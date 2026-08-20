@@ -1,0 +1,12 @@
+---
+import BlogIndexPage from "../../../views/BlogIndexPage.astro";
+import { localeStaticPaths, resolveLocaleParam } from "../../../i18n/paths";
+
+export function getStaticPaths() {
+	return localeStaticPaths();
+}
+
+const locale = resolveLocaleParam(Astro.params.locale);
+---
+
+<BlogIndexPage locale={locale} />

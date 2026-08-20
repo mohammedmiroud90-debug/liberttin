@@ -1,0 +1,57 @@
+---
+type Props = {
+	href?: string;
+	text?: string;
+	/** dark = white text for black headers; light = black text for white headers */
+	variant?: "dark" | "light";
+	fontSize?: number;
+	fontWeight?: number;
+	scale?: number;
+};
+
+const {
+	href = "/",
+	text = "Liberttin",
+	variant = "dark",
+	fontSize = 28,
+	fontWeight = 700,
+	scale = 1,
+} = Astro.props;
+
+const color = variant === "dark" ? "#ffffff" : "#000000";
+const computedSize = fontSize * scale;
+---
+
+<a href={href} class="brand-logo">
+	<span
+		class="brand-logo__text"
+		style={`font-size: ${computedSize}px; font-weight: ${fontWeight}; color: ${color};`}
+	>
+		{text}
+	</span>
+</a>
+
+<style>
+	@font-face {
+		font-family: "Libertinage";
+		src: url("/Fontlogo/Libertinage.ttf") format("truetype");
+		font-weight: 100 900;
+		font-style: normal;
+		font-display: swap;
+	}
+
+	.brand-logo {
+		display: inline-flex;
+		align-items: center;
+		min-width: 0;
+		text-decoration: none;
+		flex-shrink: 0;
+	}
+
+	.brand-logo__text {
+		font-family: "Libertinage", serif;
+		line-height: 1;
+		letter-spacing: -0.01em;
+		white-space: nowrap;
+	}
+</style>

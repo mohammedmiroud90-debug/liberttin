@@ -1,0 +1,601 @@
+---
+type Props = {
+	postId: string;
+};
+
+const { postId } = Astro.props;
+---
+
+<section id="comments" class="post-comments" data-post-id={postId}>
+	<div class="post-comments__inner">
+		<div class="post-comments__top">
+			<h2 class="post-comments__title">
+				Responses <span class="post-comments__count" id="comments-count">…</span>
+			</h2>
+		</div>
+
+		<form
+			id="comment-form"
+			class="post-comments__composer"
+			onsubmit="return false"
+		>
+			<div class="post-comments__composer-title" id="replying-to-label" style="display:none">
+				Replying to: <span id="replying-to-name"></span>
+				<button type="button" id="cancel-reply" class="post-comments__link-btn">Cancel</button>
+			</div>
+
+			<textarea
+				id="comment-content"
+				class="post-comments__textarea"
+				rows="4"
+				placeholder="What are your thoughts?"
+				required
+			></textarea>
+			<div class="post-comments__actions">
+				<button type="submit" class="post-comments__submit">Respond</button>
+			</div>
+			<p class="post-comments__error" id="comment-error" role="alert"></p>
+		</form>
+
+		<div class="post-comments__list" id="comments-list"></div>
+	</div>
+
+	<script>
+		const postId = document.getElementById("comments")?.dataset?.postId;
+
+		const elCount = document.getElementById("comments-count");
+		const elList = document.getElementById("comments-list");
+		const elForm = document.getElementById("comment-form");
+		const elTextarea = document.getElementById("comment-content");
+		const elError = document.getElementById("comment-error");
+
+		let replyTargetId = null;
+		let replyTargetName = null;
+
+		const elReplyingLabel = document.getElementById("replying-to-label");
+		const elReplyingToName = document.getElementById("replying-to-name");
+		const elCancelReply = document.getElementById("cancel-reply");
+
+		elCancelReply?.addEventListener("click", () => {
+			replyTargetId = null;
+			replyTargetName = null;
+			elReplyingLabel.style.display = "none";
+		});
+
+		function sanitizeText(text) {
+			// Comments are plain-text; we render with textContent, so only trim here.
+			return String(text ?? "").replace(/\r\n/g, "\n").trim();
+		}
+
+		function parseCommentSegments(content) {
+			const segments = [];
+			const fence = /```([a-zA-Z0-9+#-]*)\n?([\s\S]*?)```/g;
+			let lastIndex = 0;
+			let match;
+			while ((match = fence.exec(content)) !== null) {
+				if (match.index > lastIndex) {
+					segments.push({ kind: "text", value: content.slice(lastIndex, match.index) });
+				}
+				segments.push({
+					kind: "block",
+					language: match[1] || undefined,
+					value: match[2].replace(/\n$/, ""),
+				});
+				lastIndex = match.index + match[0].length;
+			}
+			if (lastIndex < content.length) {
+				segments.push({ kind: "text", value: content.slice(lastIndex) });
+			}
+			return segments;
+		}
+
+		function renderInline(value) {
+			// Split on `inline code` spans.
+			const parts = String(value).split(/(`[^`\n]+`)/g);
+			const frag = document.createDocumentFragment();
+			for (const part of parts) {
+				if (part.startsWith("`") && part.endsWith("`") && part.length > 2) {
+					const code = document.createElement("code");
+					code.className = "post-comments__inline-code";
+					code.textContent = part.slice(1, -1);
+					frag.appendChild(code);
+				} else if (part) {
+					frag.appendChild(document.createTextNode(part));
+				}
+			}
+			return frag;
+		}
+
+		function renderCommentBody(content) {
+			const segments = parseCommentSegments(content);
+			const wrapper = document.createElement("div");
+			wrapper.className = "post-comments__body";
+
+			for (const seg of segments) {
+				if (seg.kind === "block") {
+					const pre = document.createElement("pre");
+					const code = document.createElement("code");
+					code.textContent = seg.value;
+					pre.appendChild(code);
+
+					if (seg.language) {
+						const lang = document.createElement("div");
+						lang.className = "post-comments__code-lang";
+						lang.textContent = seg.language;
+						wrapper.appendChild(lang);
+					}
+
+					wrapper.appendChild(pre);
+				} else {
+					const p = document.createElement("p");
+					p.className = "post-comments__p";
+					p.style.whiteSpace = "pre-wrap";
+					p.appendChild(renderInline(seg.value));
+					wrapper.appendChild(p);
+				}
+			}
+
+			return wrapper;
+		}
+
+		function formatDate(iso) {
+			try {
+				return new Date(iso).toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" });
+			} catch {
+				return "";
+			}
+		}
+
+		function avatarNode(name) {
+			const span = document.createElement("span");
+			span.className = "post-comments__avatar";
+			
+			// Generate a consistent identicon-style avatar based on user name
+			const userName = String(name || "Guest").trim();
+			const hash = userName.split('').reduce((acc, char) => {
+				return char.charCodeAt(0) + ((acc << 5) - acc);
+			}, 0);
+			
+			// Use DiceBear API for consistent identicon avatars
+			const avatarUrl = `https://api.dicebear.com/7.x/identicon/svg?seed=${encodeURIComponent(userName)}&backgroundColor=f0f0f0`;
+			
+			const img = document.createElement("img");
+			img.src = avatarUrl;
+			img.alt = userName;
+			img.className = "post-comments__avatar-img";
+			
+			// Fallback to colored circle with initial if image fails
+			img.onerror = function() {
+				span.innerHTML = "";
+				span.style.background = `hsl(${Math.abs(hash) % 360}, 65%, 55%)`;
+				span.style.color = "#fff";
+				span.style.display = "flex";
+				span.style.alignItems = "center";
+				span.style.justifyContent = "center";
+				span.style.fontWeight = "700";
+				span.style.fontSize = "1rem";
+				span.textContent = userName.charAt(0).toUpperCase();
+			};
+			
+			span.appendChild(img);
+			return span;
+		}
+
+		function renderThread(comments) {
+			elList.innerHTML = "";
+
+			if (!comments || comments.length === 0) {
+				const empty = document.createElement("p");
+				empty.className = "post-comments__empty";
+				empty.textContent = "No responses yet. Be the first to share your thoughts.";
+				elList.appendChild(empty);
+				return;
+			}
+
+			const frag = document.createDocumentFragment();
+			for (const comment of comments) frag.appendChild(renderComment(comment, 0));
+			elList.appendChild(frag);
+		}
+
+		function renderComment(comment, level) {
+			const wrapper = document.createElement("div");
+			wrapper.className = level > 0 ? "post-comments__reply post-comments__reply--level" : "post-comments__root";
+
+			const article = document.createElement("div");
+			article.className = "post-comments__item" + (comment.isActive ? "" : " post-comments__item--hidden");
+
+			const top = document.createElement("div");
+			top.className = "post-comments__item-top";
+
+			const left = document.createElement("div");
+			left.className = "post-comments__item-left";
+
+			left.appendChild(avatarNode(comment.author));
+
+			const meta = document.createElement("div");
+			meta.className = "post-comments__meta";
+
+			const name = document.createElement("div");
+			name.className = "post-comments__author";
+			name.textContent = comment.author;
+
+			const date = document.createElement("div");
+			date.className = "post-comments__date";
+			date.textContent = formatDate(comment.createdAt);
+
+			meta.appendChild(name);
+			meta.appendChild(date);
+			left.appendChild(meta);
+
+			top.appendChild(left);
+
+			const actions = document.createElement("div");
+			actions.className = "post-comments__item-actions";
+
+			const replyBtn = document.createElement("button");
+			replyBtn.type = "button";
+			replyBtn.className = "post-comments__reply-btn";
+			replyBtn.textContent = "Reply";
+			replyBtn.addEventListener("click", () => {
+				replyTargetId = comment.id;
+				replyTargetName = comment.author;
+				elReplyingToName.textContent = replyTargetName || "User";
+				elReplyingLabel.style.display = "block";
+				elTextarea.focus();
+			});
+			actions.appendChild(replyBtn);
+
+			top.appendChild(actions);
+
+			const body = renderCommentBody(comment.content);
+
+			article.appendChild(top);
+			article.appendChild(body);
+
+			wrapper.appendChild(article);
+
+			if (comment.replies && comment.replies.length > 0) {
+				const repliesWrap = document.createElement("div");
+				repliesWrap.className = "post-comments__replies";
+				for (const r of comment.replies) repliesWrap.appendChild(renderComment(r, level + 1));
+				wrapper.appendChild(repliesWrap);
+			}
+
+			return wrapper;
+		}
+
+		async function loadComments() {
+			elError.textContent = "";
+			elList.innerHTML = "";
+			elCount.textContent = "…";
+
+			try {
+				const res = await fetch(`/api/comments/${encodeURIComponent(postId)}`);
+				if (!res.ok) throw new Error("Failed to load comments");
+				const data = await res.json();
+				elCount.textContent = String(data.count ?? 0);
+				renderThread(data.comments ?? []);
+			} catch (e) {
+				elError.textContent = e?.message || "Could not load comments.";
+			}
+		}
+
+		async function submitComment() {
+			elError.textContent = "";
+			const content = sanitizeText(elTextarea.value);
+			if (!content) return;
+
+			const payload = {
+				content,
+				author: "Guest",
+				parentId: replyTargetId,
+			};
+
+			try {
+				elForm.querySelector("button[type='submit']").disabled = true;
+				const res = await fetch(`/api/comments/${encodeURIComponent(postId)}`, {
+					method: "POST",
+					headers: { "Content-Type": "application/json" },
+					body: JSON.stringify(payload),
+				});
+				const data = await res.json().catch(() => null);
+				if (!res.ok || !data?.created) throw new Error("Your response could not be posted.");
+
+				elTextarea.value = "";
+				replyTargetId = null;
+				replyTargetName = null;
+				elReplyingLabel.style.display = "none";
+				await loadComments();
+			} catch (e) {
+				elError.textContent = e?.message || "Could not post your comment.";
+			} finally {
+				elForm.querySelector("button[type='submit']").disabled = false;
+			}
+		}
+
+		elForm.addEventListener("submit", submitComment);
+		loadComments();
+	</script>
+
+	<style>
+		.post-comments__inner {
+			width: 720px;
+			max-width: calc(100% - 2em);
+			margin: 0 auto;
+			padding: 2.25rem 0;
+		}
+
+		.post-comments__title {
+			margin: 0 0 1rem;
+			font-size: 1.5rem;
+			line-height: 1.2;
+			color: rgb(var(--black));
+			font-family: "Atkinson", sans-serif;
+			font-weight: 700;
+		}
+
+		.post-comments__count {
+			color: var(--accent);
+		}
+
+		.post-comments__composer {
+			border: none;
+			background: #f8f9fa;
+			padding: 1.5rem;
+			border-radius: 8px;
+			margin-bottom: 2rem;
+		}
+
+		.post-comments__composer-title {
+			margin-bottom: .75rem;
+			font-size: .95rem;
+			color: rgb(var(--gray-dark));
+			font-weight: 600;
+		}
+
+		.post-comments__link-btn {
+			margin-left: 1rem;
+			border: none;
+			background: transparent;
+			color: var(--accent);
+			cursor: pointer;
+			font-weight: 600;
+			text-decoration: underline;
+		}
+
+		.post-comments__textarea {
+			width: 100%;
+			font-size: 16px;
+			line-height: 1.6;
+			border: 1px solid rgb(var(--gray-light));
+			border-radius: 6px;
+			padding: .875rem 1rem;
+			outline: none;
+			resize: vertical;
+			background: #fff;
+			font-family: inherit;
+		}
+
+		.post-comments__textarea:focus {
+			border-color: rgb(var(--black));
+			box-shadow: 0 0 0 2px rgba(var(--black), 0.1);
+		}
+
+		.post-comments__actions {
+			display: flex;
+			justify-content: flex-end;
+			margin-top: .875rem;
+		}
+
+		.post-comments__submit {
+			background: #000;
+			color: #fff;
+			border: none;
+			border-radius: 6px;
+			padding: .625rem 1.5rem;
+			font-weight: 700;
+			font-size: 0.9375rem;
+			cursor: pointer;
+			transition: all 0.2s ease;
+		}
+
+		.post-comments__submit:hover {
+			background: #333;
+			transform: translateY(-1px);
+		}
+
+		.post-comments__submit:disabled {
+			opacity: .6;
+			cursor: not-allowed;
+			transform: none;
+		}
+
+		.post-comments__error {
+			min-height: 1.25rem;
+			margin: .5rem 0 0;
+			color: #b91c1c;
+			font-size: .95rem;
+		}
+
+		.post-comments__list {
+			margin-top: 2rem;
+		}
+
+		.post-comments__empty {
+			color: rgb(var(--gray-dark));
+			font-size: 1rem;
+			padding: 2rem 0;
+			margin: 0;
+			text-align: center;
+			background: #f8f9fa;
+			border-radius: 8px;
+		}
+
+		.post-comments__root,
+		.post-comments__reply {
+			border-bottom: 1px solid rgb(var(--gray-light));
+			padding: 1.5rem 0;
+		}
+
+		.post-comments__reply {
+			border-bottom: none;
+			padding-left: 2.5rem;
+			border-left: 3px solid #e5e7eb;
+			margin-top: 1rem;
+			position: relative;
+		}
+
+		.post-comments__reply::before {
+			content: '';
+			position: absolute;
+			left: -3px;
+			top: 0;
+			width: 3px;
+			height: 2rem;
+			background: var(--accent);
+		}
+
+		.post-comments__item--hidden {
+			opacity: .6;
+		}
+
+		.post-comments__item-top {
+			display: flex;
+			justify-content: space-between;
+			gap: 1rem;
+			align-items: flex-start;
+			margin-bottom: .75rem;
+		}
+
+		.post-comments__item-left {
+			display: flex;
+			gap: .875rem;
+			align-items: center;
+		}
+
+		.post-comments__avatar {
+			display: block;
+			width: 44px !important;
+			height: 44px !important;
+			min-width: 44px;
+			min-height: 44px;
+			max-width: 44px;
+			max-height: 44px;
+			border-radius: 50%;
+			background: #f8f9fa;
+			border: 2px solid rgb(var(--gray-light));
+			overflow: hidden;
+			flex-shrink: 0;
+			position: relative;
+		}
+
+		.post-comments__avatar-img {
+			position: absolute;
+			top: 0;
+			left: 0;
+			width: 100% !important;
+			height: 100% !important;
+			object-fit: cover;
+			display: block;
+		}
+
+		.post-comments__meta {
+			display: flex;
+			flex-direction: column;
+			gap: .15rem;
+		}
+
+		.post-comments__author {
+			font-weight: 700;
+			font-size: 0.9375rem;
+			color: rgb(var(--black));
+			font-family: "Atkinson", sans-serif;
+		}
+
+		.post-comments__date {
+			font-size: .875rem;
+			color: rgb(var(--gray));
+		}
+
+		.post-comments__reply-btn {
+			background: transparent;
+			border: none;
+			color: var(--accent);
+			font-weight: 600;
+			font-size: 0.875rem;
+			cursor: pointer;
+			padding: 0.25rem 0.5rem;
+			border-radius: 4px;
+			transition: background 0.2s ease;
+		}
+
+		.post-comments__reply-btn:hover {
+			background: rgba(var(--gray-light), 0.5);
+		}
+
+		.post-comments__body {
+			font-family: inherit;
+			font-size: 15px;
+			line-height: 1.65;
+			color: rgb(var(--gray-dark));
+		}
+
+		.post-comments__p {
+			margin: 0 0 .9rem;
+		}
+
+		.post-comments__inline-code {
+			font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+			background: rgb(var(--gray-light));
+			padding: .15rem .4rem;
+			border-radius: 4px;
+			font-size: .9em;
+			color: #e11d48;
+		}
+
+		.post-comments__code-lang {
+			margin: .9rem 0 .4rem;
+			font-size: .75rem;
+			font-weight: 800;
+			letter-spacing: .08em;
+			text-transform: uppercase;
+			color: #9ca3af;
+			font-family: "Atkinson", sans-serif;
+		}
+
+		pre {
+			background: #1e293b;
+			color: #f1f5f9;
+			padding: 1.25rem;
+			border-radius: 8px;
+			overflow-x: auto;
+			margin: .75rem 0 .9rem;
+			border: 1px solid #334155;
+		}
+
+		pre code {
+			font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+			font-size: 0.875rem;
+		}
+
+		@media (max-width: 720px) {
+			.post-comments__inner {
+				padding: 1.5rem 0;
+			}
+
+			.post-comments__reply {
+				padding-left: 1.5rem;
+			}
+
+			.post-comments__avatar {
+				width: 38px !important;
+				height: 38px !important;
+				min-width: 38px;
+				min-height: 38px;
+				max-width: 38px;
+				max-height: 38px;
+			}
+		}
+	</style>
+</section>
+

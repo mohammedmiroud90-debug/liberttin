@@ -1,0 +1,47 @@
+---
+import BlogPost from "../../../layouts/BlogPost.astro";
+import { getAllPostSlugs, getBlogPostBySlug } from "../../../lib/parse/posts";
+import { processHeadings } from "../../../lib/blog/headings";
+import { localizedPath } from "../../../i18n/locales";
+import { localeStaticPaths, resolveLocaleParam } from "../../../i18n/paths";
+
+export async function getStaticPaths() {
+	const slugs = await getAllPostSlugs();
+	const locales = localeStaticPaths();
+	return locales.flatMap(({ params: { locale } }) =>
+		slugs.map((slug) => ({
+			params: { locale, slug },
+			props: { locale: resolveLocaleParam(locale) },
+		})),
+	);
+}
+
+const locale = Astro.props.locale ?? resolveLocaleParam(Astro.params.locale);
+const slug = Astro.params.slug;
+
+if (!slug) {
+	return Astro.redirect(localizedPath(locale, "/blog/"));
+}
+
+const post = await getBlogPostBySlug(slug);
+if (!post) {
+	return Astro.redirect("/404");
+}
+
+const processed = processHeadings(post.content);
+---
+
+<BlogPost
+	title={post.title}
+	excerpt={post.excerpt}
+	publishedAt={post.publishedAt}
+	updatedAt={post.updatedAt}
+	imageUrl={post.imageUrl}
+	author={post.author}
+	category={post.category}
+	postId={post.id}
+	readingTime={post.readingTime}
+	headings={processed.headings}
+	contentHtml={processed.html}
+	locale={locale}
+/>

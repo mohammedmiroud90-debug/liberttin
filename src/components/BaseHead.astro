@@ -1,0 +1,65 @@
+---
+import "../styles/global.css";
+import { LOCALES, DEFAULT_LOCALE, getLocaleFromPath, localizedPath, stripLocale } from "../i18n/locales";
+import { SITE_TITLE, SITE_URL } from "../consts";
+
+interface Props {
+	title: string;
+	description: string;
+	image?: string;
+	locale?: string;
+	noindex?: boolean;
+}
+
+const {
+	title,
+	description,
+	image = "/blog-placeholder-1.jpg",
+	locale = getLocaleFromPath(Astro.url.pathname),
+	noindex = false,
+} = Astro.props;
+
+const path = stripLocale(Astro.url.pathname);
+const canonicalURL = new URL(localizedPath(locale as any, path), SITE_URL);
+const ogImage = new URL(image, SITE_URL);
+---
+
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+<meta name="generator" content={Astro.generator} />
+{noindex ? <meta name="robots" content="noindex,nofollow" /> : <meta name="robots" content="index,follow,max-image-preview:large" />}
+
+<link rel="preload" href="/fonts/atkinson-regular.woff" as="font" type="font/woff" crossorigin />
+<link rel="preload" href="/fonts/atkinson-bold.woff" as="font" type="font/woff" crossorigin />
+
+<link rel="canonical" href={canonicalURL} />
+{
+	LOCALES.map((code) => (
+		<link
+			rel="alternate"
+			hreflang={code}
+			href={new URL(localizedPath(code, path), SITE_URL).href}
+		/>
+	))
+}
+<link rel="alternate" hreflang="x-default" href={new URL(localizedPath(DEFAULT_LOCALE, path), SITE_URL).href} />
+
+<title>{title}</title>
+<meta name="title" content={title} />
+<meta name="description" content={description} />
+<meta name="author" content={SITE_TITLE} />
+
+<meta property="og:type" content="website" />
+<meta property="og:site_name" content={SITE_TITLE} />
+<meta property="og:locale" content={locale} />
+<meta property="og:url" content={canonicalURL} />
+<meta property="og:title" content={title} />
+<meta property="og:description" content={description} />
+<meta property="og:image" content={ogImage} />
+
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:url" content={canonicalURL} />
+<meta name="twitter:title" content={title} />
+<meta name="twitter:description" content={description} />
+<meta name="twitter:image" content={ogImage} />

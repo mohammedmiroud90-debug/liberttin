@@ -1,0 +1,43 @@
+---
+---
+
+<div class="reading-progress" aria-hidden="true">
+	<div class="reading-progress__bar" id="reading-progress-bar"></div>
+</div>
+
+<script>
+	const bar = document.getElementById("reading-progress-bar");
+
+	function updateProgress() {
+		const article = document.querySelector("article") || document.documentElement;
+		const scrollTop = window.scrollY;
+		const docHeight = article.scrollHeight - window.innerHeight;
+		const percent = docHeight > 0 ? (scrollTop / docHeight) * 100 : 0;
+		const clamped = Math.min(100, Math.max(0, percent));
+		if (bar) bar.style.width = clamped + "%";
+	}
+
+	window.addEventListener("scroll", updateProgress, { passive: true });
+	window.addEventListener("resize", updateProgress, { passive: true });
+	updateProgress();
+</script>
+
+<style>
+	.reading-progress {
+		position: fixed;
+		top: 0;
+		left: 0;
+		right: 0;
+		height: 4px;
+		z-index: 999;
+		background: rgba(0, 0, 0, 0.08);
+	}
+
+	.reading-progress__bar {
+		height: 100%;
+		width: 0%;
+		background: linear-gradient(90deg, #14b8a6 0%, #2563eb 100%);
+		transition: width 80ms linear;
+	}
+</style>
+

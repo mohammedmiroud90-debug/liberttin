@@ -1,0 +1,525 @@
+---
+import BaseHead from '../components/BaseHead.astro';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import FormattedDate from '../components/FormattedDate.astro';
+import ReadingProgress from '../components/ReadingProgress.astro';
+import PostComments from '../components/PostComments.astro';
+import CookieBanner from '../components/CookieBanner.astro';
+import type { BlogPost } from '../lib/parse/posts';
+import type { ArticleHeading } from '../lib/blog/headings';
+import { DEFAULT_LOCALE, type Locale } from '../i18n/locales';
+import { t } from '../i18n/ui';
+
+type Props = Pick<
+	BlogPost,
+	| 'title'
+	| 'excerpt'
+	| 'publishedAt'
+	| 'updatedAt'
+	| 'imageUrl'
+	| 'author'
+	| 'category'
+	| 'readingTime'
+> & {
+	postId: string;
+	headings: ArticleHeading[];
+	contentHtml: string;
+	locale?: Locale;
+};
+
+const {
+	title,
+	excerpt,
+	publishedAt,
+	updatedAt,
+	imageUrl,
+	author,
+	category,
+	readingTime,
+	postId,
+	headings,
+	contentHtml,
+	locale = DEFAULT_LOCALE,
+} = Astro.props;
+const pubDate = new Date(publishedAt);
+const updated = updatedAt ? new Date(updatedAt) : undefined;
+const dir = locale === 'ar' ? 'rtl' : 'ltr';
+---
+
+<html lang={locale} dir={dir}>
+	<head>
+		<BaseHead title={title} description={excerpt} locale={locale} />
+		<style>
+			@font-face {
+				font-family: "Source Serif Pro";
+				src: url("/source-serif-pro.regular.ttf") format("truetype");
+				font-weight: 400;
+				font-style: normal;
+				font-display: swap;
+			}
+
+			main {
+				width: calc(100% - 2em);
+				max-width: 100%;
+				margin: 0;
+			}
+			.hero-image {
+				width: 100%;
+			}
+			.hero-image img {
+				display: block;
+				margin: 0 auto;
+				border-radius: 12px;
+				box-shadow: var(--box-shadow);
+			}
+			.prose {
+				width: 720px;
+				max-width: calc(100% - 2em);
+				margin: auto;
+				padding: 1em;
+				color: rgb(var(--gray-dark));
+			}
+			.title {
+				margin-bottom: 1em;
+				padding: 1em 0;
+				text-align: left;
+				line-height: 1;
+			}
+			.title h1 {
+				margin: 0 0 0.5em 0;
+				font-family: "Atkinson", sans-serif;
+				font-size: 2.25rem;
+			}
+			.post-author-header {
+				display: flex;
+				align-items: center;
+				gap: 1rem;
+				margin-bottom: 1.5rem;
+			}
+			.post-author-header__avatar {
+				width: 50px;
+				height: 50px;
+				border-radius: 50%;
+				object-fit: cover;
+			}
+			.post-author-header__info {
+				flex: 1;
+			}
+			.post-author-header__name {
+				font-family: "Atkinson", sans-serif;
+				font-weight: 700;
+				color: rgb(var(--black));
+				font-size: 1rem;
+				margin: 0 0 0.25rem 0;
+			}
+			.post-author-header__date {
+				color: rgb(var(--gray));
+				font-size: 0.875rem;
+			}
+			.meta {
+				margin-bottom: 0.5em;
+				color: rgb(var(--gray));
+				font-family: "Atkinson", sans-serif;
+				font-size: 0.875rem;
+			}
+			.last-updated-on {
+				font-style: italic;
+			}
+			.post-content {
+				font-family: "Source Serif Pro", Georgia, serif;
+				font-size: 21px;
+				line-height: 1.58;
+			}
+			.post-content :global(h1),
+			.post-content :global(h2),
+			.post-content :global(h3),
+			.post-content :global(h4) {
+				font-family: "Atkinson", sans-serif;
+			}
+			.post-content :global(h1) {
+				font-size: 2rem;
+			}
+			.post-content :global(h2) {
+				font-size: 1.75rem;
+			}
+			.post-content :global(h3) {
+				font-size: 1.5rem;
+			}
+			.post-content :global(h4) {
+				font-size: 1.25rem;
+			}
+			.post-content :global(img) {
+				max-width: 100%;
+				height: auto;
+			}
+
+			.article-toc {
+				margin: 1.25rem auto 0;
+				width: min(720px, calc(100% - 2em));
+				padding: 0 1em;
+				font-family: "Atkinson", sans-serif;
+			}
+
+			.article-toc__label {
+				font-size: .95rem;
+				font-weight: 700;
+				color: rgb(var(--gray-dark));
+				margin-bottom: .5rem;
+			}
+
+			.article-toc__list {
+				list-style: none;
+				padding: 0;
+				margin: 0;
+				display: flex;
+				flex-wrap: wrap;
+				gap: .5rem .75rem;
+			}
+
+			.article-toc__item {
+				display: inline-flex;
+				align-items: center;
+				gap: .4rem;
+				font-size: .95rem;
+			}
+
+			.article-toc__item a {
+				color: rgb(var(--gray-dark));
+				text-decoration: none;
+				border-bottom: 1px solid transparent;
+				transition: color 0.15s ease, border-color 0.15s ease;
+			}
+
+			.article-toc__item a:hover {
+				color: var(--accent);
+				border-bottom-color: var(--accent);
+			}
+
+			.article-toc__dot {
+				width: .35rem;
+				height: .35rem;
+				border-radius: 999px;
+				background: rgb(var(--gray-light));
+			}
+
+			/* Author Profile Styles */
+			.author-profile {
+				margin: 3rem 0 2rem;
+				padding: 2rem;
+				background: linear-gradient(135deg, #f6f8fb 0%, #ffffff 100%);
+				border-radius: 16px;
+				border: 1px solid rgb(var(--gray-light));
+			}
+
+			.author-profile__inner {
+				display: flex;
+				align-items: center;
+				gap: 1.5rem;
+			}
+
+			.author-profile__avatar {
+				width: 80px;
+				height: 80px;
+				border-radius: 50%;
+				object-fit: cover;
+				border: 3px solid #fff;
+				box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+				flex-shrink: 0;
+			}
+
+			.author-profile__info {
+				flex: 1;
+			}
+
+			.author-profile__name {
+				font-family: "Atkinson", sans-serif;
+				font-size: 1.25rem;
+				font-weight: 700;
+				color: rgb(var(--black));
+				margin-bottom: 0.5rem;
+			}
+
+			.author-profile__bio {
+				font-family: "Source Serif Pro", Georgia, serif;
+				font-size: 0.95rem;
+				color: rgb(var(--gray-dark));
+				line-height: 1.5;
+			}
+
+			/* Social Share Styles */
+			.social-share {
+				margin: 2rem 0 3rem;
+				padding: 1.5rem 0;
+				border-top: 1px solid rgb(var(--gray-light));
+				border-bottom: 1px solid rgb(var(--gray-light));
+			}
+
+			.social-share__label {
+				font-family: "Atkinson", sans-serif;
+				font-size: 0.875rem;
+				font-weight: 700;
+				color: rgb(var(--gray-dark));
+				margin-bottom: 1rem;
+				text-transform: uppercase;
+				letter-spacing: 0.05em;
+			}
+
+			.social-share__buttons {
+				display: flex;
+				flex-wrap: wrap;
+				gap: 0.75rem;
+			}
+
+			.social-share__btn {
+				display: inline-flex;
+				align-items: center;
+				gap: 0.5rem;
+				padding: 0.6rem 1.2rem;
+				border: 1px solid rgb(var(--gray-light));
+				border-radius: 8px;
+				background: #fff;
+				color: rgb(var(--gray-dark));
+				font-family: "Atkinson", sans-serif;
+				font-size: 0.875rem;
+				font-weight: 600;
+				text-decoration: none;
+				cursor: pointer;
+				transition: all 0.2s ease;
+			}
+
+			.social-share__btn:hover {
+				background: rgb(var(--gray-light));
+				border-color: rgb(var(--gray));
+				transform: translateY(-2px);
+				box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+			}
+
+			.social-share__btn--twitter:hover {
+				background: #1da1f2;
+				border-color: #1da1f2;
+				color: #fff;
+			}
+
+			.social-share__btn--facebook:hover {
+				background: #1877f2;
+				border-color: #1877f2;
+				color: #fff;
+			}
+
+			.social-share__btn--linkedin:hover {
+				background: #0077b5;
+				border-color: #0077b5;
+				color: #fff;
+			}
+
+			.social-share__btn--copy:hover {
+				background: rgb(var(--black));
+				border-color: rgb(var(--black));
+				color: #fff;
+			}
+
+			.social-share__btn svg {
+				flex-shrink: 0;
+			}
+
+			@media (max-width: 720px) {
+				.author-profile {
+					padding: 1.5rem;
+				}
+
+				.author-profile__inner {
+					flex-direction: column;
+					text-align: center;
+				}
+
+				.author-profile__avatar {
+					width: 70px;
+					height: 70px;
+				}
+
+				.social-share__buttons {
+					flex-direction: column;
+				}
+
+				.social-share__btn {
+					width: 100%;
+					justify-content: center;
+				}
+			}
+		</style>
+	</head>
+
+	<body>
+		<ReadingProgress />
+		<Header locale={locale} />
+		<main>
+			<article>
+				{
+					imageUrl && (
+						<div class="hero-image">
+							<img width={1020} height={510} src={imageUrl} alt="" />
+						</div>
+					)
+				}
+				<div class="prose">
+					<div class="title">
+						<!-- Author Header with Avatar -->
+						<div class="post-author-header">
+							<img 
+								src="https://founder.brintiel.com/static/images/profile-pic.png" 
+								alt={author || 'Author'} 
+								class="post-author-header__avatar"
+							/>
+							<div class="post-author-header__info">
+								<div class="post-author-header__name">{author || 'Author'}</div>
+								<div class="post-author-header__date">
+									<FormattedDate date={pubDate} />
+									{category && <span> · {category}</span>}
+									{typeof readingTime === 'number' && readingTime > 0 && <span> · {readingTime} min read</span>}
+								</div>
+							</div>
+						</div>
+
+						<h1>{title}</h1>
+						
+						{
+							updated && (
+								<div class="last-updated-on">
+									Last updated on <FormattedDate date={updated} />
+								</div>
+							)
+						}
+						<hr />
+
+						{headings && headings.length > 1 && (
+							<nav class="article-toc" aria-label={t(locale, 'toc.label')}>
+								<div class="article-toc__label">{t(locale, 'toc.label')}</div>
+								<ul class="article-toc__list">
+									{
+										headings
+											.filter((h) => h.level >= 2)
+											.map((h) => (
+												<li class="article-toc__item">
+													<span class="article-toc__dot" aria-hidden="true" style={`opacity: ${h.level === 2 ? 1 : 0.7};`} />
+													<a href={`#${h.id}`}>{h.text}</a>
+												</li>
+											))
+									}
+								</ul>
+							</nav>
+						)}
+					</div>
+					<div class="post-content" set:html={contentHtml} />
+
+					<!-- Author Profile Section -->
+					<div class="author-profile">
+						<div class="author-profile__inner">
+							<img 
+								src="https://founder.brintiel.com/static/images/profile-pic.png" 
+								alt="Author profile" 
+								class="author-profile__avatar"
+							/>
+							<div class="author-profile__info">
+								<div class="author-profile__name">{author || 'Author'}</div>
+								<div class="author-profile__bio">
+									Writer, developer, and content creator sharing insights on technology and design.
+								</div>
+							</div>
+						</div>
+					</div>
+
+					<!-- Social Share Section -->
+					<div class="social-share">
+						<div class="social-share__label">Share this article</div>
+						<div class="social-share__buttons">
+							<a 
+								href={`https://twitter.com/intent/tweet?url=${encodeURIComponent(Astro.url.href)}&text=${encodeURIComponent(title)}`}
+								target="_blank"
+								rel="noopener noreferrer"
+								class="social-share__btn social-share__btn--twitter"
+								aria-label="Share on Twitter"
+							>
+								<svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor">
+									<path d="M23.953 4.57a10 10 0 01-2.825.775 4.958 4.958 0 002.163-2.723c-.951.555-2.005.959-3.127 1.184a4.92 4.92 0 00-8.384 4.482C7.69 8.095 4.067 6.13 1.64 3.162a4.822 4.822 0 00-.666 2.475c0 1.71.87 3.213 2.188 4.096a4.904 4.904 0 01-2.228-.616v.06a4.923 4.923 0 003.946 4.827 4.996 4.996 0 01-2.212.085 4.936 4.936 0 004.604 3.417 9.867 9.867 0 01-6.102 2.105c-.39 0-.779-.023-1.17-.067a13.995 13.995 0 007.557 2.209c9.053 0 13.998-7.496 13.998-13.985 0-.21 0-.42-.015-.63A9.935 9.935 0 0024 4.59z"/>
+								</svg>
+								Twitter
+							</a>
+							<a 
+								href={`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(Astro.url.href)}`}
+								target="_blank"
+								rel="noopener noreferrer"
+								class="social-share__btn social-share__btn--facebook"
+								aria-label="Share on Facebook"
+							>
+								<svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor">
+									<path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/>
+								</svg>
+								Facebook
+							</a>
+							<a 
+								href={`https://www.linkedin.com/shareArticle?mini=true&url=${encodeURIComponent(Astro.url.href)}&title=${encodeURIComponent(title)}`}
+								target="_blank"
+								rel="noopener noreferrer"
+								class="social-share__btn social-share__btn--linkedin"
+								aria-label="Share on LinkedIn"
+							>
+								<svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor">
+									<path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/>
+								</svg>
+								LinkedIn
+							</a>
+							<button
+								type="button"
+								class="social-share__btn social-share__btn--copy"
+								aria-label="Copy link"
+								data-copy-link={Astro.url.href}
+							>
+								<svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2">
+									<path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path>
+									<path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path>
+								</svg>
+								Copy Link
+							</button>
+						</div>
+					</div>
+				</div>
+			</article>
+		</main>
+		<PostComments postId={postId} />
+		<Footer locale={locale} />
+		<CookieBanner locale={locale} />
+
+		<script>
+			// Copy link functionality
+			function initCopyLink() {
+				const copyBtn = document.querySelector('[data-copy-link]');
+				if (!copyBtn) return;
+
+				copyBtn.addEventListener('click', async () => {
+					const url = copyBtn.getAttribute('data-copy-link');
+					if (!url) return;
+
+					try {
+						await navigator.clipboard.writeText(url);
+						const originalText = copyBtn.innerHTML;
+						copyBtn.innerHTML = `
+							<svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2">
+								<polyline points="20 6 9 17 4 12"></polyline>
+							</svg>
+							Copied!
+						`;
+						setTimeout(() => {
+							copyBtn.innerHTML = originalText;
+						}, 2000);
+					} catch (err) {
+						console.error('Failed to copy:', err);
+					}
+				});
+			}
+
+			initCopyLink();
+			document.addEventListener('astro:page-load', initCopyLink);
+		</script>
+	</body>
+</html>
