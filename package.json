@@ -24,7 +24,7 @@
 		"wrangler": "4.88.0"
 	},
 	"engines": {
-		"node": ">=20"
+		"node": ">=22"
 	},
 	"private": true,
 	"scripts": {
