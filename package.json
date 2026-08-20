@@ -1,6 +1,6 @@
 {
-	"name": "liberttin-blog",
-	"description": "Liberttin blog — Astro + Cloudflare Workers, Parse-backed posts.",
+	"name": "libertta-blog",
+	"description": "Libertta blog — Astro + Cloudflare Workers, Parse-backed posts.",
 	"cloudflare": {
 		"label": "Astro Framework Starter",
 		"products": [

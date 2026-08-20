@@ -20,7 +20,7 @@ const SEO_SETTINGS_KEY = "site-seo";
 export const DEFAULT_LOGO_SETTINGS: LogoSettings = {
 	type: "image",
 	imageUrl: "/LOGO.png",
-	text: "Liberttin",
+	text: "Libertta",
 	fontFamily: "Libertinage",
 	fontSize: 28,
 	fontWeight: 700,

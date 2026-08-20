@@ -7,7 +7,7 @@ import { LOCALES, DEFAULT_LOCALE } from "./src/i18n/locales";
 
 // https://astro.build/config
 export default defineConfig({
-	site: "https://liberttin.blog",
+	site: "https://libertta.blog",
 	integrations: [
 		mdx(),
 		sitemap({

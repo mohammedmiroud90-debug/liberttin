@@ -1,6 +1,6 @@
-# Liberttin Blog
+# Libertta Blog
 
-Astro blog for **Liberttin**, deployed on Cloudflare Workers. Posts come from the shared Parse backend; the header uses a Libertinage text logo and post bodies use Source Serif Pro.
+Astro blog for **Libertta**, deployed on Cloudflare Workers. Posts come from the shared Parse backend; the header uses a Libertinage text logo and post bodies use Source Serif Pro.
 
 ## Setup
 
