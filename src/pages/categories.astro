@@ -1,0 +1,5 @@
+---
+import { DEFAULT_LOCALE, localizedPath } from "../i18n/locales";
+
+return Astro.redirect(localizedPath(DEFAULT_LOCALE, "/categories/"), 301);
+---

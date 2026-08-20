@@ -1,14 +1,15 @@
 ---
 interface Props {
 	date: Date;
+	locale?: string;
 }
 
-const { date } = Astro.props;
+const { date, locale = "en" } = Astro.props;
 const isValid = date instanceof Date && !isNaN(date.getTime());
-const iso = isValid ? date.toISOString() : '';
+const iso = isValid ? date.toISOString() : "";
 const label = isValid
-	? date.toLocaleDateString('en-us', { year: 'numeric', month: 'short', day: 'numeric' })
-	: '';
+	? date.toLocaleDateString(locale, { year: "numeric", month: "short", day: "numeric" })
+	: "";
 ---
 
 {isValid && <time datetime={iso}>{label}</time>}

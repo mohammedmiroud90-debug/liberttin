@@ -1,0 +1,127 @@
+---
+import BaseHead from "../components/BaseHead.astro";
+import Header from "../components/Header.astro";
+import Footer from "../components/Footer.astro";
+import { SITE_TITLE } from "../consts";
+import {
+	DEFAULT_LOCALE,
+	getDir,
+	getLocaleFromPath,
+	localizedPath,
+	type Locale,
+} from "../i18n/locales";
+import { t } from "../i18n/ui";
+
+const locale: Locale = getLocaleFromPath(Astro.url.pathname) || DEFAULT_LOCALE;
+const dir = getDir(locale);
+const homeHref = localizedPath(locale, "/");
+const blogHref = localizedPath(locale, "/blog/");
+
+Astro.response.status = 404;
+---
+
+<!doctype html>
+<html lang={locale} dir={dir}>
+	<head>
+		<BaseHead
+			title={`404 · ${SITE_TITLE}`}
+			description={t(locale, "notFound.description")}
+			locale={locale}
+			noindex={true}
+		/>
+		<style>
+			.not-found {
+				min-height: 55vh;
+				display: flex;
+				flex-direction: column;
+				align-items: flex-start;
+				justify-content: center;
+				padding: 3rem 0 4rem;
+			}
+
+			.not-found__code {
+				font-family: "Atkinson", sans-serif;
+				font-size: clamp(4rem, 12vw, 7rem);
+				font-weight: 700;
+				line-height: 1;
+				color: var(--accent);
+				margin: 0 0 0.75rem;
+				letter-spacing: -0.04em;
+			}
+
+			.not-found__title {
+				font-family: "Atkinson", sans-serif;
+				font-size: 1.75rem;
+				margin: 0 0 0.75rem;
+				color: rgb(var(--black));
+			}
+
+			.not-found__text {
+				margin: 0 0 2rem;
+				max-width: 32rem;
+				color: rgb(var(--gray-dark));
+				font-size: 1.05rem;
+				line-height: 1.6;
+			}
+
+			.not-found__actions {
+				display: flex;
+				flex-wrap: wrap;
+				gap: 0.75rem 1rem;
+			}
+
+			.not-found__btn {
+				display: inline-flex;
+				align-items: center;
+				justify-content: center;
+				padding: 0.7rem 1.35rem;
+				font-family: "Atkinson", sans-serif;
+				font-weight: 700;
+				font-size: 0.95rem;
+				text-decoration: none;
+				border: 2px solid transparent;
+				transition: background 0.15s ease, color 0.15s ease, border-color 0.15s ease;
+			}
+
+			.not-found__btn--primary {
+				background: rgb(var(--black));
+				color: #fff;
+			}
+
+			.not-found__btn--primary:hover {
+				background: var(--accent);
+				color: #fff;
+			}
+
+			.not-found__btn--ghost {
+				background: transparent;
+				color: var(--accent);
+				border-color: rgb(var(--gray-light));
+			}
+
+			.not-found__btn--ghost:hover {
+				border-color: var(--accent);
+				color: var(--accent-dark);
+			}
+		</style>
+	</head>
+	<body>
+		<Header locale={locale} />
+		<main>
+			<section class="not-found" aria-labelledby="not-found-title">
+				<p class="not-found__code" aria-hidden="true">404</p>
+				<h1 id="not-found-title" class="not-found__title">{t(locale, "notFound.title")}</h1>
+				<p class="not-found__text">{t(locale, "notFound.description")}</p>
+				<div class="not-found__actions">
+					<a class="not-found__btn not-found__btn--primary" href={homeHref}>
+						{t(locale, "notFound.home")}
+					</a>
+					<a class="not-found__btn not-found__btn--ghost" href={blogHref}>
+						{t(locale, "notFound.blog")}
+					</a>
+				</div>
+			</section>
+		</main>
+		<Footer locale={locale} />
+	</body>
+</html>

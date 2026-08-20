@@ -43,6 +43,17 @@ body {
 	font-size: 20px;
 	line-height: 1.7;
 }
+
+html[dir="rtl"] body {
+	text-align: right;
+	font-family: "Segoe UI", Tahoma, "Noto Naskh Arabic", "Arial", "Atkinson", sans-serif;
+}
+
+html[dir="rtl"] blockquote {
+	border-left: none;
+	border-right: 4px solid var(--accent);
+	padding: 0 20px 0 0;
+}
 main {
 	width: 720px;
 	max-width: calc(100% - 2em);

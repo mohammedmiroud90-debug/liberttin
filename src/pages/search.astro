@@ -1,8 +1,5 @@
 ---
-export const prerender = false;
+import { DEFAULT_LOCALE, localizedPath } from "../i18n/locales";
 
-import SearchPage from "../views/SearchPage.astro";
-import { DEFAULT_LOCALE } from "../i18n/locales";
+return Astro.redirect(localizedPath(DEFAULT_LOCALE, "/search/"), 301);
 ---
-
-<SearchPage locale={DEFAULT_LOCALE} />

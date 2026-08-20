@@ -1,41 +1,36 @@
 ---
-import { DEFAULT_LOCALE, type Locale } from "../i18n/locales";
+import { DEFAULT_LOCALE, localizedPath, type Locale } from "../i18n/locales";
+import { t } from "../i18n/ui";
 
 type Props = { locale?: Locale };
 const locale = Astro.props.locale ?? DEFAULT_LOCALE;
+const policiesBase = localizedPath(locale, "/policies/");
 ---
 
-<div id="cookie-banner" class="cookie-banner" hidden>
+<div id="cookie-banner" class="cookie-banner" hidden data-policies-url={`${policiesBase}#cookies`}>
 	<div class="cookie-banner__content">
 		<div class="cookie-banner__text">
-			<h3 class="cookie-banner__title">We use cookies and other technologies.</h3>
-			<p class="cookie-banner__description">
-				This website uses cookies, web beacons, JavaScript and similar technologies. 
-				We accept that companies and third parties may create user profiles for 
-				personalization, market research and advertising. While information may be 
-				shared with third parties, it cannot be combined with personal data. 
-				You can find detailed information on this subject and how to withdraw your 
-				consent in the site's privacy policy.
-			</p>
+			<h3 class="cookie-banner__title">{t(locale, "cookie.title")}</h3>
+			<p class="cookie-banner__description">{t(locale, "cookie.description")}</p>
 			<div class="cookie-banner__links">
-				<a href="/policies#privacy" class="cookie-banner__link">Privacy Policy</a>
-				<a href="/policies#cookies" class="cookie-banner__link">Cookie Policy</a>
-				<a href="/policies" class="cookie-banner__link">Terms & Conditions</a>
+				<a href={`${policiesBase}#privacy`} class="cookie-banner__link">{t(locale, "cookie.privacy")}</a>
+				<a href={`${policiesBase}#cookies`} class="cookie-banner__link">{t(locale, "cookie.cookies")}</a>
+				<a href={policiesBase} class="cookie-banner__link">{t(locale, "cookie.terms")}</a>
 			</div>
 		</div>
 		<div class="cookie-banner__actions">
 			<button type="button" class="cookie-banner__btn cookie-banner__btn--decline" data-cookie-decline>
-				DECLINE
+				{t(locale, "cookie.decline")}
 			</button>
 			<button type="button" class="cookie-banner__btn cookie-banner__btn--settings" data-cookie-settings>
-				SETTINGS
+				{t(locale, "cookie.settings")}
 			</button>
 			<button type="button" class="cookie-banner__btn cookie-banner__btn--accept" data-cookie-accept>
-				OK
+				{t(locale, "cookie.accept")}
 			</button>
 		</div>
 	</div>
-	<button type="button" class="cookie-banner__close" aria-label="Close" data-cookie-close>
+	<button type="button" class="cookie-banner__close" aria-label={t(locale, "cookie.close")} data-cookie-close>
 		<svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2">
 			<path d="M18 6L6 18M6 6l12 12"></path>
 		</svg>
@@ -44,46 +39,45 @@ const locale = Astro.props.locale ?? DEFAULT_LOCALE;
 
 <script>
 	function initCookieBanner() {
-		const banner = document.getElementById('cookie-banner');
+		const banner = document.getElementById("cookie-banner");
 		if (!banner) return;
 
-		const cookieConsent = localStorage.getItem('cookieConsent');
-		
-		// Show banner if no consent given
+		const cookieConsent = localStorage.getItem("cookieConsent");
+
 		if (!cookieConsent) {
-			banner.removeAttribute('hidden');
+			banner.removeAttribute("hidden");
 		}
 
-		const acceptBtn = banner.querySelector('[data-cookie-accept]');
-		const declineBtn = banner.querySelector('[data-cookie-decline]');
-		const settingsBtn = banner.querySelector('[data-cookie-settings]');
-		const closeBtn = banner.querySelector('[data-cookie-close]');
+		const acceptBtn = banner.querySelector("[data-cookie-accept]");
+		const declineBtn = banner.querySelector("[data-cookie-decline]");
+		const settingsBtn = banner.querySelector("[data-cookie-settings]");
+		const closeBtn = banner.querySelector("[data-cookie-close]");
 
 		function hideBanner() {
-			banner.setAttribute('hidden', '');
+			banner.setAttribute("hidden", "");
 		}
 
-		acceptBtn?.addEventListener('click', () => {
-			localStorage.setItem('cookieConsent', 'accepted');
+		acceptBtn?.addEventListener("click", () => {
+			localStorage.setItem("cookieConsent", "accepted");
 			hideBanner();
 		});
 
-		declineBtn?.addEventListener('click', () => {
-			localStorage.setItem('cookieConsent', 'declined');
+		declineBtn?.addEventListener("click", () => {
+			localStorage.setItem("cookieConsent", "declined");
 			hideBanner();
 		});
 
-		settingsBtn?.addEventListener('click', () => {
-			window.location.href = '/policies#cookies';
+		settingsBtn?.addEventListener("click", () => {
+			window.location.href = banner.dataset.policiesUrl || "/policies#cookies";
 		});
 
-		closeBtn?.addEventListener('click', () => {
+		closeBtn?.addEventListener("click", () => {
 			hideBanner();
 		});
 	}
 
 	initCookieBanner();
-	document.addEventListener('astro:page-load', initCookieBanner);
+	document.addEventListener("astro:page-load", initCookieBanner);
 </script>
 
 <style>
@@ -153,14 +147,14 @@ const locale = Astro.props.locale ?? DEFAULT_LOCALE;
 
 	.cookie-banner__link {
 		font-size: 0.8125rem;
-		color: #0066cc;
+		color: var(--accent);
 		text-decoration: underline;
 		transition: color 0.2s ease;
 		font-weight: 500;
 	}
 
 	.cookie-banner__link:hover {
-		color: #004999;
+		color: var(--accent-dark);
 	}
 
 	.cookie-banner__actions {
@@ -196,14 +190,14 @@ const locale = Astro.props.locale ?? DEFAULT_LOCALE;
 	}
 
 	.cookie-banner__btn--settings {
-		background: #0066cc;
+		background: var(--accent);
 		color: #fff;
 	}
 
 	.cookie-banner__btn--settings:hover {
-		background: #0052a3;
+		background: var(--accent-dark);
 		transform: translateY(-1px);
-		box-shadow: 0 4px 8px rgba(0, 102, 204, 0.25);
+		box-shadow: 0 4px 8px rgba(35, 55, 255, 0.25);
 	}
 
 	.cookie-banner__btn--accept {
@@ -231,6 +225,11 @@ const locale = Astro.props.locale ?? DEFAULT_LOCALE;
 		align-items: center;
 		justify-content: center;
 		transition: all 0.2s ease;
+	}
+
+	:global([dir="rtl"]) .cookie-banner__close {
+		right: auto;
+		left: 1rem;
 	}
 
 	.cookie-banner__close:hover {
@@ -262,6 +261,11 @@ const locale = Astro.props.locale ?? DEFAULT_LOCALE;
 		.cookie-banner__close {
 			top: 0.75rem;
 			right: 0.75rem;
+		}
+
+		:global([dir="rtl"]) .cookie-banner__close {
+			right: auto;
+			left: 0.75rem;
 		}
 	}
 

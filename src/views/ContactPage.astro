@@ -4,12 +4,12 @@ import Header from "../components/Header.astro";
 import Footer from "../components/Footer.astro";
 import CookieBanner from "../components/CookieBanner.astro";
 import { SITE_TITLE } from "../consts";
-import { DEFAULT_LOCALE, type Locale } from "../i18n/locales";
+import { DEFAULT_LOCALE, getDir, type Locale } from "../i18n/locales";
 import { t } from "../i18n/ui";
 
 type Props = { locale?: Locale };
 const locale = Astro.props.locale ?? DEFAULT_LOCALE;
-const dir = locale === "ar" ? "rtl" : "ltr";
+const dir = getDir(locale);
 ---
 
 <!doctype html>
@@ -17,7 +17,7 @@ const dir = locale === "ar" ? "rtl" : "ltr";
 	<head>
 		<BaseHead
 			title={`${t(locale, "nav.contact")} · ${SITE_TITLE}`}
-			description="Get in touch with Liberttin"
+			description={t(locale, "contact.intro")}
 			locale={locale}
 		/>
 		<style>
@@ -48,7 +48,6 @@ const dir = locale === "ar" ? "rtl" : "ltr";
 			.contact-form {
 				background: #fff;
 				border: 1px solid rgb(var(--gray-light));
-				border-radius: 12px;
 				padding: 2rem;
 				margin-bottom: 3rem;
 			}
@@ -66,12 +65,10 @@ const dir = locale === "ar" ? "rtl" : "ltr";
 			}
 
 			.form-group input,
-			.form-group textarea,
 			.form-group select {
 				width: 100%;
 				padding: 0.875rem 1rem;
 				border: 2px solid rgb(var(--gray-light));
-				border-radius: 8px;
 				font-size: 1rem;
 				font-weight: 500;
 				font-family: "Atkinson", sans-serif;
@@ -80,43 +77,98 @@ const dir = locale === "ar" ? "rtl" : "ltr";
 				transition: all 0.2s ease;
 			}
 
-			.form-group input::placeholder,
-			.form-group textarea::placeholder {
+			.form-group input::placeholder {
 				color: rgb(var(--gray));
 				font-weight: 400;
 			}
 
 			.form-group input:focus,
-			.form-group textarea:focus,
 			.form-group select:focus {
 				outline: none;
 				border-color: rgb(var(--black));
 				box-shadow: 0 0 0 3px rgba(var(--black), 0.1);
 			}
 
-			.form-group textarea {
-				min-height: 150px;
-				resize: vertical;
+			.message-editor {
+				background: #fff;
+				min-height: 200px;
+				border: 2px solid rgb(var(--gray-light));
+				transition: border-color 0.2s ease;
+			}
+
+			.message-editor:focus-within {
+				border-color: rgb(var(--black));
+			}
+
+			.message-editor :global(.ql-toolbar) {
+				background: #f8f9fa;
+				border: none !important;
+				border-bottom: 1px solid rgb(var(--gray-light)) !important;
+				padding: 0.75rem;
+			}
+
+			.message-editor :global(.ql-container) {
+				border: none !important;
+				font-size: 16px;
+				font-family: "Atkinson", sans-serif;
+				min-height: 170px;
+			}
+
+			.message-editor :global(.ql-editor) {
+				min-height: 170px;
+				padding: 1rem;
+				line-height: 1.6;
+			}
+
+			.message-editor :global(.ql-editor.ql-blank::before) {
+				color: rgb(var(--gray));
+				font-style: normal;
+				left: 1rem;
+			}
+
+			.message-editor :global(.ql-stroke) {
+				stroke: rgb(var(--gray-dark));
+			}
+
+			.message-editor :global(.ql-fill) {
+				fill: rgb(var(--gray-dark));
+			}
+
+			.message-editor :global(.ql-toolbar button:hover .ql-stroke),
+			.message-editor :global(.ql-toolbar button:hover .ql-fill),
+			.message-editor :global(.ql-toolbar button.ql-active .ql-stroke),
+			.message-editor :global(.ql-toolbar button.ql-active .ql-fill) {
+				stroke: rgb(var(--black));
+				fill: rgb(var(--black));
+			}
+
+			.message-editor :global(.ql-toolbar button) {
+				width: 32px;
+				height: 32px;
 			}
 
 			.form-group small {
 				display: block;
-				margin-top: 0.25rem;
+				margin-top: 0.5rem;
 				color: rgb(var(--gray));
 				font-size: 0.875rem;
 			}
 
 			.submit-btn {
+				display: inline-flex;
+				align-items: center;
+				justify-content: center;
+				gap: 0.55rem;
 				background: rgb(var(--black));
 				color: #fff;
 				border: none;
-				border-radius: 8px;
 				padding: 0.875rem 2rem;
 				font-size: 1rem;
 				font-weight: 700;
 				font-family: "Atkinson", sans-serif;
 				cursor: pointer;
 				transition: all 0.2s ease;
+				min-width: 10.5rem;
 			}
 
 			.submit-btn:hover {
@@ -126,15 +178,80 @@ const dir = locale === "ar" ? "rtl" : "ltr";
 			}
 
 			.submit-btn:disabled {
-				opacity: 0.6;
+				opacity: 0.85;
 				cursor: not-allowed;
 				transform: none;
+				box-shadow: none;
+			}
+
+			.submit-btn.is-loading {
+				background: rgb(var(--black));
+			}
+
+			.btn-loader {
+				width: 16px;
+				height: 16px;
+				border-radius: 50%;
+				border: 2px solid transparent;
+				border-top-color: currentColor;
+				border-right-color: currentColor;
+				animation: halfSpin 0.7s linear infinite;
+				flex-shrink: 0;
+			}
+
+			@keyframes halfSpin {
+				to {
+					transform: rotate(360deg);
+				}
+			}
+
+			.form-status {
+				display: none;
+				align-items: flex-start;
+				gap: 0.75rem;
+				padding: 1rem 1.1rem;
+				margin-bottom: 1.5rem;
+				font-size: 0.95rem;
+				line-height: 1.5;
+			}
+
+			.form-status.is-visible {
+				display: flex;
+			}
+
+			.form-status__icon {
+				flex-shrink: 0;
+				width: 20px;
+				height: 20px;
+				margin-top: 0.1rem;
+			}
+
+			.form-status.success {
+				background: #ecfdf5;
+				color: #065f46;
+				border: 1px solid #6ee7b7;
+			}
+
+			.form-status.error {
+				background: #fef2f2;
+				color: #991b1b;
+				border: 1px solid #fca5a5;
+			}
+
+			.form-status.loading {
+				background: #f8fafc;
+				color: rgb(var(--gray-dark));
+				border: 1px solid rgb(var(--gray-light));
+			}
+
+			.form-status.loading .btn-loader {
+				border-top-color: var(--accent);
+				border-right-color: var(--accent);
 			}
 
 			.contact-info {
 				background: linear-gradient(135deg, #f6f8fb 0%, #ffffff 100%);
 				border: 1px solid rgb(var(--gray-light));
-				border-radius: 12px;
 				padding: 2rem;
 				margin-bottom: 2rem;
 			}
@@ -159,7 +276,6 @@ const dir = locale === "ar" ? "rtl" : "ltr";
 				justify-content: center;
 				background: var(--accent);
 				color: #fff;
-				border-radius: 8px;
 			}
 
 			.contact-info-content h3 {
@@ -183,25 +299,6 @@ const dir = locale === "ar" ? "rtl" : "ltr";
 				text-decoration: underline;
 			}
 
-			.form-status {
-				padding: 1rem;
-				border-radius: 8px;
-				margin-bottom: 1.5rem;
-				display: none;
-			}
-
-			.form-status.success {
-				background: #d1fae5;
-				color: #065f46;
-				border: 1px solid #34d399;
-			}
-
-			.form-status.error {
-				background: #fee2e2;
-				color: #991b1b;
-				border: 1px solid #f87171;
-			}
-
 			@media (max-width: 720px) {
 				.contact-form {
 					padding: 1.5rem;
@@ -219,63 +316,69 @@ const dir = locale === "ar" ? "rtl" : "ltr";
 			<div class="contact-container">
 				<article>
 					<h1>{t(locale, "nav.contact")}</h1>
-					<p class="contact-intro">
-						Have a question, suggestion, or just want to say hello? We'd love to hear from you. 
-						Fill out the form below or reach out through any of our contact channels.
-					</p>
+					<p class="contact-intro">{t(locale, "contact.intro")}</p>
 
-					<div id="form-status" class="form-status"></div>
+					<div id="form-status" class="form-status" role="status" aria-live="polite"></div>
 
-					<form class="contact-form" id="contact-form">
+					<form
+						class="contact-form"
+						id="contact-form"
+						data-msg-required={t(locale, "contact.messageRequired")}
+						data-msg-success={t(locale, "contact.success")}
+						data-msg-error={t(locale, "contact.error")}
+						data-label-send={t(locale, "contact.send")}
+						data-label-sending={t(locale, "contact.sending")}
+						data-editor-placeholder={t(locale, "contact.messagePlaceholder")}
+					>
 						<div class="form-group">
-							<label for="name">Name *</label>
-							<input 
-								type="text" 
-								id="name" 
-								name="name" 
-								required 
-								placeholder="Your full name"
+							<label for="name">{t(locale, "contact.name")}</label>
+							<input
+								type="text"
+								id="name"
+								name="name"
+								required
+								placeholder={t(locale, "contact.namePlaceholder")}
 							/>
 						</div>
 
 						<div class="form-group">
-							<label for="email">Email *</label>
-							<input 
-								type="email" 
-								id="email" 
-								name="email" 
-								required 
-								placeholder="your.email@example.com"
+							<label for="email">{t(locale, "contact.email")}</label>
+							<input
+								type="email"
+								id="email"
+								name="email"
+								required
+								placeholder={t(locale, "contact.emailPlaceholder")}
 							/>
 						</div>
 
 						<div class="form-group">
-							<label for="subject">Subject *</label>
+							<label for="subject">{t(locale, "contact.subject")}</label>
 							<select id="subject" name="subject" required>
-								<option value="">Select a subject</option>
-								<option value="general">General Inquiry</option>
-								<option value="feedback">Feedback</option>
-								<option value="support">Technical Support</option>
-								<option value="collaboration">Collaboration</option>
-								<option value="other">Other</option>
+								<option value="">{t(locale, "contact.subjectPlaceholder")}</option>
+								<option value="general">{t(locale, "contact.subjectGeneral")}</option>
+								<option value="feedback">{t(locale, "contact.subjectFeedback")}</option>
+								<option value="support">{t(locale, "contact.subjectSupport")}</option>
+								<option value="collaboration">{t(locale, "contact.subjectCollaboration")}</option>
+								<option value="other">{t(locale, "contact.subjectOther")}</option>
 							</select>
 						</div>
 
 						<div class="form-group">
-							<label for="message">Message *</label>
-							<textarea 
-								id="message" 
-								name="message" 
-								required 
-								placeholder="Tell us what's on your mind..."
-							></textarea>
-							<small>Please be as detailed as possible</small>
+							<label for="message">{t(locale, "contact.message")}</label>
+							<div id="message-editor" class="message-editor"></div>
+							<input type="hidden" id="message" name="message" />
+							<div class="message-editor-footer">
+								<small>{t(locale, "contact.messageHint")}</small>
+							</div>
 						</div>
 
-						<button type="submit" class="submit-btn">Send Message</button>
+						<button type="submit" class="submit-btn" id="contact-submit">
+							<span class="submit-btn__label">{t(locale, "contact.send")}</span>
+						</button>
 					</form>
 
-					<h2>Other Ways to Reach Us</h2>
+					<h2>{t(locale, "contact.otherWays")}</h2>
 					<div class="contact-info">
 						<div class="contact-info-item">
 							<div class="contact-info-icon">
@@ -285,20 +388,20 @@ const dir = locale === "ar" ? "rtl" : "ltr";
 								</svg>
 							</div>
 							<div class="contact-info-content">
-								<h3>Email</h3>
+								<h3>{t(locale, "contact.emailLabel")}</h3>
 								<p><a href="mailto:contact@liberttin.blog">contact@liberttin.blog</a></p>
 							</div>
 						</div>
 
 						<div class="contact-info-item">
 							<div class="contact-info-icon">
-								<svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor">
-									<path d="M23.953 4.57a10 10 0 01-2.825.775 4.958 4.958 0 002.163-2.723c-.951.555-2.005.959-3.127 1.184a4.92 4.92 0 00-8.384 4.482C7.69 8.095 4.067 6.13 1.64 3.162a4.822 4.822 0 00-.666 2.475c0 1.71.87 3.213 2.188 4.096a4.904 4.904 0 01-2.228-.616v.06a4.923 4.923 0 003.946 4.827 4.996 4.996 0 01-2.212.085 4.936 4.936 0 004.604 3.417 9.867 9.867 0 01-6.102 2.105c-.39 0-.779-.023-1.17-.067a13.995 13.995 0 007.557 2.209c9.053 0 13.998-7.496 13.998-13.985 0-.21 0-.42-.015-.63A9.935 9.935 0 0024 4.59z"/>
+								<svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor" aria-hidden="true">
+									<path d="M18.244 2.25h3.308l-7.227 8.26 8.502 10.24H16.17l-5.214-6.817L4.99 20.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
 								</svg>
 							</div>
 							<div class="contact-info-content">
-								<h3>Twitter</h3>
-								<p><a href="https://twitter.com/liberttin" target="_blank" rel="noopener noreferrer">@liberttin</a></p>
+								<h3>X</h3>
+								<p><a href="https://x.com/liberttin" target="_blank" rel="noopener noreferrer">@liberttin</a></p>
 							</div>
 						</div>
 
@@ -321,51 +424,152 @@ const dir = locale === "ar" ? "rtl" : "ltr";
 		<CookieBanner locale={locale} />
 
 		<script>
-			const form = document.getElementById('contact-form') as HTMLFormElement;
-			const statusEl = document.getElementById('form-status') as HTMLDivElement;
+			(function () {
+				const quillCSS = document.createElement("link");
+				quillCSS.rel = "stylesheet";
+				quillCSS.href = "https://cdn.quilljs.com/1.3.6/quill.snow.css";
+				document.head.appendChild(quillCSS);
 
-			if (form) {
-				form.addEventListener('submit', async (e) => {
-					e.preventDefault();
-					
-					const submitBtn = form.querySelector('.submit-btn') as HTMLButtonElement;
-					const formData = new FormData(form);
-					
-					// Disable submit button
-					submitBtn.disabled = true;
-					submitBtn.textContent = 'Sending...';
-					
-					// Hide previous status
-					statusEl.style.display = 'none';
-					statusEl.className = 'form-status';
-					
-					try {
-						// Simulate form submission (replace with actual endpoint)
-						await new Promise(resolve => setTimeout(resolve, 1500));
-						
-						// Show success message
-						statusEl.className = 'form-status success';
-						statusEl.textContent = '✓ Thank you for your message! We\'ll get back to you soon.';
-						statusEl.style.display = 'block';
-						
-						// Reset form
-						form.reset();
-						
-						// Re-enable button
-						submitBtn.disabled = false;
-						submitBtn.textContent = 'Send Message';
-						
-					} catch (error) {
-						// Show error message
-						statusEl.className = 'form-status error';
-						statusEl.textContent = '✗ Something went wrong. Please try again or contact us directly via email.';
-						statusEl.style.display = 'block';
-						
-						// Re-enable button
-						submitBtn.disabled = false;
-						submitBtn.textContent = 'Send Message';
-					}
-				});
+				const quillScript = document.createElement("script");
+				quillScript.src = "https://cdn.quilljs.com/1.3.6/quill.js";
+				quillScript.onload = function () {
+					initContactForm();
+				};
+				document.head.appendChild(quillScript);
+			})();
+
+			/** @type {any} */
+			let quill;
+
+			function halfLoaderHtml() {
+				return '<span class="btn-loader" aria-hidden="true"></span>';
+			}
+
+			function successIconHtml() {
+				return `<svg class="form-status__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true">
+					<circle cx="12" cy="12" r="10" stroke-width="2" opacity="0.35"></circle>
+					<path d="M8 12.5l2.5 2.5L16 9.5" stroke-linecap="round" stroke-linejoin="round"></path>
+				</svg>`;
+			}
+
+			function errorIconHtml() {
+				return `<svg class="form-status__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true">
+					<circle cx="12" cy="12" r="10" stroke-width="2" opacity="0.35"></circle>
+					<path d="M15 9l-6 6M9 9l6 6" stroke-linecap="round"></path>
+				</svg>`;
+			}
+
+			/**
+			 * @param {HTMLElement | null} statusEl
+			 * @param {"success" | "error" | "loading" | "hide"} kind
+			 * @param {string} [message]
+			 */
+			function setStatus(statusEl, kind, message) {
+				if (!statusEl) return;
+				if (kind === "hide") {
+					statusEl.className = "form-status";
+					statusEl.innerHTML = "";
+					return;
+				}
+
+				statusEl.className = `form-status is-visible ${kind}`;
+				if (kind === "loading") {
+					statusEl.innerHTML = `${halfLoaderHtml()}<span>${message || ""}</span>`;
+					return;
+				}
+				const icon = kind === "success" ? successIconHtml() : errorIconHtml();
+				statusEl.innerHTML = `${icon}<span>${message || ""}</span>`;
+			}
+
+			/**
+			 * @param {HTMLButtonElement | null} btn
+			 * @param {boolean} loading
+			 * @param {string} labelSend
+			 * @param {string} labelSending
+			 */
+			function setButtonLoading(btn, loading, labelSend, labelSending) {
+				if (!btn) return;
+				btn.disabled = loading;
+				btn.classList.toggle("is-loading", loading);
+				if (loading) {
+					btn.innerHTML = `${halfLoaderHtml()}<span class="submit-btn__label">${labelSending}</span>`;
+				} else {
+					btn.innerHTML = `<span class="submit-btn__label">${labelSend}</span>`;
+				}
+			}
+
+			function initContactForm() {
+				setTimeout(() => {
+					const editorEl = document.getElementById("message-editor");
+					const form = document.getElementById("contact-form");
+					if (!editorEl || !(form instanceof HTMLFormElement)) return;
+
+					const placeholder = form.dataset.editorPlaceholder || "Tell us what's on your mind…";
+					const msgRequired = form.dataset.msgRequired || "Please enter a message.";
+					const msgSuccess = form.dataset.msgSuccess || "Thank you!";
+					const msgError = form.dataset.msgError || "Something went wrong.";
+					const labelSend = form.dataset.labelSend || "Send Message";
+					const labelSending = form.dataset.labelSending || "Sending…";
+
+					// @ts-ignore Quill is loaded from CDN
+					quill = new Quill("#message-editor", {
+						theme: "snow",
+						placeholder,
+						modules: {
+							toolbar: [
+								["bold", "italic", "underline"],
+								["blockquote"],
+								[{ list: "ordered" }, { list: "bullet" }],
+								["link"],
+								["clean"],
+							],
+						},
+					});
+
+					const statusEl = document.getElementById("form-status");
+					const messageInput = document.getElementById("message");
+					const submitBtn = form.querySelector(".submit-btn");
+
+					form.addEventListener("submit", async (e) => {
+						e.preventDefault();
+
+						const messageHTML = quill.root.innerHTML.trim();
+						const messageText = quill.getText().trim();
+
+						if (!messageText || messageText === "\n") {
+							setStatus(statusEl, "error", msgRequired);
+							return;
+						}
+
+						if (messageInput instanceof HTMLInputElement) {
+							messageInput.value = messageHTML;
+						}
+
+						setButtonLoading(
+							submitBtn instanceof HTMLButtonElement ? submitBtn : null,
+							true,
+							labelSend,
+							labelSending,
+						);
+						setStatus(statusEl, "loading", labelSending);
+
+						try {
+							await new Promise((resolve) => setTimeout(resolve, 1200));
+							setStatus(statusEl, "success", msgSuccess.replace(/^✓\s*/, ""));
+							form.reset();
+							quill.setText("");
+						} catch {
+							setStatus(statusEl, "error", msgError.replace(/^✗\s*/, ""));
+						} finally {
+							setButtonLoading(
+								submitBtn instanceof HTMLButtonElement ? submitBtn : null,
+								false,
+								labelSend,
+								labelSending,
+							);
+						}
+					});
+				}, 100);
 			}
 		</script>
 	</body>

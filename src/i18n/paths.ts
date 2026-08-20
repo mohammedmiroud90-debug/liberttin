@@ -1,13 +1,13 @@
-import { DEFAULT_LOCALE, LOCALES, isLocale, type Locale } from "./locales";
+import { LOCALES, isLocale, type Locale } from "./locales";
 
-/** Static paths for `/[locale]/...` (non-default locales only). */
+/** Static paths for `/[locale]/...` — every locale including English (`en`). */
 export function localeStaticPaths() {
-	return LOCALES.filter((code) => code !== DEFAULT_LOCALE).map((locale) => ({
+	return LOCALES.map((locale) => ({
 		params: { locale },
 		props: { locale },
 	}));
 }
 
 export function resolveLocaleParam(value: string | undefined): Locale {
-	return isLocale(value) ? value : DEFAULT_LOCALE;
+	return isLocale(value) ? value : "en";
 }

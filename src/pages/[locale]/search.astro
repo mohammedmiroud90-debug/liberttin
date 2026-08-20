@@ -2,9 +2,15 @@
 export const prerender = false;
 
 import SearchPage from "../../views/SearchPage.astro";
+import { isLocale } from "../../i18n/locales";
 import { resolveLocaleParam } from "../../i18n/paths";
 
-const locale = resolveLocaleParam(Astro.params.locale);
+const raw = Astro.params.locale;
+if (!isLocale(raw)) {
+	return Astro.redirect("/en/search/", 301);
+}
+
+const locale = resolveLocaleParam(raw);
 ---
 
 <SearchPage locale={locale} />

@@ -4,21 +4,21 @@ import Header from "../components/Header.astro";
 import Footer from "../components/Footer.astro";
 import FormattedDate from "../components/FormattedDate.astro";
 import CookieBanner from "../components/CookieBanner.astro";
-import { SITE_TITLE, SITE_DESCRIPTION } from "../consts";
+import { SITE_TITLE } from "../consts";
 import { getBlogPosts } from "../lib/parse/posts";
-import { DEFAULT_LOCALE, localizedPath, type Locale } from "../i18n/locales";
+import { DEFAULT_LOCALE, getDir, localizedPath, type Locale } from "../i18n/locales";
 import { t } from "../i18n/ui";
 
 type Props = { locale?: Locale };
 const locale = Astro.props.locale ?? DEFAULT_LOCALE;
 const { items: posts } = await getBlogPosts(1, 6);
-const dir = locale === "ar" ? "rtl" : "ltr";
+const dir = getDir(locale);
 ---
 
 <!doctype html>
 <html lang={locale} dir={dir}>
 	<head>
-		<BaseHead title={SITE_TITLE} description={SITE_DESCRIPTION} locale={locale} />
+		<BaseHead title={SITE_TITLE} description={t(locale, "site.description")} locale={locale} />
 		<style>
 			.hero { margin-bottom: 2rem; }
 			.hero h1 { margin-bottom: 0.5rem; }
@@ -28,7 +28,7 @@ const dir = locale === "ar" ? "rtl" : "ltr";
 				padding: 1.25rem 0;
 			}
 			.post-list a { text-decoration: none; color: inherit; }
-			.post-list a:hover .post-title { color: rgb(var(--accent)); }
+			.post-list a:hover .post-title { color: var(--accent); }
 			.post-title { margin: 0 0 0.35rem; font-size: 1.35rem; }
 			.post-meta { margin: 0; color: rgb(var(--gray)); font-size: 0.95rem; }
 			.view-all { display: inline-block; margin-top: 1.5rem; }
@@ -39,7 +39,7 @@ const dir = locale === "ar" ? "rtl" : "ltr";
 		<main>
 			<section class="hero">
 				<h1>{SITE_TITLE}</h1>
-				<p>{SITE_DESCRIPTION}</p>
+				<p>{t(locale, "site.description")}</p>
 			</section>
 			<section>
 				<h2>{t(locale, "home.latest")}</h2>
@@ -53,7 +53,7 @@ const dir = locale === "ar" ? "rtl" : "ltr";
 									<a href={localizedPath(locale, `/blog/${post.slug}/`)}>
 										<h3 class="post-title">{post.title}</h3>
 										<p class="post-meta">
-											<FormattedDate date={new Date(post.publishedAt)} />
+											<FormattedDate date={new Date(post.publishedAt)} locale={locale} />
 											{post.category ? ` · ${post.category}` : ""}
 										</p>
 									</a>

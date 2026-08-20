@@ -1,0 +1,226 @@
+---
+import type { CollectionEntry } from "astro:content";
+import BaseHead from "../components/BaseHead.astro";
+import Header from "../components/Header.astro";
+import Footer from "../components/Footer.astro";
+import CookieBanner from "../components/CookieBanner.astro";
+import { SITE_TITLE } from "../consts";
+import FormattedDate from "../components/FormattedDate.astro";
+import { localizedPath, getDir, type Locale } from "../i18n/locales";
+import { t } from "../i18n/ui";
+
+interface Props {
+	locale: Locale;
+	posts: CollectionEntry<"blog">[];
+}
+
+const { locale, posts } = Astro.props;
+const dir = getDir(locale);
+
+const categoriesMap = new Map<string, CollectionEntry<"blog">[]>();
+
+posts.forEach((post) => {
+	const category = post.data.category || "General";
+	if (!categoriesMap.has(category)) {
+		categoriesMap.set(category, []);
+	}
+	categoriesMap.get(category)!.push(post);
+});
+
+const categories = Array.from(categoriesMap.entries()).sort((a, b) => a[0].localeCompare(b[0]));
+---
+
+<!doctype html>
+<html lang={locale} dir={dir}>
+	<head>
+		<BaseHead
+			title={`${t(locale, "categories.title")} · ${SITE_TITLE}`}
+			description={t(locale, "categories.subtitle")}
+			locale={locale}
+		/>
+	</head>
+	<body>
+		<Header locale={locale} />
+		<main>
+			<section class="categories-header">
+				<h1>{t(locale, "categories.title")}</h1>
+				<p>{t(locale, "categories.subtitle")}</p>
+			</section>
+
+			<section class="categories-grid">
+				{
+					categories.map(([category, categoryPosts]) => (
+						<div class="category-card">
+							<h2 class="category-title">{category}</h2>
+							<p class="category-count">
+								{categoryPosts.length}{" "}
+								{categoryPosts.length === 1
+									? t(locale, "categories.articleOne")
+									: t(locale, "categories.articleMany")}
+							</p>
+							<ul class="category-posts">
+								{categoryPosts.slice(0, 5).map((post) => (
+									<li>
+										<a href={localizedPath(locale, `/blog/${post.id}/`)}>
+											<span class="post-title">{post.data.title}</span>
+											<span class="post-date">
+												<FormattedDate date={post.data.pubDate} locale={locale} />
+											</span>
+										</a>
+									</li>
+								))}
+							</ul>
+							{categoryPosts.length > 5 && (
+								<a
+									href={localizedPath(
+										locale,
+										`/categories/${category.toLowerCase().replace(/\s+/g, "-")}/`,
+									)}
+									class="view-all"
+								>
+									{t(locale, "categories.viewAll").replace("{count}", String(categoryPosts.length))}
+								</a>
+							)}
+						</div>
+					))
+				}
+			</section>
+		</main>
+		<Footer locale={locale} />
+		<CookieBanner locale={locale} />
+	</body>
+</html>
+
+<style>
+	main {
+		width: 100%;
+		max-width: 1200px;
+		margin: 0 auto;
+		padding: 2rem 1.5rem;
+	}
+
+	.categories-header {
+		text-align: center;
+		margin-bottom: 3rem;
+		padding: 2rem 0;
+	}
+
+	.categories-header h1 {
+		font-size: 2.5rem;
+		font-weight: 700;
+		margin: 0 0 1rem 0;
+		color: #000;
+	}
+
+	.categories-header p {
+		font-size: 1.125rem;
+		color: #6b7280;
+		margin: 0;
+	}
+
+	.categories-grid {
+		display: grid;
+		grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+		gap: 2rem;
+		margin-bottom: 3rem;
+	}
+
+	.category-card {
+		background: #fff;
+		border: 1px solid #e5e7eb;
+		padding: 1.5rem;
+		transition: all 0.2s ease;
+	}
+
+	.category-card:hover {
+		box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+		transform: translateY(-2px);
+	}
+
+	.category-title {
+		font-size: 1.5rem;
+		font-weight: 600;
+		margin: 0 0 0.5rem 0;
+		color: #000;
+	}
+
+	.category-count {
+		font-size: 0.875rem;
+		color: #6b7280;
+		margin: 0 0 1.5rem 0;
+	}
+
+	.category-posts {
+		list-style: none;
+		padding: 0;
+		margin: 0 0 1rem 0;
+	}
+
+	.category-posts li {
+		margin-bottom: 0.75rem;
+	}
+
+	.category-posts a {
+		display: flex;
+		justify-content: space-between;
+		align-items: baseline;
+		gap: 1rem;
+		color: #374151;
+		text-decoration: none;
+		padding: 0.5rem;
+		margin: 0 -0.5rem;
+		transition: background 0.15s ease;
+	}
+
+	.category-posts a:hover {
+		background: #f9fafb;
+	}
+
+	.post-title {
+		flex: 1;
+		font-size: 0.9375rem;
+		font-weight: 500;
+		color: #000;
+	}
+
+	.post-date {
+		font-size: 0.8125rem;
+		color: #9ca3af;
+		white-space: nowrap;
+	}
+
+	.view-all {
+		display: inline-block;
+		color: var(--accent);
+		text-decoration: none;
+		font-size: 0.9375rem;
+		font-weight: 500;
+		margin-top: 0.5rem;
+		transition: color 0.15s ease;
+	}
+
+	.view-all:hover {
+		color: var(--accent-dark);
+	}
+
+	@media (max-width: 768px) {
+		.categories-header h1 {
+			font-size: 2rem;
+		}
+
+		.categories-grid {
+			grid-template-columns: 1fr;
+			gap: 1.5rem;
+		}
+
+		.category-posts a {
+			flex-direction: column;
+			align-items: flex-start;
+			gap: 0.25rem;
+		}
+
+		.post-date {
+			font-size: 0.75rem;
+		}
+	}
+</style>

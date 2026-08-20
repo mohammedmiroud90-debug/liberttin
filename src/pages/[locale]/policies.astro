@@ -1,14 +1,12 @@
 ---
 import PoliciesPage from "../../views/PoliciesPage.astro";
-import { LOCALES, DEFAULT_LOCALE, type Locale } from "../../i18n/locales";
+import { localeStaticPaths, resolveLocaleParam } from "../../i18n/paths";
 
 export function getStaticPaths() {
-	return LOCALES.filter((l) => l !== DEFAULT_LOCALE).map((locale) => ({
-		params: { locale },
-	}));
+	return localeStaticPaths();
 }
 
-const { locale } = Astro.params;
+const locale = resolveLocaleParam(Astro.params.locale);
 ---
 
-<PoliciesPage locale={locale as Locale} />
+<PoliciesPage locale={locale} />

@@ -14,6 +14,7 @@ const locale = Astro.props.locale ?? getLocaleFromPath(Astro.url.pathname);
 const homeHref = localizedPath(locale, "/");
 const blogHref = localizedPath(locale, "/blog/");
 const aboutHref = localizedPath(locale, "/about/");
+const categoriesHref = localizedPath(locale, "/categories/");
 const contactHref = localizedPath(locale, "/contact/");
 const policiesHref = localizedPath(locale, "/policies/");
 ---
@@ -27,12 +28,19 @@ const policiesHref = localizedPath(locale, "/policies/");
 			<HeaderLink href={homeHref}>{t(locale, "nav.home")}</HeaderLink>
 			<HeaderLink href={blogHref}>{t(locale, "nav.blog")}</HeaderLink>
 			<HeaderLink href={aboutHref}>{t(locale, "nav.about")}</HeaderLink>
+			<HeaderLink href={categoriesHref}>{t(locale, "nav.categories")}</HeaderLink>
 			<HeaderLink href={contactHref}>{t(locale, "nav.contact")}</HeaderLink>
 			<HeaderLink href={policiesHref}>{t(locale, "nav.policies")}</HeaderLink>
 		</div>
 		<div class="header-actions">
 			<HeaderSearch locale={locale} />
 			<LanguageSwitcher locale={locale} />
+			<button class="mobile-menu-toggle" aria-label={t(locale, "nav.menu")} data-mobile-menu-toggle>
+				<svg viewBox="0 0 24 24" width="24" height="24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2">
+					<path class="menu-icon" d="M3 12h18M3 6h18M3 18h18"></path>
+					<path class="close-icon" style="display: none;" d="M18 6L6 18M6 6l12 12"></path>
+				</svg>
+			</button>
 			<div class="social-links">
 				<a href="https://m.webtoo.ls/@astro" target="_blank" rel="noopener noreferrer">
 					<span class="sr-only">Follow Astro on Mastodon</span>
@@ -43,12 +51,12 @@ const policiesHref = localizedPath(locale, "/policies/");
 						></path></svg
 					>
 				</a>
-				<a href="https://twitter.com/astrodotbuild" target="_blank" rel="noopener noreferrer">
-					<span class="sr-only">Follow Astro on Twitter</span>
+				<a href="https://x.com/liberttin" target="_blank" rel="noopener noreferrer">
+					<span class="sr-only">Follow Libertta on X</span>
 					<svg viewBox="0 0 16 16" aria-hidden="true" width="28" height="28"
 						><path
 							fill="currentColor"
-							d="M5.026 15c6.038 0 9.341-5.003 9.341-9.334 0-.14 0-.282-.006-.422A6.685 6.685 0 0 0 16 3.542a6.658 6.658 0 0 1-1.889.518 3.301 3.301 0 0 0 1.447-1.817 6.533 6.533 0 0 1-2.087.793A3.286 3.286 0 0 0 7.875 6.03a9.325 9.325 0 0 1-6.767-3.429 3.289 3.289 0 0 0 1.018 4.382A3.323 3.323 0 0 1 .64 6.575v.045a3.288 3.288 0 0 0 2.632 3.218 3.203 3.203 0 0 1-.865.115 3.23 3.23 0 0 1-.614-.057 3.283 3.283 0 0 0 3.067 2.277A6.588 6.588 0 0 1 .78 13.58a6.32 6.32 0 0 1-.78-.045A9.344 9.344 0 0 0 5.026 15z"
+							d="M12.163 1.5h2.205l-4.818 5.507L15.5 14.5h-4.938l-3.868-5.054L2.3 14.5H.094l5.152-5.891L.5 1.5h5.063l3.495 4.633L12.163 1.5zm-.774 11.668h1.222L4.764 2.76H3.452l7.937 10.408z"
 						></path></svg
 					>
 				</a>
@@ -64,6 +72,16 @@ const policiesHref = localizedPath(locale, "/policies/");
 			</div>
 		</div>
 	</nav>
+	<div class="mobile-menu" data-mobile-menu>
+		<div class="mobile-menu-links">
+			<a href={homeHref} class="mobile-menu-link">{t(locale, "nav.home")}</a>
+			<a href={blogHref} class="mobile-menu-link">{t(locale, "nav.blog")}</a>
+			<a href={aboutHref} class="mobile-menu-link">{t(locale, "nav.about")}</a>
+			<a href={categoriesHref} class="mobile-menu-link">{t(locale, "nav.categories")}</a>
+			<a href={contactHref} class="mobile-menu-link">{t(locale, "nav.contact")}</a>
+			<a href={policiesHref} class="mobile-menu-link">{t(locale, "nav.policies")}</a>
+		</div>
+	</div>
 	<div class="search-mobile-panel" hidden data-search-mobile>
 		<form class="search-form search-form-mobile" data-search-form-mobile>
 			<input
@@ -82,6 +100,39 @@ const policiesHref = localizedPath(locale, "/policies/");
 		</form>
 	</div>
 </header>
+<script>
+	// Mobile menu toggle
+	const toggleBtn = document.querySelector('[data-mobile-menu-toggle]') as HTMLButtonElement;
+	const mobileMenu = document.querySelector('[data-mobile-menu]') as HTMLElement;
+	const menuIcon = toggleBtn?.querySelector('.menu-icon') as SVGPathElement;
+	const closeIcon = toggleBtn?.querySelector('.close-icon') as SVGPathElement;
+
+	if (toggleBtn && mobileMenu) {
+		toggleBtn.addEventListener('click', () => {
+			const isOpen = mobileMenu.classList.contains('open');
+			
+			if (isOpen) {
+				mobileMenu.classList.remove('open');
+				menuIcon.style.display = '';
+				closeIcon.style.display = 'none';
+			} else {
+				mobileMenu.classList.add('open');
+				menuIcon.style.display = 'none';
+				closeIcon.style.display = '';
+			}
+		});
+
+		// Close menu when clicking a link
+		const menuLinks = mobileMenu.querySelectorAll('.mobile-menu-link');
+		menuLinks.forEach(link => {
+			link.addEventListener('click', () => {
+				mobileMenu.classList.remove('open');
+				menuIcon.style.display = '';
+				closeIcon.style.display = 'none';
+			});
+		});
+	}
+</script>
 <style>
 	header {
 		position: sticky;
@@ -150,13 +201,108 @@ const policiesHref = localizedPath(locale, "/policies/");
 		color: #d1d5db;
 	}
 
+	.mobile-menu-toggle {
+		display: none;
+		background: transparent;
+		border: none;
+		color: #fff;
+		cursor: pointer;
+		padding: 0.5rem;
+		margin: 0;
+		touch-action: manipulation;
+	}
+
+	.mobile-menu-toggle:hover {
+		color: #d1d5db;
+	}
+
+	.mobile-menu {
+		display: none;
+		background: #000;
+		border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+		overflow: hidden;
+		max-height: 0;
+		transition: max-height 0.3s ease;
+	}
+
+	.mobile-menu.open {
+		max-height: 400px;
+	}
+
+	.mobile-menu-links {
+		display: flex;
+		flex-direction: column;
+		padding: 0.5rem 0;
+	}
+
+	.mobile-menu-link {
+		padding: 0.875rem 1.25rem;
+		color: #fff;
+		text-decoration: none;
+		font-size: 1rem;
+		font-weight: 400;
+		border-inline-start: 4px solid transparent;
+		transition: all 0.15s ease;
+		min-height: 44px;
+		display: flex;
+		align-items: center;
+	}
+
+	.mobile-menu-link:hover,
+	.mobile-menu-link:active {
+		background: rgba(255, 255, 255, 0.05);
+		border-inline-start-color: #fff;
+	}
+
+	:global([dir="rtl"]) header {
+		direction: rtl;
+	}
+
+	:global([dir="rtl"]) .internal-links :global(a) {
+		font-size: 0.9rem;
+	}
+
+	:global([dir="rtl"]) .lang-option {
+		text-align: right;
+	}
+
 	@media (max-width: 720px) {
+		header {
+			padding: 0 1rem;
+		}
+
+		nav {
+			min-height: 3.5rem;
+		}
+
+		.internal-links {
+			display: none;
+		}
+
+		.mobile-menu-toggle {
+			display: block;
+		}
+
+		.mobile-menu {
+			display: block;
+		}
+
 		.social-links {
 			display: none;
 		}
-		.internal-links :global(a) {
-			padding: 1em 0.4em;
-			font-size: 0.875rem;
+
+		.header-actions {
+			gap: 0.25rem;
+		}
+	}
+
+	@media (max-width: 480px) {
+		header {
+			padding: 0 0.75rem;
+		}
+
+		h2 {
+			font-size: 0.9em;
 		}
 	}
 </style>

@@ -1,6 +1,5 @@
 ---
-import ContactPage from "../views/ContactPage.astro";
-import { DEFAULT_LOCALE } from "../i18n/locales";
----
+import { DEFAULT_LOCALE, localizedPath } from "../i18n/locales";
 
-<ContactPage locale={DEFAULT_LOCALE} />
+return Astro.redirect(localizedPath(DEFAULT_LOCALE, "/contact/"), 301);
+---

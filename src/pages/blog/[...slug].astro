@@ -1,41 +1,16 @@
 ---
-import BlogPost from "../../layouts/BlogPost.astro";
-import { getAllPostSlugs, getBlogPostBySlug } from "../../lib/parse/posts";
-import { processHeadings } from "../../lib/blog/headings";
-import { DEFAULT_LOCALE, localizedPath, type Locale } from "../../i18n/locales";
+import { getAllPostSlugs } from "../../lib/parse/posts";
+import { DEFAULT_LOCALE, localizedPath } from "../../i18n/locales";
 
 export async function getStaticPaths() {
 	const slugs = await getAllPostSlugs();
 	return slugs.map((slug) => ({ params: { slug } }));
 }
 
-type Props = { locale?: Locale };
-const locale = Astro.props.locale ?? DEFAULT_LOCALE;
-
 const slug = Astro.params.slug;
 if (!slug) {
-	return Astro.redirect(localizedPath(locale, "/blog/"));
+	return Astro.redirect(localizedPath(DEFAULT_LOCALE, "/blog/"), 301);
 }
 
-const post = await getBlogPostBySlug(slug);
-if (!post) {
-	return Astro.redirect("/404");
-}
-
-const processed = processHeadings(post.content);
+return Astro.redirect(localizedPath(DEFAULT_LOCALE, `/blog/${slug}/`), 301);
 ---
-
-<BlogPost
-	title={post.title}
-	excerpt={post.excerpt}
-	publishedAt={post.publishedAt}
-	updatedAt={post.updatedAt}
-	imageUrl={post.imageUrl}
-	author={post.author}
-	category={post.category}
-	postId={post.id}
-	readingTime={post.readingTime}
-	headings={processed.headings}
-	contentHtml={processed.html}
-	locale={locale}
-/>

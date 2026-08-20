@@ -37,14 +37,40 @@ export function stripLocale(pathname: string): string {
 	return rest || "/";
 }
 
-/** Build a locale-prefixed path. Default locale has no prefix. */
+/**
+ * Build a locale-prefixed path for every locale (including English).
+ * Examples: localizedPath("en", "/") → "/en/"
+ *           localizedPath("fr", "/blog/") → "/fr/blog/"
+ */
 export function localizedPath(locale: Locale, path = "/"): string {
 	const clean = path.startsWith("/") ? path : `/${path}`;
-	if (locale === DEFAULT_LOCALE) return clean === "" ? "/" : clean;
-	if (clean === "/") return `/${locale}/`;
-	return `/${locale}${clean.endsWith("/") ? clean : `${clean}/`}`.replace(/\/{2,}/g, "/");
+	if (clean === "/" || clean === "") return `/${locale}/`;
+	const withSlash = clean.endsWith("/") ? clean : `${clean}/`;
+	return `/${locale}${withSlash}`.replace(/\/{2,}/g, "/");
 }
 
 export function languageByCode(code: string) {
 	return LANGUAGES.find((l) => l.code === code) ?? LANGUAGES[0];
+}
+
+/** Document text direction for a locale. */
+export function getDir(locale: Locale | string | undefined): "rtl" | "ltr" {
+	return locale === "ar" ? "rtl" : "ltr";
+}
+
+/** True for paths that should stay outside locale routing. */
+export function isLocaleExemptPath(pathname: string): boolean {
+	return (
+		pathname.startsWith("/api/") ||
+		pathname.startsWith("/_astro/") ||
+		pathname.startsWith("/fonts/") ||
+		pathname === "/robots.txt" ||
+		pathname.startsWith("/sitemap") ||
+		pathname === "/rss.xml" ||
+		pathname === "/favicon.svg" ||
+		pathname === "/favicon.ico" ||
+		pathname === "/404" ||
+		pathname === "/404/" ||
+		/\.[a-zA-Z0-9]+$/.test(pathname)
+	);
 }

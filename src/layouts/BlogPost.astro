@@ -8,7 +8,7 @@ import PostComments from '../components/PostComments.astro';
 import CookieBanner from '../components/CookieBanner.astro';
 import type { BlogPost } from '../lib/parse/posts';
 import type { ArticleHeading } from '../lib/blog/headings';
-import { DEFAULT_LOCALE, type Locale } from '../i18n/locales';
+import { DEFAULT_LOCALE, getDir, type Locale } from '../i18n/locales';
 import { t } from '../i18n/ui';
 
 type Props = Pick<
@@ -44,7 +44,7 @@ const {
 } = Astro.props;
 const pubDate = new Date(publishedAt);
 const updated = updatedAt ? new Date(updatedAt) : undefined;
-const dir = locale === 'ar' ? 'rtl' : 'ltr';
+const dir = getDir(locale);
 ---
 
 <html lang={locale} dir={dir}>
@@ -185,15 +185,23 @@ const dir = locale === 'ar' ? 'rtl' : 'ltr';
 			}
 
 			.article-toc__item a {
-				color: rgb(var(--gray-dark));
+				color: var(--accent);
 				text-decoration: none;
 				border-bottom: 1px solid transparent;
 				transition: color 0.15s ease, border-color 0.15s ease;
 			}
 
 			.article-toc__item a:hover {
+				color: var(--accent-dark);
+				border-bottom-color: var(--accent-dark);
+			}
+
+			.post-content :global(a) {
 				color: var(--accent);
-				border-bottom-color: var(--accent);
+			}
+
+			.post-content :global(a:hover) {
+				color: var(--accent-dark);
 			}
 
 			.article-toc__dot {
@@ -295,9 +303,9 @@ const dir = locale === 'ar' ? 'rtl' : 'ltr';
 				box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 			}
 
-			.social-share__btn--twitter:hover {
-				background: #1da1f2;
-				border-color: #1da1f2;
+			.social-share__btn--x:hover {
+				background: #000;
+				border-color: #000;
 				color: #fff;
 			}
 
@@ -374,9 +382,11 @@ const dir = locale === 'ar' ? 'rtl' : 'ltr';
 							<div class="post-author-header__info">
 								<div class="post-author-header__name">{author || 'Author'}</div>
 								<div class="post-author-header__date">
-									<FormattedDate date={pubDate} />
+									<FormattedDate date={pubDate} locale={locale} />
 									{category && <span> · {category}</span>}
-									{typeof readingTime === 'number' && readingTime > 0 && <span> · {readingTime} min read</span>}
+									{typeof readingTime === 'number' && readingTime > 0 && (
+										<span> · {readingTime} {t(locale, 'post.minRead')}</span>
+									)}
 								</div>
 							</div>
 						</div>
@@ -386,7 +396,7 @@ const dir = locale === 'ar' ? 'rtl' : 'ltr';
 						{
 							updated && (
 								<div class="last-updated-on">
-									Last updated on <FormattedDate date={updated} />
+									{t(locale, 'post.updated')} <FormattedDate date={updated} locale={locale} />
 								</div>
 							)
 						}
@@ -423,7 +433,7 @@ const dir = locale === 'ar' ? 'rtl' : 'ltr';
 							<div class="author-profile__info">
 								<div class="author-profile__name">{author || 'Author'}</div>
 								<div class="author-profile__bio">
-									Writer, developer, and content creator sharing insights on technology and design.
+									{t(locale, 'post.authorBio')}
 								</div>
 							</div>
 						</div>
@@ -431,19 +441,19 @@ const dir = locale === 'ar' ? 'rtl' : 'ltr';
 
 					<!-- Social Share Section -->
 					<div class="social-share">
-						<div class="social-share__label">Share this article</div>
+						<div class="social-share__label">{t(locale, 'post.share')}</div>
 						<div class="social-share__buttons">
 							<a 
-								href={`https://twitter.com/intent/tweet?url=${encodeURIComponent(Astro.url.href)}&text=${encodeURIComponent(title)}`}
+								href={`https://x.com/intent/tweet?url=${encodeURIComponent(Astro.url.href)}&text=${encodeURIComponent(title)}`}
 								target="_blank"
 								rel="noopener noreferrer"
-								class="social-share__btn social-share__btn--twitter"
-								aria-label="Share on Twitter"
+								class="social-share__btn social-share__btn--x"
+								aria-label="Share on X"
 							>
-								<svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor">
-									<path d="M23.953 4.57a10 10 0 01-2.825.775 4.958 4.958 0 002.163-2.723c-.951.555-2.005.959-3.127 1.184a4.92 4.92 0 00-8.384 4.482C7.69 8.095 4.067 6.13 1.64 3.162a4.822 4.822 0 00-.666 2.475c0 1.71.87 3.213 2.188 4.096a4.904 4.904 0 01-2.228-.616v.06a4.923 4.923 0 003.946 4.827 4.996 4.996 0 01-2.212.085 4.936 4.936 0 004.604 3.417 9.867 9.867 0 01-6.102 2.105c-.39 0-.779-.023-1.17-.067a13.995 13.995 0 007.557 2.209c9.053 0 13.998-7.496 13.998-13.985 0-.21 0-.42-.015-.63A9.935 9.935 0 0024 4.59z"/>
+								<svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor" aria-hidden="true">
+									<path d="M18.244 2.25h3.308l-7.227 8.26 8.502 10.24H16.17l-5.214-6.817L4.99 20.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
 								</svg>
-								Twitter
+								X
 							</a>
 							<a 
 								href={`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(Astro.url.href)}`}
@@ -472,45 +482,54 @@ const dir = locale === 'ar' ? 'rtl' : 'ltr';
 							<button
 								type="button"
 								class="social-share__btn social-share__btn--copy"
-								aria-label="Copy link"
+								aria-label={t(locale, 'post.copyLink')}
 								data-copy-link={Astro.url.href}
+								data-copied-label={t(locale, 'post.copied')}
+								data-copy-label={t(locale, 'post.copyLink')}
 							>
 								<svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2">
 									<path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path>
 									<path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path>
 								</svg>
-								Copy Link
+								{t(locale, 'post.copyLink')}
 							</button>
 						</div>
 					</div>
 				</div>
 			</article>
 		</main>
-		<PostComments postId={postId} />
+		<PostComments postId={postId} locale={locale} />
 		<Footer locale={locale} />
 		<CookieBanner locale={locale} />
 
 		<script>
-			// Copy link functionality
 			function initCopyLink() {
 				const copyBtn = document.querySelector('[data-copy-link]');
-				if (!copyBtn) return;
+				if (!copyBtn || !(copyBtn instanceof HTMLElement)) return;
 
 				copyBtn.addEventListener('click', async () => {
 					const url = copyBtn.getAttribute('data-copy-link');
 					if (!url) return;
 
+					const copiedLabel = copyBtn.getAttribute('data-copied-label') || 'Copied!';
+					const copyLabel = copyBtn.getAttribute('data-copy-label') || 'Copy Link';
+
 					try {
 						await navigator.clipboard.writeText(url);
-						const originalText = copyBtn.innerHTML;
 						copyBtn.innerHTML = `
 							<svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2">
 								<polyline points="20 6 9 17 4 12"></polyline>
 							</svg>
-							Copied!
+							${copiedLabel}
 						`;
 						setTimeout(() => {
-							copyBtn.innerHTML = originalText;
+							copyBtn.innerHTML = `
+								<svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2">
+									<path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path>
+									<path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path>
+								</svg>
+								${copyLabel}
+							`;
 						}, 2000);
 					} catch (err) {
 						console.error('Failed to copy:', err);

@@ -1,16 +1,35 @@
 ---
+import { DEFAULT_LOCALE, type Locale } from "../i18n/locales";
+import { t } from "../i18n/ui";
+
 type Props = {
 	postId: string;
+	locale?: Locale;
 };
 
-const { postId } = Astro.props;
+const { postId, locale = DEFAULT_LOCALE } = Astro.props;
 ---
 
-<section id="comments" class="post-comments" data-post-id={postId}>
+<section
+	id="comments"
+	class="post-comments"
+	data-post-id={postId}
+	data-i18n-placeholder={t(locale, "comments.placeholder")}
+	data-i18n-empty={t(locale, "comments.empty")}
+	data-i18n-reply={t(locale, "comments.reply")}
+	data-i18n-cancel={t(locale, "comments.cancel")}
+	data-i18n-replying-to={t(locale, "comments.replyingTo")}
+	data-i18n-characters={t(locale, "comments.characters")}
+	data-i18n-draft-saved={t(locale, "comments.draftSaved")}
+	data-i18n-draft-restored={t(locale, "comments.draftRestored")}
+	data-i18n-error-load={t(locale, "comments.errorLoad")}
+	data-i18n-error-post={t(locale, "comments.errorPost")}
+	data-i18n-error-empty={t(locale, "comments.errorEmpty")}
+>
 	<div class="post-comments__inner">
 		<div class="post-comments__top">
 			<h2 class="post-comments__title">
-				Responses <span class="post-comments__count" id="comments-count">…</span>
+				{t(locale, "comments.title")} <span class="post-comments__count" id="comments-count">…</span>
 			</h2>
 		</div>
 
@@ -20,19 +39,19 @@ const { postId } = Astro.props;
 			onsubmit="return false"
 		>
 			<div class="post-comments__composer-title" id="replying-to-label" style="display:none">
-				Replying to: <span id="replying-to-name"></span>
-				<button type="button" id="cancel-reply" class="post-comments__link-btn">Cancel</button>
+				{t(locale, "comments.replyingTo")} <span id="replying-to-name"></span>
+				<button type="button" id="cancel-reply" class="post-comments__link-btn">{t(locale, "comments.cancel")}</button>
 			</div>
 
-			<textarea
-				id="comment-content"
-				class="post-comments__textarea"
-				rows="4"
-				placeholder="What are your thoughts?"
-				required
-			></textarea>
+			<div id="comment-editor" class="post-comments__editor"></div>
+			<input type="hidden" id="comment-content" />
+			<div class="post-comments__editor-footer">
+				<span class="post-comments__char-count" id="char-count">0 {t(locale, "comments.characters")}</span>
+				<span class="post-comments__draft-status" id="draft-status"></span>
+			</div>
+			
 			<div class="post-comments__actions">
-				<button type="submit" class="post-comments__submit">Respond</button>
+				<button type="submit" class="post-comments__submit">{t(locale, "comments.respond")}</button>
 			</div>
 			<p class="post-comments__error" id="comment-error" role="alert"></p>
 		</form>
@@ -41,283 +60,310 @@ const { postId } = Astro.props;
 	</div>
 
 	<script>
-		const postId = document.getElementById("comments")?.dataset?.postId;
+		(function() {
+			// Load Quill CSS
+			const quillCSS = document.createElement('link');
+			quillCSS.rel = 'stylesheet';
+			quillCSS.href = 'https://cdn.quilljs.com/1.3.6/quill.snow.css';
+			document.head.appendChild(quillCSS);
 
-		const elCount = document.getElementById("comments-count");
-		const elList = document.getElementById("comments-list");
-		const elForm = document.getElementById("comment-form");
-		const elTextarea = document.getElementById("comment-content");
-		const elError = document.getElementById("comment-error");
-
-		let replyTargetId = null;
-		let replyTargetName = null;
-
-		const elReplyingLabel = document.getElementById("replying-to-label");
-		const elReplyingToName = document.getElementById("replying-to-name");
-		const elCancelReply = document.getElementById("cancel-reply");
-
-		elCancelReply?.addEventListener("click", () => {
-			replyTargetId = null;
-			replyTargetName = null;
-			elReplyingLabel.style.display = "none";
-		});
-
-		function sanitizeText(text) {
-			// Comments are plain-text; we render with textContent, so only trim here.
-			return String(text ?? "").replace(/\r\n/g, "\n").trim();
-		}
-
-		function parseCommentSegments(content) {
-			const segments = [];
-			const fence = /```([a-zA-Z0-9+#-]*)\n?([\s\S]*?)```/g;
-			let lastIndex = 0;
-			let match;
-			while ((match = fence.exec(content)) !== null) {
-				if (match.index > lastIndex) {
-					segments.push({ kind: "text", value: content.slice(lastIndex, match.index) });
-				}
-				segments.push({
-					kind: "block",
-					language: match[1] || undefined,
-					value: match[2].replace(/\n$/, ""),
-				});
-				lastIndex = match.index + match[0].length;
-			}
-			if (lastIndex < content.length) {
-				segments.push({ kind: "text", value: content.slice(lastIndex) });
-			}
-			return segments;
-		}
-
-		function renderInline(value) {
-			// Split on `inline code` spans.
-			const parts = String(value).split(/(`[^`\n]+`)/g);
-			const frag = document.createDocumentFragment();
-			for (const part of parts) {
-				if (part.startsWith("`") && part.endsWith("`") && part.length > 2) {
-					const code = document.createElement("code");
-					code.className = "post-comments__inline-code";
-					code.textContent = part.slice(1, -1);
-					frag.appendChild(code);
-				} else if (part) {
-					frag.appendChild(document.createTextNode(part));
-				}
-			}
-			return frag;
-		}
-
-		function renderCommentBody(content) {
-			const segments = parseCommentSegments(content);
-			const wrapper = document.createElement("div");
-			wrapper.className = "post-comments__body";
-
-			for (const seg of segments) {
-				if (seg.kind === "block") {
-					const pre = document.createElement("pre");
-					const code = document.createElement("code");
-					code.textContent = seg.value;
-					pre.appendChild(code);
-
-					if (seg.language) {
-						const lang = document.createElement("div");
-						lang.className = "post-comments__code-lang";
-						lang.textContent = seg.language;
-						wrapper.appendChild(lang);
-					}
-
-					wrapper.appendChild(pre);
-				} else {
-					const p = document.createElement("p");
-					p.className = "post-comments__p";
-					p.style.whiteSpace = "pre-wrap";
-					p.appendChild(renderInline(seg.value));
-					wrapper.appendChild(p);
-				}
-			}
-
-			return wrapper;
-		}
-
-		function formatDate(iso) {
-			try {
-				return new Date(iso).toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" });
-			} catch {
-				return "";
-			}
-		}
-
-		function avatarNode(name) {
-			const span = document.createElement("span");
-			span.className = "post-comments__avatar";
-			
-			// Generate a consistent identicon-style avatar based on user name
-			const userName = String(name || "Guest").trim();
-			const hash = userName.split('').reduce((acc, char) => {
-				return char.charCodeAt(0) + ((acc << 5) - acc);
-			}, 0);
-			
-			// Use DiceBear API for consistent identicon avatars
-			const avatarUrl = `https://api.dicebear.com/7.x/identicon/svg?seed=${encodeURIComponent(userName)}&backgroundColor=f0f0f0`;
-			
-			const img = document.createElement("img");
-			img.src = avatarUrl;
-			img.alt = userName;
-			img.className = "post-comments__avatar-img";
-			
-			// Fallback to colored circle with initial if image fails
-			img.onerror = function() {
-				span.innerHTML = "";
-				span.style.background = `hsl(${Math.abs(hash) % 360}, 65%, 55%)`;
-				span.style.color = "#fff";
-				span.style.display = "flex";
-				span.style.alignItems = "center";
-				span.style.justifyContent = "center";
-				span.style.fontWeight = "700";
-				span.style.fontSize = "1rem";
-				span.textContent = userName.charAt(0).toUpperCase();
+			// Load Quill JS
+			const quillScript = document.createElement('script');
+			quillScript.src = 'https://cdn.quilljs.com/1.3.6/quill.js';
+			quillScript.onload = function() {
+				initComments();
 			};
-			
-			span.appendChild(img);
-			return span;
-		}
+			document.head.appendChild(quillScript);
+		})();
 
-		function renderThread(comments) {
-			elList.innerHTML = "";
+		let quill;
+		
+		function initComments() {
+			const root = document.getElementById("comments");
+			const postId = root?.dataset?.postId;
+			const i18n = {
+				placeholder: root?.dataset?.i18nPlaceholder || "What are your thoughts?",
+				empty: root?.dataset?.i18nEmpty || "No responses yet.",
+				reply: root?.dataset?.i18nReply || "Reply",
+				characters: root?.dataset?.i18nCharacters || "characters",
+				draftSaved: root?.dataset?.i18nDraftSaved || "Draft saved",
+				draftRestored: root?.dataset?.i18nDraftRestored || "Draft restored",
+				errorLoad: root?.dataset?.i18nErrorLoad || "Could not load comments.",
+				errorPost: root?.dataset?.i18nErrorPost || "Could not post your comment.",
+				errorEmpty: root?.dataset?.i18nErrorEmpty || "Please enter a comment.",
+			};
 
-			if (!comments || comments.length === 0) {
-				const empty = document.createElement("p");
-				empty.className = "post-comments__empty";
-				empty.textContent = "No responses yet. Be the first to share your thoughts.";
-				elList.appendChild(empty);
-				return;
-			}
+			const elCount = document.getElementById("comments-count");
+			const elList = document.getElementById("comments-list");
+			const elForm = document.getElementById("comment-form");
+			const elError = document.getElementById("comment-error");
+			const elContentInput = document.getElementById("comment-content");
+			const elCharCount = document.getElementById("char-count");
+			const elDraftStatus = document.getElementById("draft-status");
 
-			const frag = document.createDocumentFragment();
-			for (const comment of comments) frag.appendChild(renderComment(comment, 0));
-			elList.appendChild(frag);
-		}
-
-		function renderComment(comment, level) {
-			const wrapper = document.createElement("div");
-			wrapper.className = level > 0 ? "post-comments__reply post-comments__reply--level" : "post-comments__root";
-
-			const article = document.createElement("div");
-			article.className = "post-comments__item" + (comment.isActive ? "" : " post-comments__item--hidden");
-
-			const top = document.createElement("div");
-			top.className = "post-comments__item-top";
-
-			const left = document.createElement("div");
-			left.className = "post-comments__item-left";
-
-			left.appendChild(avatarNode(comment.author));
-
-			const meta = document.createElement("div");
-			meta.className = "post-comments__meta";
-
-			const name = document.createElement("div");
-			name.className = "post-comments__author";
-			name.textContent = comment.author;
-
-			const date = document.createElement("div");
-			date.className = "post-comments__date";
-			date.textContent = formatDate(comment.createdAt);
-
-			meta.appendChild(name);
-			meta.appendChild(date);
-			left.appendChild(meta);
-
-			top.appendChild(left);
-
-			const actions = document.createElement("div");
-			actions.className = "post-comments__item-actions";
-
-			const replyBtn = document.createElement("button");
-			replyBtn.type = "button";
-			replyBtn.className = "post-comments__reply-btn";
-			replyBtn.textContent = "Reply";
-			replyBtn.addEventListener("click", () => {
-				replyTargetId = comment.id;
-				replyTargetName = comment.author;
-				elReplyingToName.textContent = replyTargetName || "User";
-				elReplyingLabel.style.display = "block";
-				elTextarea.focus();
+			// Initialize Quill editor
+			quill = new Quill('#comment-editor', {
+				theme: 'snow',
+				placeholder: i18n.placeholder,
+				modules: {
+					toolbar: [
+						['bold', 'italic', 'underline', 'strike'],
+						['blockquote', 'code-block'],
+						[{ 'list': 'ordered'}, { 'list': 'bullet' }],
+						[{ 'header': [1, 2, 3, false] }],
+						['link'],
+						['clean']
+					]
+				}
 			});
-			actions.appendChild(replyBtn);
 
-			top.appendChild(actions);
+			// Smart features
+			let draftTimeout;
+			const DRAFT_KEY = `comment_draft_${postId}`;
 
-			const body = renderCommentBody(comment.content);
-
-			article.appendChild(top);
-			article.appendChild(body);
-
-			wrapper.appendChild(article);
-
-			if (comment.replies && comment.replies.length > 0) {
-				const repliesWrap = document.createElement("div");
-				repliesWrap.className = "post-comments__replies";
-				for (const r of comment.replies) repliesWrap.appendChild(renderComment(r, level + 1));
-				wrapper.appendChild(repliesWrap);
+			// Load saved draft
+			const savedDraft = localStorage.getItem(DRAFT_KEY);
+			if (savedDraft) {
+				try {
+					const draft = JSON.parse(savedDraft);
+					quill.root.innerHTML = draft.content;
+					elDraftStatus.textContent = i18n.draftRestored;
+					elDraftStatus.style.color = '#10b981';
+					setTimeout(() => { elDraftStatus.textContent = ''; }, 3000);
+				} catch (e) {
+					// Ignore invalid drafts
+				}
 			}
 
-			return wrapper;
-		}
+			// Character count and auto-save
+			quill.on('text-change', function() {
+				const text = quill.getText();
+				const length = text.trim().length;
+				elCharCount.textContent = `${length} ${i18n.characters}`;
 
-		async function loadComments() {
-			elError.textContent = "";
-			elList.innerHTML = "";
-			elCount.textContent = "…";
+				// Auto-save draft
+				clearTimeout(draftTimeout);
+				draftTimeout = setTimeout(() => {
+					if (length > 0) {
+						localStorage.setItem(DRAFT_KEY, JSON.stringify({
+							content: quill.root.innerHTML,
+							timestamp: Date.now()
+						}));
+						elDraftStatus.textContent = i18n.draftSaved;
+						elDraftStatus.style.color = '#6b7280';
+						setTimeout(() => { elDraftStatus.textContent = ''; }, 2000);
+					}
+				}, 1000);
+			});
 
-			try {
-				const res = await fetch(`/api/comments/${encodeURIComponent(postId)}`);
-				if (!res.ok) throw new Error("Failed to load comments");
-				const data = await res.json();
-				elCount.textContent = String(data.count ?? 0);
-				renderThread(data.comments ?? []);
-			} catch (e) {
-				elError.textContent = e?.message || "Could not load comments.";
-			}
-		}
+			let replyTargetId = null;
+			let replyTargetName = null;
 
-		async function submitComment() {
-			elError.textContent = "";
-			const content = sanitizeText(elTextarea.value);
-			if (!content) return;
+			const elReplyingLabel = document.getElementById("replying-to-label");
+			const elReplyingToName = document.getElementById("replying-to-name");
+			const elCancelReply = document.getElementById("cancel-reply");
 
-			const payload = {
-				content,
-				author: "Guest",
-				parentId: replyTargetId,
-			};
-
-			try {
-				elForm.querySelector("button[type='submit']").disabled = true;
-				const res = await fetch(`/api/comments/${encodeURIComponent(postId)}`, {
-					method: "POST",
-					headers: { "Content-Type": "application/json" },
-					body: JSON.stringify(payload),
-				});
-				const data = await res.json().catch(() => null);
-				if (!res.ok || !data?.created) throw new Error("Your response could not be posted.");
-
-				elTextarea.value = "";
+			elCancelReply?.addEventListener("click", () => {
 				replyTargetId = null;
 				replyTargetName = null;
 				elReplyingLabel.style.display = "none";
-				await loadComments();
-			} catch (e) {
-				elError.textContent = e?.message || "Could not post your comment.";
-			} finally {
-				elForm.querySelector("button[type='submit']").disabled = false;
-			}
-		}
+			});
 
-		elForm.addEventListener("submit", submitComment);
-		loadComments();
+			function sanitizeText(text) {
+				return String(text ?? "").replace(/\r\n/g, "\n").trim();
+			}
+
+			function formatDate(iso) {
+				try {
+					return new Date(iso).toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" });
+				} catch {
+					return "";
+				}
+			}
+
+			function avatarNode(name) {
+				const size = 44;
+				const span = document.createElement("span");
+				span.className = "post-comments__avatar";
+				
+				const userName = String(name || "Guest").trim();
+				const avatarUrl = `https://api.dicebear.com/7.x/identicon/svg?seed=${encodeURIComponent(userName)}&backgroundColor=f0f0f0&size=${size}`;
+				
+				const img = document.createElement("img");
+				img.src = avatarUrl;
+				img.alt = "";
+				img.width = size;
+				img.height = size;
+				img.loading = "lazy";
+				img.decoding = "async";
+				img.className = "post-comments__avatar-img";
+				
+				img.onerror = function() {
+					const hash = userName.split('').reduce((acc, char) => {
+						return char.charCodeAt(0) + ((acc << 5) - acc);
+					}, 0);
+					span.innerHTML = "";
+					span.style.background = `hsl(${Math.abs(hash) % 360}, 65%, 55%)`;
+					span.style.color = "#fff";
+					span.style.display = "flex";
+					span.style.alignItems = "center";
+					span.style.justifyContent = "center";
+					span.style.fontWeight = "700";
+					span.style.fontSize = "1rem";
+					span.textContent = userName.charAt(0).toUpperCase();
+				};
+				
+				span.appendChild(img);
+				return span;
+			}
+
+			function renderThread(comments) {
+				elList.innerHTML = "";
+
+				if (!comments || comments.length === 0) {
+					const empty = document.createElement("p");
+					empty.className = "post-comments__empty";
+					empty.textContent = i18n.empty;
+					elList.appendChild(empty);
+					return;
+				}
+
+				const frag = document.createDocumentFragment();
+				for (const comment of comments) frag.appendChild(renderComment(comment, 0));
+				elList.appendChild(frag);
+			}
+
+			function renderComment(comment, level) {
+				const wrapper = document.createElement("div");
+				wrapper.className = level > 0 ? "post-comments__reply post-comments__reply--level" : "post-comments__root";
+
+				const article = document.createElement("div");
+				article.className = "post-comments__item" + (comment.isActive ? "" : " post-comments__item--hidden");
+
+				const top = document.createElement("div");
+				top.className = "post-comments__item-top";
+
+				const left = document.createElement("div");
+				left.className = "post-comments__item-left";
+
+				left.appendChild(avatarNode(comment.author));
+
+				const meta = document.createElement("div");
+				meta.className = "post-comments__meta";
+
+				const name = document.createElement("div");
+				name.className = "post-comments__author";
+				name.textContent = comment.author;
+
+				const date = document.createElement("div");
+				date.className = "post-comments__date";
+				date.textContent = formatDate(comment.createdAt);
+
+				meta.appendChild(name);
+				meta.appendChild(date);
+				left.appendChild(meta);
+
+				top.appendChild(left);
+
+				const actions = document.createElement("div");
+				actions.className = "post-comments__item-actions";
+
+				const replyBtn = document.createElement("button");
+				replyBtn.type = "button";
+				replyBtn.className = "post-comments__reply-btn";
+				replyBtn.textContent = i18n.reply;
+				replyBtn.addEventListener("click", () => {
+					replyTargetId = comment.id;
+					replyTargetName = comment.author;
+					elReplyingToName.textContent = replyTargetName || "User";
+					elReplyingLabel.style.display = "block";
+					quill.focus();
+				});
+				actions.appendChild(replyBtn);
+
+				top.appendChild(actions);
+
+				const body = document.createElement("div");
+				body.className = "post-comments__body";
+				body.innerHTML = comment.content || '';
+
+				article.appendChild(top);
+				article.appendChild(body);
+
+				wrapper.appendChild(article);
+
+				if (comment.replies && comment.replies.length > 0) {
+					const repliesWrap = document.createElement("div");
+					repliesWrap.className = "post-comments__replies";
+					for (const r of comment.replies) repliesWrap.appendChild(renderComment(r, level + 1));
+					wrapper.appendChild(repliesWrap);
+				}
+
+				return wrapper;
+			}
+
+			async function loadComments() {
+				elError.textContent = "";
+				elList.innerHTML = "";
+				elCount.textContent = "…";
+
+				try {
+					const res = await fetch(`/api/comments/${encodeURIComponent(postId)}/`);
+					if (!res.ok) throw new Error(i18n.errorLoad);
+					const data = await res.json();
+					elCount.textContent = String(data.count ?? 0);
+					renderThread(data.comments ?? []);
+				} catch (e) {
+					elError.textContent = e?.message || i18n.errorLoad;
+				}
+			}
+
+			async function submitComment() {
+				elError.textContent = "";
+				const content = quill.root.innerHTML.trim();
+				const textContent = quill.getText().trim();
+				
+				if (!textContent || textContent === '\n') {
+					elError.textContent = i18n.errorEmpty;
+					return;
+				}
+
+				const payload = {
+					content,
+					author: "Guest",
+					parentId: replyTargetId,
+				};
+
+				try {
+					elForm.querySelector("button[type='submit']").disabled = true;
+					const res = await fetch(`/api/comments/${encodeURIComponent(postId)}/`, {
+						method: "POST",
+						headers: { "Content-Type": "application/json" },
+						body: JSON.stringify(payload),
+					});
+					const data = await res.json().catch(() => null);
+					if (!res.ok || !data?.created) throw new Error(i18n.errorPost);
+
+					quill.setText('');
+					localStorage.removeItem(DRAFT_KEY); // Clear draft after successful post
+					replyTargetId = null;
+					replyTargetName = null;
+					elReplyingLabel.style.display = "none";
+					await loadComments();
+				} catch (e) {
+					elError.textContent = e?.message || i18n.errorPost;
+				} finally {
+					elForm.querySelector("button[type='submit']").disabled = false;
+				}
+			}
+
+			elForm.addEventListener("submit", submitComment);
+			loadComments();
+		}
 	</script>
 
-	<style>
+	<style is:global>
+		/* is:global: comment list/avatars are rendered by JS and miss Astro scoped attrs */
 		.post-comments__inner {
 			width: 720px;
 			max-width: calc(100% - 2em);
@@ -342,7 +388,6 @@ const { postId } = Astro.props;
 			border: none;
 			background: #f8f9fa;
 			padding: 1.5rem;
-			border-radius: 8px;
 			margin-bottom: 2rem;
 		}
 
@@ -363,22 +408,79 @@ const { postId } = Astro.props;
 			text-decoration: underline;
 		}
 
-		.post-comments__textarea {
-			width: 100%;
-			font-size: 16px;
-			line-height: 1.6;
-			border: 1px solid rgb(var(--gray-light));
-			border-radius: 6px;
-			padding: .875rem 1rem;
-			outline: none;
-			resize: vertical;
+		.post-comments__editor {
 			background: #fff;
-			font-family: inherit;
+			min-height: 150px;
+			border: 2px solid rgb(var(--gray-light));
+			transition: border-color 0.2s ease;
 		}
 
-		.post-comments__textarea:focus {
+		.post-comments__editor:focus-within {
 			border-color: rgb(var(--black));
-			box-shadow: 0 0 0 2px rgba(var(--black), 0.1);
+		}
+
+		.post-comments__editor .ql-toolbar {
+			background: #f8f9fa;
+			border: none !important;
+			border-bottom: 1px solid rgb(var(--gray-light)) !important;
+			padding: 0.75rem;
+		}
+
+		.post-comments__editor .ql-container {
+			border: none !important;
+			font-size: 16px;
+			font-family: inherit;
+			min-height: 120px;
+		}
+
+		.post-comments__editor .ql-editor {
+			min-height: 120px;
+			padding: 1rem;
+			line-height: 1.6;
+		}
+
+		.post-comments__editor .ql-editor.ql-blank::before {
+			color: rgb(var(--gray));
+			font-style: normal;
+			left: 1rem;
+		}
+
+		.post-comments__editor .ql-stroke {
+			stroke: rgb(var(--gray-dark));
+		}
+
+		.post-comments__editor .ql-fill {
+			fill: rgb(var(--gray-dark));
+		}
+
+		.post-comments__editor .ql-toolbar button:hover .ql-stroke,
+		.post-comments__editor .ql-toolbar button:hover .ql-fill,
+		.post-comments__editor .ql-toolbar button.ql-active .ql-stroke,
+		.post-comments__editor .ql-toolbar button.ql-active .ql-fill {
+			stroke: rgb(var(--black));
+			fill: rgb(var(--black));
+		}
+
+		.post-comments__editor .ql-toolbar button {
+			width: 32px;
+			height: 32px;
+		}
+
+		.post-comments__editor-footer {
+			display: flex;
+			justify-content: space-between;
+			align-items: center;
+			margin-top: 0.5rem;
+			font-size: 0.8125rem;
+		}
+
+		.post-comments__char-count {
+			color: rgb(var(--gray));
+		}
+
+		.post-comments__draft-status {
+			color: #6b7280;
+			font-weight: 500;
 		}
 
 		.post-comments__actions {
@@ -391,7 +493,6 @@ const { postId } = Astro.props;
 			background: #000;
 			color: #fff;
 			border: none;
-			border-radius: 6px;
 			padding: .625rem 1.5rem;
 			font-weight: 700;
 			font-size: 0.9375rem;
@@ -428,7 +529,6 @@ const { postId } = Astro.props;
 			margin: 0;
 			text-align: center;
 			background: #f8f9fa;
-			border-radius: 8px;
 		}
 
 		.post-comments__root,
@@ -475,8 +575,8 @@ const { postId } = Astro.props;
 
 		.post-comments__avatar {
 			display: block;
-			width: 44px !important;
-			height: 44px !important;
+			width: 44px;
+			height: 44px;
 			min-width: 44px;
 			min-height: 44px;
 			max-width: 44px;
@@ -491,12 +591,14 @@ const { postId } = Astro.props;
 
 		.post-comments__avatar-img {
 			position: absolute;
-			top: 0;
-			left: 0;
-			width: 100% !important;
-			height: 100% !important;
+			inset: 0;
+			width: 44px;
+			height: 44px;
+			max-width: 44px;
+			max-height: 44px;
 			object-fit: cover;
 			display: block;
+			border-radius: 50%;
 		}
 
 		.post-comments__meta {
@@ -525,7 +627,6 @@ const { postId } = Astro.props;
 			font-size: 0.875rem;
 			cursor: pointer;
 			padding: 0.25rem 0.5rem;
-			border-radius: 4px;
 			transition: background 0.2s ease;
 		}
 
@@ -540,42 +641,70 @@ const { postId } = Astro.props;
 			color: rgb(var(--gray-dark));
 		}
 
-		.post-comments__p {
+		.post-comments__body p {
 			margin: 0 0 .9rem;
 		}
 
-		.post-comments__inline-code {
+		.post-comments__body strong {
+			font-weight: 700;
+		}
+
+		.post-comments__body em {
+			font-style: italic;
+		}
+
+		.post-comments__body u {
+			text-decoration: underline;
+		}
+
+		.post-comments__body s {
+			text-decoration: line-through;
+		}
+
+		.post-comments__body a {
+			color: var(--accent);
+			text-decoration: underline;
+		}
+
+		.post-comments__body blockquote {
+			border-left: 4px solid rgb(var(--gray-light));
+			padding-left: 1rem;
+			margin: 1rem 0;
+			color: rgb(var(--gray-dark));
+			font-style: italic;
+		}
+
+		.post-comments__body code {
 			font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
 			background: rgb(var(--gray-light));
 			padding: .15rem .4rem;
-			border-radius: 4px;
 			font-size: .9em;
 			color: #e11d48;
 		}
 
-		.post-comments__code-lang {
-			margin: .9rem 0 .4rem;
-			font-size: .75rem;
-			font-weight: 800;
-			letter-spacing: .08em;
-			text-transform: uppercase;
-			color: #9ca3af;
-			font-family: "Atkinson", sans-serif;
-		}
-
-		pre {
+		.post-comments__body pre {
 			background: #1e293b;
 			color: #f1f5f9;
 			padding: 1.25rem;
-			border-radius: 8px;
 			overflow-x: auto;
 			margin: .75rem 0 .9rem;
 			border: 1px solid #334155;
 		}
 
-		pre code {
-			font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
-			font-size: 0.875rem;
+		.post-comments__body pre code {
+			background: transparent;
+			color: inherit;
+			padding: 0;
+		}
+
+		.post-comments__body ol,
+		.post-comments__body ul {
+			margin: 0 0 .9rem;
+			padding-left: 1.5rem;
+		}
+
+		.post-comments__body li {
+			margin-bottom: .25rem;
 		}
 
 		@media (max-width: 720px) {
@@ -587,15 +716,19 @@ const { postId } = Astro.props;
 				padding-left: 1.5rem;
 			}
 
-			.post-comments__avatar {
-				width: 38px !important;
-				height: 38px !important;
+			.post-comments__avatar,
+			.post-comments__avatar-img {
+				width: 38px;
+				height: 38px;
 				min-width: 38px;
 				min-height: 38px;
 				max-width: 38px;
 				max-height: 38px;
 			}
+
+			.post-comments__composer {
+				padding: 1rem;
+			}
 		}
 	</style>
 </section>
-

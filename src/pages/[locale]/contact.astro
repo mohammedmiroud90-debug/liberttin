@@ -1,14 +1,12 @@
 ---
 import ContactPage from "../../views/ContactPage.astro";
-import { LOCALES, DEFAULT_LOCALE, type Locale } from "../../i18n/locales";
+import { localeStaticPaths, resolveLocaleParam } from "../../i18n/paths";
 
 export function getStaticPaths() {
-	return LOCALES.filter((l) => l !== DEFAULT_LOCALE).map((locale) => ({
-		params: { locale },
-	}));
+	return localeStaticPaths();
 }
 
-const { locale } = Astro.params;
+const locale = resolveLocaleParam(Astro.params.locale);
 ---
 
-<ContactPage locale={locale as Locale} />
+<ContactPage locale={locale} />
