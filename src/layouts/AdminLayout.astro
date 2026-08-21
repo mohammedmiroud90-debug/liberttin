@@ -1,8 +1,8 @@
 ---
-import BaseHead from "../BaseHead.astro";
-import { DEFAULT_LOCALE, getDir, type Locale } from "../../i18n/locales";
-import { pageTitle } from "../../i18n/title";
-import "../../styles/admin.css";
+import BaseHead from "../components/BaseHead.astro";
+import { DEFAULT_LOCALE, getDir, type Locale } from "../i18n/locales";
+import { pageTitle } from "../i18n/title";
+import "../styles/admin.css";
 
 type Props = {
 	locale?: Locale;

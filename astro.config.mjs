@@ -1,15 +1,22 @@
 // @ts-check
+import path from "node:path";
+import { fileURLToPath } from "node:url";
 import { defineConfig } from "astro/config";
 import mdx from "@astrojs/mdx";
 import sitemap from "@astrojs/sitemap";
 import cloudflare from "@astrojs/cloudflare";
+import react from "@astrojs/react";
+import tailwindcss from "@tailwindcss/vite";
 import { LOCALES, DEFAULT_LOCALE } from "./src/i18n/locales";
+
+const rootDir = path.dirname(fileURLToPath(import.meta.url));
 
 // https://astro.build/config
 export default defineConfig({
 	site: "https://libertta.blog",
 	trailingSlash: "always",
 	integrations: [
+		react(),
 		mdx(),
 		sitemap({
 			i18n: {
@@ -34,6 +41,16 @@ export default defineConfig({
 			enabled: false,
 		},
 	}),
+	vite: {
+		plugins: [tailwindcss()],
+		resolve: {
+			alias: {
+				"@": path.resolve(rootDir, "src"),
+				"next/image": path.resolve(rootDir, "src/shims/next-image.tsx"),
+				"next/navigation": path.resolve(rootDir, "src/shims/next-navigation.ts"),
+			},
+		},
+	},
 	server: {
 		port: 3000,
 		host: true,
