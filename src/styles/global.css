@@ -117,16 +117,29 @@ img {
 	border-radius: 8px;
 }
 code {
-	padding: 2px 5px;
-	background-color: rgb(var(--gray-light));
-	border-radius: 2px;
+	font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+	padding: 1px 5px;
+	background-color: #e3e6e8;
+	border-radius: 3px;
+	font-size: 0.875em;
+	color: #0c0d0e;
 }
 pre {
-	padding: 1.5em;
-	border-radius: 8px;
+	padding: 1rem 1.25rem;
+	border-radius: 5px;
+	background: #f6f6f6;
+	border: 1px solid #d6d9dc;
+	overflow-x: auto;
+	font-size: 0.875em;
+	line-height: 1.5;
 }
 pre > code {
 	all: unset;
+	font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+	font-size: inherit;
+	color: #242629;
+	background: transparent;
+	padding: 0;
 }
 blockquote {
 	border-left: 4px solid var(--accent);

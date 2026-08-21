@@ -1,0 +1,227 @@
+---
+import { DEFAULT_LOCALE, type Locale } from "../i18n/locales";
+import { t } from "../i18n/ui";
+
+type Props = {
+	locale?: Locale;
+	/** CSS selector(s) of elements whose text should be translated (comma-separated). */
+	targets?: string;
+};
+
+const locale = Astro.props.locale ?? DEFAULT_LOCALE;
+const targets = Astro.props.targets ?? "[data-i18n-dynamic]";
+const showControl = locale !== DEFAULT_LOCALE;
+---
+
+{
+	showControl && (
+		<div
+			class="dynamic-translate"
+			data-locale={locale}
+			data-targets={targets}
+			data-label-show={t(locale, "translate.show")}
+			data-label-hide={t(locale, "translate.hide")}
+			data-label-loading={t(locale, "translate.loading")}
+			data-label-error={t(locale, "translate.error")}
+		>
+			<button type="button" class="dynamic-translate__btn" data-translate-toggle>
+				{t(locale, "translate.show")}
+			</button>
+			<p class="dynamic-translate__status" data-translate-status hidden></p>
+		</div>
+	)
+}
+
+<script>
+	type TextNode = { node: Text; original: string };
+
+	async function translateText(text: string, target: string): Promise<string> {
+		const res = await fetch("/api/translate/", {
+			method: "POST",
+			headers: { "Content-Type": "application/json" },
+			body: JSON.stringify({ text, target, source: "en" }),
+		});
+		const data = (await res.json().catch(() => null)) as {
+			translated?: string;
+			error?: string;
+		} | null;
+		if (!res.ok || !data?.translated) throw new Error(data?.error || "fail");
+		return String(data.translated);
+	}
+
+	function collectTextNodes(root: Element): TextNode[] {
+		const walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT);
+		const nodes: TextNode[] = [];
+		let current: Node | null;
+		while ((current = walker.nextNode())) {
+			const value = current.textContent ?? "";
+			if (!value.trim()) continue;
+			// Skip script/style leftovers
+			const parent = current.parentElement;
+			if (parent && /^(SCRIPT|STYLE|NOSCRIPT|CODE|PRE)$/i.test(parent.tagName)) continue;
+			nodes.push({ node: current as Text, original: value });
+		}
+		return nodes;
+	}
+
+	function chunk(text: string, max = 4000): string[] {
+		if (text.length <= max) return [text];
+		const parts: string[] = [];
+		let remaining = text;
+		while (remaining.length > max) {
+			let cut = remaining.lastIndexOf(" ", max);
+			if (cut < max * 0.5) cut = max;
+			parts.push(remaining.slice(0, cut));
+			remaining = remaining.slice(cut);
+		}
+		if (remaining) parts.push(remaining);
+		return parts;
+	}
+
+	async function translateNodes(nodes: TextNode[], target: string) {
+		// Batch by joining with a rare separator so we reduce API calls.
+		const SEP = "\n⟦§⟧\n";
+		const originals = nodes.map((n) => n.original);
+		const joined = originals.join(SEP);
+		const pieces = chunk(joined);
+		const translatedPieces: string[] = [];
+
+		for (const piece of pieces) {
+			translatedPieces.push(await translateText(piece, target));
+		}
+
+		const translatedJoined = translatedPieces.join("");
+		const parts = translatedJoined.split(/\n?⟦§⟧\n?/);
+		nodes.forEach((entry, i) => {
+			entry.node.textContent = (parts[i] ?? entry.original).trim() ? (parts[i] ?? entry.original) : entry.original;
+		});
+	}
+
+	function restoreNodes(nodes: TextNode[]) {
+		for (const entry of nodes) entry.node.textContent = entry.original;
+	}
+
+	function initDynamicTranslate(root: HTMLElement) {
+		if (root.dataset.bound === "1") return;
+		root.dataset.bound = "1";
+
+		const btn = root.querySelector("[data-translate-toggle]") as HTMLButtonElement | null;
+		const status = root.querySelector("[data-translate-status]") as HTMLElement | null;
+		if (!btn) return;
+
+		const locale = root.dataset.locale || "en";
+		const selector = root.dataset.targets || "[data-i18n-dynamic]";
+		const labelShow = root.dataset.labelShow || "Translate content";
+		const labelHide = root.dataset.labelHide || "Show original";
+		const labelLoading = root.dataset.labelLoading || "Translating…";
+		const labelError = root.dataset.labelError || "Could not translate this content.";
+
+		let active = false;
+		let busy = false;
+		const cache = new Map<Element, TextNode[]>();
+
+		btn.addEventListener("click", async () => {
+			if (busy) return;
+			const targets = Array.from(document.querySelectorAll(selector)) as Element[];
+			if (targets.length === 0) return;
+
+			if (active) {
+				for (const el of targets) {
+					const nodes = cache.get(el);
+					if (nodes) restoreNodes(nodes);
+				}
+				active = false;
+				btn.textContent = labelShow;
+				if (status) {
+					status.hidden = true;
+					status.textContent = "";
+				}
+				return;
+			}
+
+			busy = true;
+			btn.disabled = true;
+			btn.textContent = labelLoading;
+			if (status) {
+				status.hidden = false;
+				status.textContent = labelLoading;
+			}
+
+			try {
+				for (const el of targets) {
+					let nodes = cache.get(el);
+					if (!nodes) {
+						nodes = collectTextNodes(el);
+						cache.set(el, nodes);
+					} else {
+						// refresh originals if DOM was rebuilt (e.g. comments re-render)
+						nodes = collectTextNodes(el);
+						cache.set(el, nodes);
+					}
+					if (nodes.length) await translateNodes(nodes, locale);
+				}
+				active = true;
+				btn.textContent = labelHide;
+				if (status) status.hidden = true;
+			} catch {
+				if (status) {
+					status.hidden = false;
+					status.textContent = labelError;
+				}
+				btn.textContent = labelShow;
+			} finally {
+				busy = false;
+				btn.disabled = false;
+			}
+		});
+	}
+
+	function boot() {
+		document.querySelectorAll(".dynamic-translate").forEach((el) => {
+			if (el instanceof HTMLElement) initDynamicTranslate(el);
+		});
+	}
+
+	boot();
+	document.addEventListener("astro:page-load", boot);
+</script>
+
+<style>
+	.dynamic-translate {
+		display: flex;
+		flex-wrap: wrap;
+		align-items: center;
+		gap: 0.75rem 1rem;
+		margin: 0 0 1rem;
+	}
+
+	.dynamic-translate__btn {
+		appearance: none;
+		border: 1px solid rgb(var(--gray-light));
+		background: #fff;
+		color: rgb(var(--black));
+		font-family: "Atkinson", sans-serif;
+		font-size: 0.8125rem;
+		font-weight: 700;
+		letter-spacing: 0.02em;
+		padding: 0.5rem 0.9rem;
+		cursor: pointer;
+		transition: background 0.15s ease, border-color 0.15s ease;
+	}
+
+	.dynamic-translate__btn:hover:not(:disabled) {
+		background: rgb(var(--gray-light));
+		border-color: rgb(var(--gray));
+	}
+
+	.dynamic-translate__btn:disabled {
+		opacity: 0.65;
+		cursor: wait;
+	}
+
+	.dynamic-translate__status {
+		margin: 0;
+		font-size: 0.8125rem;
+		color: rgb(var(--gray-dark));
+	}
+</style>

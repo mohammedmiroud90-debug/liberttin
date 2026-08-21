@@ -4,10 +4,13 @@ import Header from "../components/Header.astro";
 import Footer from "../components/Footer.astro";
 import FormattedDate from "../components/FormattedDate.astro";
 import CookieBanner from "../components/CookieBanner.astro";
+import DynamicTranslate from "../components/DynamicTranslate.astro";
 import { SITE_TITLE } from "../consts";
 import { getBlogPosts } from "../lib/parse/posts";
 import { DEFAULT_LOCALE, getDir, localizedPath, type Locale } from "../i18n/locales";
 import { t } from "../i18n/ui";
+import { pageTitle } from "../i18n/title";
+import { localizeCategory } from "../i18n/category";
 
 type Props = { locale?: Locale };
 const locale = Astro.props.locale ?? DEFAULT_LOCALE;
@@ -18,10 +21,19 @@ const dir = getDir(locale);
 <!doctype html>
 <html lang={locale} dir={dir}>
 	<head>
-		<BaseHead title={SITE_TITLE} description={t(locale, "site.description")} locale={locale} />
+		<BaseHead title={pageTitle(locale, "nav.home")} description={t(locale, "site.description")} locale={locale} />
 		<style>
 			.hero { margin-bottom: 2rem; }
 			.hero h1 { margin-bottom: 0.5rem; }
+			.latest-header {
+				display: flex;
+				align-items: center;
+				justify-content: space-between;
+				gap: 1rem;
+				flex-wrap: wrap;
+				margin-bottom: 0.5rem;
+			}
+			.latest-header h2 { margin: 0; }
 			.post-list { list-style: none; margin: 0; padding: 0; }
 			.post-list li {
 				border-bottom: 1px solid rgb(var(--gray-light));
@@ -42,7 +54,10 @@ const dir = getDir(locale);
 				<p>{t(locale, "site.description")}</p>
 			</section>
 			<section>
-				<h2>{t(locale, "home.latest")}</h2>
+				<div class="latest-header">
+					<h2>{t(locale, "home.latest")}</h2>
+					<DynamicTranslate locale={locale} targets=".post-list [data-i18n-dynamic]" />
+				</div>
 				{
 					posts.length === 0 ? (
 						<p>{t(locale, "home.empty")}</p>
@@ -51,10 +66,10 @@ const dir = getDir(locale);
 							{posts.map((post) => (
 								<li>
 									<a href={localizedPath(locale, `/blog/${post.slug}/`)}>
-										<h3 class="post-title">{post.title}</h3>
+										<h3 class="post-title" data-i18n-dynamic>{post.title}</h3>
 										<p class="post-meta">
 											<FormattedDate date={new Date(post.publishedAt)} locale={locale} />
-											{post.category ? ` · ${post.category}` : ""}
+											{post.category ? ` · ${localizeCategory(locale, post.category)}` : ""}
 										</p>
 									</a>
 								</li>

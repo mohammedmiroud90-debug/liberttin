@@ -8,8 +8,11 @@ import PostComments from '../components/PostComments.astro';
 import CookieBanner from '../components/CookieBanner.astro';
 import type { BlogPost } from '../lib/parse/posts';
 import type { ArticleHeading } from '../lib/blog/headings';
+import DynamicTranslate from '../components/DynamicTranslate.astro';
 import { DEFAULT_LOCALE, getDir, type Locale } from '../i18n/locales';
 import { t } from '../i18n/ui';
+import { articleTitle } from '../i18n/title';
+import { localizeCategory } from '../i18n/category';
 
 type Props = Pick<
 	BlogPost,
@@ -49,7 +52,7 @@ const dir = getDir(locale);
 
 <html lang={locale} dir={dir}>
 	<head>
-		<BaseHead title={title} description={excerpt} locale={locale} />
+		<BaseHead title={articleTitle(locale, title)} description={excerpt} locale={locale} />
 		<style>
 			@font-face {
 				font-family: "Source Serif Pro";
@@ -204,6 +207,94 @@ const dir = getDir(locale);
 				color: var(--accent-dark);
 			}
 
+			/* Stack Overflow–style code snippets */
+			.post-content :global(:not(pre) > code) {
+				font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+				background: #e3e6e8;
+				padding: 1px 5px;
+				border-radius: 3px;
+				font-size: 0.82em;
+				color: #0c0d0e;
+			}
+
+			.post-content :global(.code-snippet) {
+				margin: 1.35em 0;
+				border: 1px solid #d6d9dc;
+				border-radius: 5px;
+				background: #f6f6f6;
+				overflow: hidden;
+				font-family: "Atkinson", sans-serif;
+			}
+
+			.post-content :global(.code-snippet__toolbar) {
+				display: flex;
+				align-items: center;
+				justify-content: space-between;
+				gap: 0.75rem;
+				min-height: 2.25rem;
+				padding: 0.35rem 0.75rem;
+				background: #e3e6e8;
+				border-bottom: 1px solid #d6d9dc;
+			}
+
+			.post-content :global(.code-snippet__lang) {
+				color: #6a737c;
+				font-size: 0.7rem;
+				font-weight: 700;
+				letter-spacing: 0.04em;
+				text-transform: uppercase;
+			}
+
+			.post-content :global(.code-snippet__copy) {
+				display: inline-flex;
+				align-items: center;
+				gap: 0.35rem;
+				margin-inline-start: auto;
+				padding: 0.25rem 0.55rem;
+				border: 1px solid #babfc4;
+				border-radius: 3px;
+				background: #fff;
+				color: #3b4045;
+				font-family: inherit;
+				font-size: 0.75rem;
+				font-weight: 500;
+				line-height: 1.2;
+				cursor: pointer;
+				transition: background 0.15s ease, border-color 0.15s ease, color 0.15s ease;
+			}
+
+			.post-content :global(.code-snippet__copy:hover) {
+				background: #f8f9f9;
+				border-color: #9fa6ad;
+				color: #0c0d0e;
+			}
+
+			.post-content :global(.code-snippet__copy.is-copied) {
+				border-color: #2f6f44;
+				color: #2f6f44;
+			}
+
+			.post-content :global(.code-snippet pre) {
+				margin: 0;
+				padding: 1rem 1.15rem;
+				border: none;
+				border-radius: 0;
+				background: #f6f6f6;
+				overflow-x: auto;
+				font-size: 0.82em;
+				line-height: 1.55;
+			}
+
+			.post-content :global(.code-snippet pre code),
+			.post-content :global(pre > code) {
+				font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+				background: transparent;
+				padding: 0;
+				color: #242629;
+				font-size: inherit;
+				border-radius: 0;
+			}
+
 			.article-toc__dot {
 				width: .35rem;
 				height: .35rem;
@@ -332,6 +423,36 @@ const dir = getDir(locale);
 			}
 
 			@media (max-width: 720px) {
+				main {
+					width: 100%;
+					max-width: 100%;
+					margin: 0;
+					padding: 1em 0.85rem;
+					box-sizing: border-box;
+				}
+
+				.prose {
+					width: 100%;
+					max-width: 100%;
+					margin: 0;
+					padding: 0;
+					box-sizing: border-box;
+				}
+
+				.hero-image img {
+					border-radius: 8px;
+				}
+
+				.article-toc {
+					width: 100%;
+					max-width: 100%;
+					padding: 0;
+				}
+
+				.title h1 {
+					font-size: 1.75rem;
+				}
+
 				.author-profile {
 					padding: 1.5rem;
 				}
@@ -355,6 +476,12 @@ const dir = getDir(locale);
 					justify-content: center;
 				}
 			}
+
+			@media (max-width: 480px) {
+				main {
+					padding: 0.85em 0.65rem;
+				}
+			}
 		</style>
 	</head>
 
@@ -376,14 +503,14 @@ const dir = getDir(locale);
 						<div class="post-author-header">
 							<img 
 								src="https://founder.brintiel.com/static/images/profile-pic.png" 
-								alt={author || 'Author'} 
+								alt={author || t(locale, 'post.author')} 
 								class="post-author-header__avatar"
 							/>
 							<div class="post-author-header__info">
-								<div class="post-author-header__name">{author || 'Author'}</div>
+								<div class="post-author-header__name">{author || t(locale, 'post.author')}</div>
 								<div class="post-author-header__date">
 									<FormattedDate date={pubDate} locale={locale} />
-									{category && <span> · {category}</span>}
+									{category && <span> · {localizeCategory(locale, category)}</span>}
 									{typeof readingTime === 'number' && readingTime > 0 && (
 										<span> · {readingTime} {t(locale, 'post.minRead')}</span>
 									)}
@@ -391,7 +518,8 @@ const dir = getDir(locale);
 							</div>
 						</div>
 
-						<h1>{title}</h1>
+						<DynamicTranslate locale={locale} targets="[data-i18n-dynamic]" />
+						<h1 data-i18n-dynamic>{title}</h1>
 						
 						{
 							updated && (
@@ -420,18 +548,24 @@ const dir = getDir(locale);
 							</nav>
 						)}
 					</div>
-					<div class="post-content" set:html={contentHtml} />
+					<div
+						class="post-content"
+						data-i18n-dynamic
+						set:html={contentHtml}
+						data-copy-code={t(locale, 'post.copyCode')}
+						data-copied-label={t(locale, 'post.copied')}
+					/>
 
 					<!-- Author Profile Section -->
 					<div class="author-profile">
 						<div class="author-profile__inner">
 							<img 
 								src="https://founder.brintiel.com/static/images/profile-pic.png" 
-								alt="Author profile" 
+								alt={t(locale, 'post.author')} 
 								class="author-profile__avatar"
 							/>
 							<div class="author-profile__info">
-								<div class="author-profile__name">{author || 'Author'}</div>
+								<div class="author-profile__name">{author || t(locale, 'post.author')}</div>
 								<div class="author-profile__bio">
 									{t(locale, 'post.authorBio')}
 								</div>
@@ -448,7 +582,7 @@ const dir = getDir(locale);
 								target="_blank"
 								rel="noopener noreferrer"
 								class="social-share__btn social-share__btn--x"
-								aria-label="Share on X"
+								aria-label={t(locale, 'post.shareX')}
 							>
 								<svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor" aria-hidden="true">
 									<path d="M18.244 2.25h3.308l-7.227 8.26 8.502 10.24H16.17l-5.214-6.817L4.99 20.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
@@ -460,7 +594,7 @@ const dir = getDir(locale);
 								target="_blank"
 								rel="noopener noreferrer"
 								class="social-share__btn social-share__btn--facebook"
-								aria-label="Share on Facebook"
+								aria-label={t(locale, 'post.shareFacebook')}
 							>
 								<svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor">
 									<path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/>
@@ -472,7 +606,7 @@ const dir = getDir(locale);
 								target="_blank"
 								rel="noopener noreferrer"
 								class="social-share__btn social-share__btn--linkedin"
-								aria-label="Share on LinkedIn"
+								aria-label={t(locale, 'post.shareLinkedIn')}
 							>
 								<svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor">
 									<path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/>
@@ -537,8 +671,71 @@ const dir = getDir(locale);
 				});
 			}
 
+			function initCodeSnippets() {
+				const root = document.querySelector('.post-content');
+				if (!(root instanceof HTMLElement)) return;
+
+				const copyLabel = root.getAttribute('data-copy-code') || 'Copy';
+				const copiedLabel = root.getAttribute('data-copied-label') || 'Copied!';
+
+				root.querySelectorAll('pre').forEach((pre) => {
+					if (!(pre instanceof HTMLElement)) return;
+					if (pre.closest('.code-snippet')) return;
+
+					const code = pre.querySelector('code');
+					const langMatch = code?.className?.match(/(?:language|lang)-([a-z0-9+#.-]+)/i);
+
+					const wrapper = document.createElement('div');
+					wrapper.className = 'code-snippet';
+
+					const toolbar = document.createElement('div');
+					toolbar.className = 'code-snippet__toolbar';
+
+					if (langMatch?.[1]) {
+						const lang = document.createElement('span');
+						lang.className = 'code-snippet__lang';
+						lang.textContent = langMatch[1];
+						toolbar.appendChild(lang);
+					} else {
+						const spacer = document.createElement('span');
+						spacer.setAttribute('aria-hidden', 'true');
+						toolbar.appendChild(spacer);
+					}
+
+					const btn = document.createElement('button');
+					btn.type = 'button';
+					btn.className = 'code-snippet__copy';
+					btn.setAttribute('aria-label', copyLabel);
+					btn.textContent = copyLabel;
+
+					btn.addEventListener('click', async () => {
+						const text = (code?.textContent ?? pre.textContent ?? '').replace(/\n$/, '');
+						try {
+							await navigator.clipboard.writeText(text);
+							btn.textContent = copiedLabel;
+							btn.classList.add('is-copied');
+							window.setTimeout(() => {
+								btn.textContent = copyLabel;
+								btn.classList.remove('is-copied');
+							}, 2000);
+						} catch (err) {
+							console.error('Failed to copy code:', err);
+						}
+					});
+
+					toolbar.appendChild(btn);
+					pre.parentNode?.insertBefore(wrapper, pre);
+					wrapper.appendChild(toolbar);
+					wrapper.appendChild(pre);
+				});
+			}
+
 			initCopyLink();
-			document.addEventListener('astro:page-load', initCopyLink);
+			initCodeSnippets();
+			document.addEventListener('astro:page-load', () => {
+				initCopyLink();
+				initCodeSnippets();
+			});
 		</script>
 	</body>
 </html>

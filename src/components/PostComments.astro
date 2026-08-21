@@ -1,6 +1,7 @@
 ---
 import { DEFAULT_LOCALE, type Locale } from "../i18n/locales";
 import { t } from "../i18n/ui";
+import DynamicTranslate from "./DynamicTranslate.astro";
 
 type Props = {
 	postId: string;
@@ -14,6 +15,7 @@ const { postId, locale = DEFAULT_LOCALE } = Astro.props;
 	id="comments"
 	class="post-comments"
 	data-post-id={postId}
+	data-locale={locale}
 	data-i18n-placeholder={t(locale, "comments.placeholder")}
 	data-i18n-empty={t(locale, "comments.empty")}
 	data-i18n-reply={t(locale, "comments.reply")}
@@ -25,6 +27,8 @@ const { postId, locale = DEFAULT_LOCALE } = Astro.props;
 	data-i18n-error-load={t(locale, "comments.errorLoad")}
 	data-i18n-error-post={t(locale, "comments.errorPost")}
 	data-i18n-error-empty={t(locale, "comments.errorEmpty")}
+	data-i18n-guest={t(locale, "comments.guest")}
+	data-i18n-user={t(locale, "comments.user")}
 >
 	<div class="post-comments__inner">
 		<div class="post-comments__top">
@@ -32,6 +36,8 @@ const { postId, locale = DEFAULT_LOCALE } = Astro.props;
 				{t(locale, "comments.title")} <span class="post-comments__count" id="comments-count">…</span>
 			</h2>
 		</div>
+
+		<DynamicTranslate locale={locale} targets="#comments-list [data-i18n-dynamic]" />
 
 		<form
 			id="comment-form"
@@ -91,7 +97,10 @@ const { postId, locale = DEFAULT_LOCALE } = Astro.props;
 				errorLoad: root?.dataset?.i18nErrorLoad || "Could not load comments.",
 				errorPost: root?.dataset?.i18nErrorPost || "Could not post your comment.",
 				errorEmpty: root?.dataset?.i18nErrorEmpty || "Please enter a comment.",
+				guest: root?.dataset?.i18nGuest || "Guest",
+				user: root?.dataset?.i18nUser || "User",
 			};
+			const locale = root?.dataset?.locale || "en";
 
 			const elCount = document.getElementById("comments-count");
 			const elList = document.getElementById("comments-list");
@@ -175,7 +184,7 @@ const { postId, locale = DEFAULT_LOCALE } = Astro.props;
 
 			function formatDate(iso) {
 				try {
-					return new Date(iso).toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" });
+					return new Date(iso).toLocaleDateString(locale, { month: "short", day: "numeric", year: "numeric" });
 				} catch {
 					return "";
 				}
@@ -186,7 +195,7 @@ const { postId, locale = DEFAULT_LOCALE } = Astro.props;
 				const span = document.createElement("span");
 				span.className = "post-comments__avatar";
 				
-				const userName = String(name || "Guest").trim();
+				const userName = String(name || i18n.guest).trim();
 				const avatarUrl = `https://api.dicebear.com/7.x/identicon/svg?seed=${encodeURIComponent(userName)}&backgroundColor=f0f0f0&size=${size}`;
 				
 				const img = document.createElement("img");
@@ -275,7 +284,7 @@ const { postId, locale = DEFAULT_LOCALE } = Astro.props;
 				replyBtn.addEventListener("click", () => {
 					replyTargetId = comment.id;
 					replyTargetName = comment.author;
-					elReplyingToName.textContent = replyTargetName || "User";
+					elReplyingToName.textContent = replyTargetName || i18n.user;
 					elReplyingLabel.style.display = "block";
 					quill.focus();
 				});
@@ -285,6 +294,7 @@ const { postId, locale = DEFAULT_LOCALE } = Astro.props;
 
 				const body = document.createElement("div");
 				body.className = "post-comments__body";
+				body.setAttribute("data-i18n-dynamic", "");
 				body.innerHTML = comment.content || '';
 
 				article.appendChild(top);
@@ -330,7 +340,7 @@ const { postId, locale = DEFAULT_LOCALE } = Astro.props;
 
 				const payload = {
 					content,
-					author: "Guest",
+					author: i18n.guest,
 					parentId: replyTargetId,
 				};
 
@@ -676,25 +686,30 @@ const { postId, locale = DEFAULT_LOCALE } = Astro.props;
 
 		.post-comments__body code {
 			font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
-			background: rgb(var(--gray-light));
-			padding: .15rem .4rem;
+			background: #e3e6e8;
+			padding: 1px 5px;
 			font-size: .9em;
-			color: #e11d48;
+			border-radius: 3px;
+			color: #0c0d0e;
 		}
 
 		.post-comments__body pre {
-			background: #1e293b;
-			color: #f1f5f9;
-			padding: 1.25rem;
+			background: #f6f6f6;
+			color: #242629;
+			padding: 1rem 1.15rem;
 			overflow-x: auto;
 			margin: .75rem 0 .9rem;
-			border: 1px solid #334155;
+			border: 1px solid #d6d9dc;
+			border-radius: 5px;
+			font-size: .875em;
+			line-height: 1.5;
 		}
 
 		.post-comments__body pre code {
 			background: transparent;
 			color: inherit;
 			padding: 0;
+			border-radius: 0;
 		}
 
 		.post-comments__body ol,

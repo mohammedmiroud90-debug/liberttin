@@ -4,10 +4,11 @@ import BaseHead from "../components/BaseHead.astro";
 import Header from "../components/Header.astro";
 import Footer from "../components/Footer.astro";
 import CookieBanner from "../components/CookieBanner.astro";
-import { SITE_TITLE } from "../consts";
 import FormattedDate from "../components/FormattedDate.astro";
 import { localizedPath, getDir, type Locale } from "../i18n/locales";
 import { t } from "../i18n/ui";
+import { pageTitle } from "../i18n/title";
+import { localizeCategory } from "../i18n/category";
 
 interface Props {
 	locale: Locale;
@@ -34,7 +35,7 @@ const categories = Array.from(categoriesMap.entries()).sort((a, b) => a[0].local
 <html lang={locale} dir={dir}>
 	<head>
 		<BaseHead
-			title={`${t(locale, "categories.title")} · ${SITE_TITLE}`}
+			title={pageTitle(locale, "categories.title")}
 			description={t(locale, "categories.subtitle")}
 			locale={locale}
 		/>
@@ -51,7 +52,7 @@ const categories = Array.from(categoriesMap.entries()).sort((a, b) => a[0].local
 				{
 					categories.map(([category, categoryPosts]) => (
 						<div class="category-card">
-							<h2 class="category-title">{category}</h2>
+							<h2 class="category-title">{localizeCategory(locale, category)}</h2>
 							<p class="category-count">
 								{categoryPosts.length}{" "}
 								{categoryPosts.length === 1

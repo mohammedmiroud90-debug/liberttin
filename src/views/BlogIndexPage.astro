@@ -3,10 +3,11 @@ import BaseHead from "../components/BaseHead.astro";
 import Header from "../components/Header.astro";
 import Footer from "../components/Footer.astro";
 import FormattedDate from "../components/FormattedDate.astro";
-import { SITE_TITLE } from "../consts";
 import { getBlogPosts } from "../lib/parse/posts";
 import { DEFAULT_LOCALE, getDir, localizedPath, type Locale } from "../i18n/locales";
 import { t } from "../i18n/ui";
+import { pageTitle } from "../i18n/title";
+import DynamicTranslate from "../components/DynamicTranslate.astro";
 
 type Props = { locale?: Locale };
 const locale = Astro.props.locale ?? DEFAULT_LOCALE;
@@ -17,7 +18,7 @@ const dir = getDir(locale);
 <!doctype html>
 <html lang={locale} dir={dir}>
 	<head>
-		<BaseHead title={`${t(locale, "nav.blog")} · ${SITE_TITLE}`} description={t(locale, "site.description")} locale={locale} />
+		<BaseHead title={pageTitle(locale, "nav.blog")} description={t(locale, "site.description")} locale={locale} />
 		<style>
 			main { width: 960px; }
 			ul {
@@ -57,19 +58,22 @@ const dir = getDir(locale);
 					posts.length === 0 ? (
 						<p class="empty">{t(locale, "blog.empty")}</p>
 					) : (
-						<ul>
-							{posts.map((post) => (
-								<li>
-									<a href={localizedPath(locale, `/blog/${post.slug}/`)}>
-										{post.imageUrl && <img width={720} height={360} src={post.imageUrl} alt="" />}
-										<h4 class="title">{post.title}</h4>
-										<p class="date">
-											<FormattedDate date={new Date(post.publishedAt)} locale={locale} />
-										</p>
-									</a>
-								</li>
-							))}
-						</ul>
+						<>
+							<DynamicTranslate locale={locale} targets="ul .title[data-i18n-dynamic]" />
+							<ul>
+								{posts.map((post) => (
+									<li>
+										<a href={localizedPath(locale, `/blog/${post.slug}/`)}>
+											{post.imageUrl && <img width={720} height={360} src={post.imageUrl} alt="" />}
+											<h4 class="title" data-i18n-dynamic>{post.title}</h4>
+											<p class="date">
+												<FormattedDate date={new Date(post.publishedAt)} locale={locale} />
+											</p>
+										</a>
+									</li>
+								))}
+							</ul>
+						</>
 					)
 				}
 			</section>

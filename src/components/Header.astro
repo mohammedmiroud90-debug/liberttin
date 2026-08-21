@@ -272,15 +272,47 @@ const policiesHref = localizedPath(locale, "/policies/");
 		}
 
 		nav {
-			min-height: 3.5rem;
+			min-height: 4.25rem;
 		}
 
-		.internal-links {
-			display: none;
+		h2 :global(.brand-logo__text) {
+			--logo-size: 42px;
 		}
 
 		.mobile-menu-toggle {
 			display: block;
+			padding: 0.55rem;
+		}
+
+		.mobile-menu-toggle svg {
+			width: 28px;
+			height: 28px;
+		}
+
+		.header-actions :global(.search-toggle) {
+			padding: 0.45rem;
+		}
+
+		.header-actions :global(.search-toggle svg) {
+			width: 26px;
+			height: 26px;
+		}
+
+		.header-actions :global(.lang-switcher-earth) {
+			width: 26px;
+			height: 26px;
+		}
+
+		.header-actions :global(.lang-switcher-btn) {
+			padding: 8px 10px;
+		}
+
+		.header-actions :global(.lang-switcher-label) {
+			font-size: 13px;
+		}
+
+		.internal-links {
+			display: none;
 		}
 
 		.mobile-menu {
@@ -292,7 +324,7 @@ const policiesHref = localizedPath(locale, "/policies/");
 		}
 
 		.header-actions {
-			gap: 0.25rem;
+			gap: 0.35rem;
 		}
 	}
 
@@ -301,8 +333,12 @@ const policiesHref = localizedPath(locale, "/policies/");
 			padding: 0 0.75rem;
 		}
 
-		h2 {
-			font-size: 0.9em;
+		nav {
+			min-height: 4.5rem;
+		}
+
+		h2 :global(.brand-logo__text) {
+			--logo-size: 44px;
 		}
 	}
 </style>
