@@ -9,7 +9,49 @@ type UiKey =
 	| "nav.policies"
 	| "nav.categories"
 	| "nav.menu"
+	| "nav.signIn"
+	| "nav.dashboard"
+	| "nav.subscribe"
+	| "subscribe.title"
+	| "subscribe.eyebrow"
+	| "subscribe.body"
+	| "subscribe.asideTitle"
+	| "subscribe.asideBody"
+	| "subscribe.email"
+	| "subscribe.submit"
+	| "subscribe.submitting"
+	| "subscribe.success"
+	| "subscribe.successBody"
+	| "subscribe.error"
+	| "subscribe.privacy"
+	| "login.subtitle"
+	| "login.email"
+	| "login.emailPlaceholder"
+	| "login.password"
+	| "login.passwordPlaceholder"
+	| "login.adminHint"
+	| "login.backHome"
+	| "admin.title"
+	| "admin.subtitle"
+	| "admin.nav.posts"
+	| "admin.nav.comments"
+	| "admin.nav.subscribers"
+	| "admin.nav.analytics"
+	| "admin.nav.settings"
+	| "admin.nav.viewSite"
+	| "admin.logout"
+	| "admin.accessRequired"
+	| "admin.accessBody"
+	| "admin.refresh"
+	| "admin.searchPlaceholder"
+	| "admin.loading"
+	| "admin.empty"
+	| "admin.col.title"
+	| "admin.col.category"
+	| "admin.col.status"
+	| "admin.col.date"
 	| "site.description"
+	| "home.tagline"
 	| "home.latest"
 	| "home.viewAll"
 	| "home.empty"
@@ -64,6 +106,9 @@ type UiKey =
 	| "post.copyLink"
 	| "post.copied"
 	| "post.copyCode"
+	| "post.viewImage"
+	| "post.downloadImage"
+	| "post.closeImage"
 	| "post.author"
 	| "post.authorBio"
 	| "comments.guest"
@@ -85,6 +130,10 @@ type UiKey =
 	| "cookie.close"
 	| "footer.rights"
 	| "footer.description"
+	| "footer.learnTitle"
+	| "footer.learnBody"
+	| "footer.curiousTitle"
+	| "footer.curiousBody"
 	| "toc.label"
 	| "lang.switch"
 	| "search.title"
@@ -110,7 +159,49 @@ const en: Record<UiKey, string> = {
 	"nav.policies": "Policies",
 	"nav.categories": "Categories",
 	"nav.menu": "Menu",
+	"nav.signIn": "Sign in",
+	"nav.dashboard": "Dashboard",
+	"nav.subscribe": "Subscribe",
+	"subscribe.title": "Stay Connected",
+	"subscribe.eyebrow": "Newsletter",
+	"subscribe.body": "Get the latest stories, ideas, and updates from Libertta — clear writing, delivered to your inbox.",
+	"subscribe.asideTitle": "Stories worth reading.",
+	"subscribe.asideBody": "Join readers who follow Libertta for thoughtful posts every week.",
+	"subscribe.email": "Enter your email",
+	"subscribe.submit": "Subscribe",
+	"subscribe.submitting": "Subscribing…",
+	"subscribe.success": "You're subscribed.",
+	"subscribe.successBody": "Welcome to Libertta. Watch your inbox for the next update.",
+	"subscribe.error": "Could not subscribe. Please try again.",
+	"subscribe.privacy": "We respect your privacy. Unsubscribe anytime.",
+	"login.subtitle": "Sign in with your admin account to open the content dashboard.",
+	"login.email": "Email or username",
+	"login.emailPlaceholder": "you@example.com",
+	"login.password": "Password",
+	"login.passwordPlaceholder": "Your password",
+	"login.adminHint": "Only administrator accounts can open the dashboard.",
+	"login.backHome": "← Back to home",
+	"admin.title": "Content",
+	"admin.subtitle": "Create, edit and review blog posts.",
+	"admin.nav.posts": "Posts",
+	"admin.nav.comments": "Comments",
+	"admin.nav.subscribers": "Subscribers",
+	"admin.nav.analytics": "Analytics",
+	"admin.nav.settings": "Settings",
+	"admin.nav.viewSite": "View site",
+	"admin.logout": "Sign out",
+	"admin.accessRequired": "Admin access required",
+	"admin.accessBody": "Sign in with an administrator account to manage content.",
+	"admin.refresh": "Refresh",
+	"admin.searchPlaceholder": "Search posts…",
+	"admin.loading": "Loading posts…",
+	"admin.empty": "No posts found.",
+	"admin.col.title": "Title",
+	"admin.col.category": "Category",
+	"admin.col.status": "Status",
+	"admin.col.date": "Published",
 	"site.description": "Thoughts, stories and ideas from Libertta.",
+	"home.tagline": "Learn something new. Try it yourself. Build something better.",
 	"home.latest": "Latest posts",
 	"home.viewAll": "View all posts →",
 	"home.empty": "No posts published yet.",
@@ -167,6 +258,9 @@ const en: Record<UiKey, string> = {
 	"post.copyLink": "Copy Link",
 	"post.copied": "Copied!",
 	"post.copyCode": "Copy",
+	"post.viewImage": "View image",
+	"post.downloadImage": "Download",
+	"post.closeImage": "Close",
 	"post.author": "Author",
 	"post.authorBio": "Writer, developer, and content creator sharing insights on technology and design.",
 	"comments.guest": "Guest",
@@ -189,6 +283,11 @@ const en: Record<UiKey, string> = {
 	"cookie.close": "Close",
 	"footer.rights": "All rights reserved.",
 	"footer.description": "Sharing insights, stories, and ideas on technology, design, and innovation.",
+	"footer.learnTitle": "Learn With Us",
+	"footer.learnBody":
+		"Whether you're improving your programming skills, exploring a new technology, or looking for practical solutions to development problems, this blog is built to make learning simple, practical, and useful.",
+	"footer.curiousTitle": "Stay Curious",
+	"footer.curiousBody": "Learn something new. Try it yourself. Build something better.",
 	"toc.label": "Table of contents",
 	"lang.switch": "Switch language",
 	"search.title": "Search articles",

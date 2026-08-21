@@ -15,9 +15,13 @@
 		"@astrojs/check": "^0.9.10",
 		"@astrojs/cloudflare": "12.6.12",
 		"@astrojs/mdx": "4.3.13",
+		"@astrojs/react": "^5.0.0",
 		"@astrojs/rss": "4.0.14",
 		"@astrojs/sitemap": "3.6.1",
 		"astro": "5.16.9",
+		"lucide-react": "^1.33.0",
+		"react": "^19.2.8",
+		"react-dom": "^19.2.8",
 		"typescript": "^5.9.3"
 	},
 	"devDependencies": {

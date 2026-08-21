@@ -90,10 +90,14 @@ b {
 	font-weight: 700;
 }
 a {
-	color: var(--accent);
+	color: #2563eb;
+	text-decoration: underline;
+	text-decoration-color: #2563eb;
+	text-underline-offset: 2px;
 }
 a:hover {
-	color: var(--accent);
+	color: #1d4ed8;
+	text-decoration-color: #1d4ed8;
 }
 p {
 	margin-bottom: 1em;

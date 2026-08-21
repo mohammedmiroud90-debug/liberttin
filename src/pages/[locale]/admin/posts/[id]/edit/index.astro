@@ -1,0 +1,19 @@
+---
+import AdminLayout from "../../../../../../layouts/AdminLayout.astro";
+import { AdminEditPostFromUrl } from "../../../../../../components/admin/pages";
+import { LOCALES, type Locale } from "../../../../../../i18n/locales";
+
+export const prerender = false;
+
+export function getStaticPaths() {
+	return LOCALES.map((locale) => ({
+		params: { locale, id: "placeholder" },
+	}));
+}
+
+const locale = (Astro.params.locale as Locale) ?? "en";
+---
+
+<AdminLayout locale={locale}>
+	<AdminEditPostFromUrl client:only="react" />
+</AdminLayout>

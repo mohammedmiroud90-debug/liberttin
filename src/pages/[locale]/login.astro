@@ -1,0 +1,11 @@
+---
+import { localeStaticPaths, resolveLocaleParam } from "../../i18n/paths";
+import { localizedPath } from "../../i18n/locales";
+
+export function getStaticPaths() {
+	return localeStaticPaths();
+}
+
+const locale = resolveLocaleParam(Astro.params.locale);
+return Astro.redirect(`${localizedPath(locale, "/")}?signin=1`, 302);
+---

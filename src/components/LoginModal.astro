@@ -1,0 +1,277 @@
+---
+import { localizedPath, type Locale } from "../i18n/locales";
+import { t } from "../i18n/ui";
+
+type Props = { locale: Locale };
+const { locale } = Astro.props;
+const adminHref = localizedPath(locale, "/admin/");
+const policiesHref = localizedPath(locale, "/policies/");
+const siteName = "Libertta";
+---
+
+<div
+	class="login-modal"
+	data-login-modal
+	hidden
+	data-admin-href={adminHref}
+>
+	<div class="login-modal__backdrop" data-login-close></div>
+	<div
+		class="login-modal__card"
+		role="dialog"
+		aria-modal="true"
+		aria-labelledby="login-modal-title"
+		data-login-panel
+	>
+		<button type="button" class="login-modal__close" aria-label="Close" data-login-close>
+			<svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2">
+				<path d="M18 6L6 18M6 6l12 12"></path>
+			</svg>
+		</button>
+
+		<div class="login-modal__brand" aria-hidden="true">
+			<span>L</span>
+		</div>
+
+		<h2 id="login-modal-title" class="login-modal__title">
+			{t(locale, "nav.signIn")} to {siteName}
+		</h2>
+
+		<p class="login-modal__legal">
+			By signing in, you agree to our
+			<a href={policiesHref}>terms of use</a>
+			and acknowledge you have read our
+			<a href={policiesHref}>privacy notice</a>.
+		</p>
+
+		<p class="login-modal__error" data-login-error hidden></p>
+
+		<div class="login-modal__providers" data-login-step="providers">
+			<button type="button" class="login-modal__provider" data-login-provider="apple">
+				<svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true" fill="currentColor">
+					<path d="M16.365 1.43c0 1.14-.42 2.2-1.18 3.01-.8.86-2.1 1.52-3.2 1.43-.14-1.1.4-2.26 1.14-3.05.8-.88 2.2-1.52 3.24-1.39zM20.5 17.2c-.56 1.3-.83 1.88-1.55 3.03-1 1.55-2.41 3.48-4.16 3.5-1.55.02-1.95-1.01-4.06-1-2.1.01-2.55 1.02-4.1 1.04-1.74.02-3.07-1.77-4.07-3.31C.7 17.1-.7 12.4 1.3 9.2c1.1-1.74 2.84-2.84 4.5-2.84 1.68 0 2.73 1.04 4.12 1.04 1.35 0 2.17-1.05 4.12-1.05 1.47 0 3.03.8 4.12 2.18-3.62 1.98-3.03 7.14.34 8.67z"></path>
+				</svg>
+				Continue with Apple
+			</button>
+			<button type="button" class="login-modal__provider" data-login-provider="google">
+				<svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true">
+					<path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92a5.06 5.06 0 0 1-2.2 3.32v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.1z"></path>
+					<path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"></path>
+					<path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18A10.96 10.96 0 0 0 1 12c0 1.77.42 3.45 1.18 4.93l3.66-2.84z"></path>
+					<path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"></path>
+				</svg>
+				Continue with Google
+			</button>
+			<button type="button" class="login-modal__provider" data-login-email-step>
+				Continue with email
+			</button>
+		</div>
+
+		<form class="login-modal__form" data-login-step="email" data-login-form hidden>
+			<button type="button" class="login-modal__back" data-login-back>
+				← All sign-in options
+			</button>
+			<input
+				type="text"
+				name="email"
+				required
+				autocomplete="username"
+				placeholder={t(locale, "login.emailPlaceholder")}
+				data-login-email
+			/>
+			<input
+				type="password"
+				name="password"
+				required
+				autocomplete="current-password"
+				placeholder={t(locale, "login.passwordPlaceholder")}
+				data-login-password
+			/>
+			<button type="submit" class="login-modal__submit" data-login-submit>
+				Continue with email
+			</button>
+		</form>
+	</div>
+</div>
+
+<style>
+	.login-modal[hidden] {
+		display: none !important;
+	}
+
+	.login-modal {
+		position: fixed;
+		inset: 0;
+		z-index: 120;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		padding: 1rem;
+	}
+
+	.login-modal__backdrop {
+		position: absolute;
+		inset: 0;
+		background: rgba(15, 23, 42, 0.45);
+		backdrop-filter: blur(6px);
+	}
+
+	.login-modal__card {
+		position: relative;
+		z-index: 1;
+		width: min(100%, 26rem);
+		background: #f4f7f8;
+		border-radius: 1.25rem;
+		box-shadow: 0 28px 60px rgba(0, 0, 0, 0.22);
+		padding: 2.25rem 1.75rem 1.85rem;
+		text-align: center;
+	}
+
+	.login-modal__close {
+		position: absolute;
+		top: 0.85rem;
+		right: 0.85rem;
+		width: 2rem;
+		height: 2rem;
+		display: inline-flex;
+		align-items: center;
+		justify-content: center;
+		border: none;
+		border-radius: 999px;
+		background: transparent;
+		color: #6b7280;
+		cursor: pointer;
+	}
+
+	.login-modal__close:hover {
+		background: rgba(0, 0, 0, 0.06);
+		color: #111;
+	}
+
+	.login-modal__brand {
+		width: 4.5rem;
+		height: 4.5rem;
+		margin: 0.25rem auto 0;
+		border-radius: 999px;
+		background: #000;
+		color: #fff;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		font-family: "Atkinson", system-ui, sans-serif;
+		font-size: 1.75rem;
+		font-weight: 700;
+	}
+
+	.login-modal__title {
+		margin: 1.25rem 0 0;
+		font-family: "Atkinson", system-ui, sans-serif;
+		font-size: 1.7rem;
+		font-weight: 700;
+		line-height: 1.2;
+		color: #111;
+	}
+
+	.login-modal__legal {
+		margin: 1rem auto 0;
+		max-width: 20rem;
+		font-size: 0.8125rem;
+		line-height: 1.5;
+		color: #4b5563;
+	}
+
+	.login-modal__legal a {
+		color: #2a8a8e;
+		text-decoration: none;
+	}
+
+	.login-modal__legal a:hover {
+		text-decoration: underline;
+	}
+
+	.login-modal__error {
+		margin: 0.85rem 0 0;
+		padding: 0.65rem 0.85rem;
+		border-radius: 0.75rem;
+		background: #fff7ed;
+		color: #9a3412;
+		font-size: 0.875rem;
+	}
+
+	.login-modal__providers,
+	.login-modal__form {
+		margin-top: 1.5rem;
+		display: flex;
+		flex-direction: column;
+		gap: 0.7rem;
+	}
+
+	.login-modal__provider,
+	.login-modal__submit {
+		display: inline-flex;
+		align-items: center;
+		justify-content: center;
+		gap: 0.65rem;
+		width: 100%;
+		padding: 0.85rem 1rem;
+		border-radius: 999px;
+		border: 1px solid #d1d5db;
+		background: #fff;
+		color: #111;
+		font-size: 0.95rem;
+		font-weight: 500;
+		cursor: pointer;
+		font-family: inherit;
+	}
+
+	.login-modal__provider:hover {
+		background: #f9fafb;
+	}
+
+	.login-modal__back {
+		align-self: flex-start;
+		border: none;
+		background: none;
+		color: #2a8a8e;
+		font-size: 0.875rem;
+		font-weight: 600;
+		cursor: pointer;
+		padding: 0;
+		margin-bottom: 0.15rem;
+	}
+
+	.login-modal__form {
+		text-align: left;
+	}
+
+	.login-modal__form input {
+		width: 100%;
+		box-sizing: border-box;
+		padding: 0.85rem 1.15rem;
+		border-radius: 999px;
+		border: 1px solid #d1d5db;
+		background: #fff;
+		font-size: 0.95rem;
+		outline: none;
+	}
+
+	.login-modal__form input:focus {
+		border-color: #2a8a8e;
+	}
+
+	.login-modal__submit {
+		background: #000;
+		color: #fff;
+		border-color: #000;
+		font-weight: 700;
+	}
+
+	.login-modal__submit:hover {
+		background: #1f1f1f;
+	}
+
+	.login-modal__submit:disabled {
+		opacity: 0.65;
+		cursor: wait;
+	}
+</style>

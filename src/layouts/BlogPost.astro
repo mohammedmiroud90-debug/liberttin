@@ -75,6 +75,10 @@ const dir = getDir(locale);
 				margin: 0 auto;
 				border-radius: 12px;
 				box-shadow: var(--box-shadow);
+				cursor: zoom-in;
+			}
+			.hero-image img:hover {
+				opacity: 0.96;
 			}
 			.prose {
 				width: 720px;
@@ -103,8 +107,12 @@ const dir = getDir(locale);
 			.post-author-header__avatar {
 				width: 50px;
 				height: 50px;
+				min-width: 50px;
+				min-height: 50px;
+				flex-shrink: 0;
 				border-radius: 50%;
 				object-fit: cover;
+				background: #e5e7eb;
 			}
 			.post-author-header__info {
 				flex: 1;
@@ -132,13 +140,41 @@ const dir = getDir(locale);
 			.post-content {
 				font-family: "Source Serif Pro", Georgia, serif;
 				font-size: 21px;
-				line-height: 1.58;
+				line-height: 1.7;
+				color: rgb(var(--gray-dark));
+			}
+			.post-content :global(p) {
+				margin: 0 0 1.35em;
+			}
+			.post-content :global(p:last-child) {
+				margin-bottom: 0;
+			}
+			.post-content :global(ul),
+			.post-content :global(ol) {
+				margin: 0 0 1.35em;
+				padding-inline-start: 1.35em;
+			}
+			.post-content :global(li) {
+				margin: 0.4em 0;
+			}
+			.post-content :global(li + li) {
+				margin-top: 0.55em;
+			}
+			.post-content :global(blockquote) {
+				margin: 1.5em 0;
+				padding: 0.35em 0 0.35em 1.1em;
+				border-inline-start: 4px solid #2563eb;
+				color: rgb(var(--gray));
+				font-style: italic;
 			}
 			.post-content :global(h1),
 			.post-content :global(h2),
 			.post-content :global(h3),
 			.post-content :global(h4) {
 				font-family: "Atkinson", sans-serif;
+				color: rgb(var(--black));
+				line-height: 1.25;
+				margin: 1.75em 0 0.65em;
 			}
 			.post-content :global(h1) {
 				font-size: 2rem;
@@ -155,6 +191,24 @@ const dir = getDir(locale);
 			.post-content :global(img) {
 				max-width: 100%;
 				height: auto;
+				border-radius: 10px;
+				margin: 1.25em 0;
+				cursor: zoom-in;
+				transition: opacity 0.15s ease, box-shadow 0.15s ease;
+			}
+			.post-content :global(img:hover) {
+				opacity: 0.96;
+				box-shadow: 0 8px 24px rgba(15, 18, 25, 0.12);
+			}
+			.post-content :global(hr) {
+				border: none;
+				border-top: 1px solid rgb(var(--gray-light));
+				margin: 2em 0;
+			}
+			.post-content :global(strong),
+			.post-content :global(b) {
+				color: rgb(var(--black));
+				font-weight: 700;
 			}
 
 			.article-toc {
@@ -188,23 +242,40 @@ const dir = getDir(locale);
 			}
 
 			.article-toc__item a {
-				color: var(--accent);
-				text-decoration: none;
-				border-bottom: 1px solid transparent;
-				transition: color 0.15s ease, border-color 0.15s ease;
+				color: #2563eb;
+				text-decoration: underline;
+				text-decoration-color: #2563eb;
+				text-underline-offset: 3px;
+				transition: color 0.15s ease, text-decoration-color 0.15s ease;
 			}
 
 			.article-toc__item a:hover {
-				color: var(--accent-dark);
-				border-bottom-color: var(--accent-dark);
+				color: #1d4ed8;
+				text-decoration-color: #1d4ed8;
 			}
 
-			.post-content :global(a) {
-				color: var(--accent);
+			/* Blue links + matching blue underline in article body */
+			.post-content :global(a),
+			.post-content :global(a:visited) {
+				color: #2563eb;
+				text-decoration: underline;
+				text-decoration-color: #2563eb;
+				text-decoration-thickness: 1.5px;
+				text-underline-offset: 3px;
+				word-break: break-word;
+				transition: color 0.15s ease, text-decoration-color 0.15s ease;
 			}
 
-			.post-content :global(a:hover) {
-				color: var(--accent-dark);
+			.post-content :global(a:hover),
+			.post-content :global(a:focus-visible) {
+				color: #1d4ed8;
+				text-decoration-color: #1d4ed8;
+			}
+
+			.post-content :global(a:focus-visible) {
+				outline: 2px solid #93c5fd;
+				outline-offset: 2px;
+				border-radius: 2px;
 			}
 
 			/* Stack Overflow–style code snippets */
@@ -320,11 +391,14 @@ const dir = getDir(locale);
 			.author-profile__avatar {
 				width: 80px;
 				height: 80px;
+				min-width: 80px;
+				min-height: 80px;
 				border-radius: 50%;
 				object-fit: cover;
 				border: 3px solid #fff;
 				box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 				flex-shrink: 0;
+				background: #e5e7eb;
 			}
 
 			.author-profile__info {
@@ -482,6 +556,85 @@ const dir = getDir(locale);
 					padding: 0.85em 0.65rem;
 				}
 			}
+
+			.image-lightbox[hidden] {
+				display: none !important;
+			}
+
+			.image-lightbox {
+				position: fixed;
+				inset: 0;
+				z-index: 200;
+				display: flex;
+				align-items: center;
+				justify-content: center;
+				padding: 1rem;
+			}
+
+			.image-lightbox__backdrop {
+				position: absolute;
+				inset: 0;
+				background: rgba(8, 10, 14, 0.88);
+				backdrop-filter: blur(6px);
+			}
+
+			.image-lightbox__dialog {
+				position: relative;
+				z-index: 1;
+				width: min(100%, 1100px);
+				max-height: calc(100vh - 2rem);
+				display: flex;
+				flex-direction: column;
+				gap: 0.85rem;
+			}
+
+			.image-lightbox__toolbar {
+				display: flex;
+				align-items: center;
+				justify-content: flex-end;
+				gap: 0.5rem;
+			}
+
+			.image-lightbox__btn {
+				display: inline-flex;
+				align-items: center;
+				justify-content: center;
+				gap: 0.4rem;
+				padding: 0.55rem 0.9rem;
+				border: 1px solid rgba(255, 255, 255, 0.28);
+				border-radius: 999px;
+				background: rgba(255, 255, 255, 0.08);
+				color: #fff;
+				font-size: 0.875rem;
+				font-weight: 600;
+				cursor: pointer;
+				text-decoration: none;
+				font-family: inherit;
+			}
+
+			.image-lightbox__btn:hover {
+				background: rgba(255, 255, 255, 0.16);
+			}
+
+			.image-lightbox__stage {
+				overflow: auto;
+				max-height: calc(100vh - 5.5rem);
+				display: flex;
+				align-items: center;
+				justify-content: center;
+				border-radius: 12px;
+			}
+
+			.image-lightbox__stage img {
+				max-width: 100%;
+				max-height: calc(100vh - 5.5rem);
+				width: auto;
+				height: auto;
+				object-fit: contain;
+				border-radius: 8px;
+				box-shadow: 0 20px 50px rgba(0, 0, 0, 0.45);
+				background: #111;
+			}
 		</style>
 	</head>
 
@@ -502,9 +655,14 @@ const dir = getDir(locale);
 						<!-- Author Header with Avatar -->
 						<div class="post-author-header">
 							<img 
-								src="https://founder.brintiel.com/static/images/profile-pic.png" 
-								alt={author || t(locale, 'post.author')} 
+								src="/images/profile-pic.png" 
+								alt=""
+								width="50"
+								height="50"
 								class="post-author-header__avatar"
+								loading="eager"
+								decoding="async"
+								onerror="this.onerror=null;this.src='https://api.dicebear.com/7.x/initials/svg?seed=author&size=100&backgroundColor=111111&textColor=ffffff';"
 							/>
 							<div class="post-author-header__info">
 								<div class="post-author-header__name">{author || t(locale, 'post.author')}</div>
@@ -560,9 +718,14 @@ const dir = getDir(locale);
 					<div class="author-profile">
 						<div class="author-profile__inner">
 							<img 
-								src="https://founder.brintiel.com/static/images/profile-pic.png" 
-								alt={t(locale, 'post.author')} 
+								src="/images/profile-pic.png" 
+								alt=""
+								width="72"
+								height="72"
 								class="author-profile__avatar"
+								loading="lazy"
+								decoding="async"
+								onerror="this.onerror=null;this.src='https://api.dicebear.com/7.x/initials/svg?seed=author&size=144&backgroundColor=111111&textColor=ffffff';"
 							/>
 							<div class="author-profile__info">
 								<div class="author-profile__name">{author || t(locale, 'post.author')}</div>
@@ -635,6 +798,38 @@ const dir = getDir(locale);
 		<PostComments postId={postId} locale={locale} />
 		<Footer locale={locale} />
 		<CookieBanner locale={locale} />
+
+		<div
+			class="image-lightbox"
+			data-image-lightbox
+			hidden
+			data-view-label={t(locale, "post.viewImage")}
+			data-download-label={t(locale, "post.downloadImage")}
+			data-close-label={t(locale, "post.closeImage")}
+		>
+			<div class="image-lightbox__backdrop" data-lightbox-close></div>
+			<div class="image-lightbox__dialog" role="dialog" aria-modal="true" aria-label={t(locale, "post.viewImage")}>
+				<div class="image-lightbox__toolbar">
+					<a class="image-lightbox__btn" data-lightbox-download download>
+						<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+							<path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+							<polyline points="7 10 12 15 17 10"></polyline>
+							<line x1="12" y1="15" x2="12" y2="3"></line>
+						</svg>
+						{t(locale, "post.downloadImage")}
+					</a>
+					<button type="button" class="image-lightbox__btn" data-lightbox-close>
+						<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+							<path d="M18 6L6 18M6 6l12 12"></path>
+						</svg>
+						{t(locale, "post.closeImage")}
+					</button>
+				</div>
+				<div class="image-lightbox__stage">
+					<img src="" alt="" data-lightbox-image />
+				</div>
+			</div>
+		</div>
 
 		<script>
 			function initCopyLink() {
@@ -730,11 +925,158 @@ const dir = getDir(locale);
 				});
 			}
 
+			function linkifyBareUrls() {
+				const root = document.querySelector('.post-content');
+				if (!(root instanceof HTMLElement)) return;
+
+				const urlPattern =
+					/\b((?:https?:\/\/|httpps:\/\/|www\.)[^\s<>"'`()\[\]{}]+[^\s<>"'`()\[\]{}.,;:!?])/gi;
+
+				const walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT, {
+					acceptNode(node) {
+						const parent = node.parentElement;
+						if (!parent) return NodeFilter.FILTER_REJECT;
+						if (parent.closest('a, pre, code, script, style, button, svg')) {
+							return NodeFilter.FILTER_REJECT;
+						}
+						return urlPattern.test(node.textContent || '')
+							? NodeFilter.FILTER_ACCEPT
+							: NodeFilter.FILTER_REJECT;
+					},
+				});
+
+				const targets: Text[] = [];
+				let current = walker.nextNode();
+				while (current) {
+					targets.push(current as Text);
+					current = walker.nextNode();
+				}
+
+				for (const textNode of targets) {
+					const text = textNode.textContent || '';
+					urlPattern.lastIndex = 0;
+					if (!urlPattern.test(text)) continue;
+					urlPattern.lastIndex = 0;
+
+					const frag = document.createDocumentFragment();
+					let lastIndex = 0;
+					let match: RegExpExecArray | null;
+					while ((match = urlPattern.exec(text)) !== null) {
+						if (match.index > lastIndex) {
+							frag.appendChild(document.createTextNode(text.slice(lastIndex, match.index)));
+						}
+						const raw = match[1];
+						const normalized = raw.replace(/^httpps:\/\//i, "https://");
+						const href = normalized.startsWith("http")
+							? normalized
+							: `https://${normalized}`;
+						const link = document.createElement("a");
+						link.href = href;
+						link.target = "_blank";
+						link.rel = "noopener noreferrer";
+						link.textContent = raw;
+						frag.appendChild(link);
+						lastIndex = match.index + raw.length;
+					}
+					if (lastIndex < text.length) {
+						frag.appendChild(document.createTextNode(text.slice(lastIndex)));
+					}
+					textNode.parentNode?.replaceChild(frag, textNode);
+				}
+			}
+
+			function initImageLightbox() {
+				const lightbox = document.querySelector<HTMLElement>("[data-image-lightbox]");
+				const lightboxImage = document.querySelector<HTMLImageElement>("[data-lightbox-image]");
+				const downloadLink = document.querySelector<HTMLAnchorElement>("[data-lightbox-download]");
+				if (!lightbox || !lightboxImage || !downloadLink) return;
+
+				const openLightbox = (src: string, alt = "") => {
+					lightboxImage.src = src;
+					lightboxImage.alt = alt || "Image";
+					downloadLink.href = src;
+					const fileName = src.split("/").pop()?.split("?")[0] || "image";
+					downloadLink.setAttribute("download", fileName);
+					lightbox.hidden = false;
+					document.body.style.overflow = "hidden";
+				};
+
+				const closeLightbox = () => {
+					lightbox.hidden = true;
+					lightboxImage.src = "";
+					document.body.style.overflow = "";
+				};
+
+				const bindImage = (img: HTMLImageElement) => {
+					if (img.dataset.lightboxBound === "1") return;
+					if (img.closest(".post-author-header, .author-profile")) return;
+					img.dataset.lightboxBound = "1";
+					img.setAttribute("role", "button");
+					img.tabIndex = 0;
+					img.setAttribute("aria-label", lightbox.dataset.viewLabel || "View image");
+
+					const open = () => {
+						const src = img.currentSrc || img.src;
+						if (!src) return;
+						openLightbox(src, img.alt || "");
+					};
+
+					img.addEventListener("click", open);
+					img.addEventListener("keydown", (event) => {
+						if (event.key === "Enter" || event.key === " ") {
+							event.preventDefault();
+							open();
+						}
+					});
+				};
+
+				document
+					.querySelectorAll<HTMLImageElement>(".hero-image img, .post-content img")
+					.forEach(bindImage);
+
+				if (lightbox.dataset.lightboxReady === "1") return;
+				lightbox.dataset.lightboxReady = "1";
+
+				lightbox.querySelectorAll("[data-lightbox-close]").forEach((el) => {
+					el.addEventListener("click", () => closeLightbox());
+				});
+
+				document.addEventListener("keydown", (event) => {
+					if (event.key === "Escape" && !lightbox.hidden) closeLightbox();
+				});
+
+				downloadLink.addEventListener("click", async (event) => {
+					const src = downloadLink.href;
+					if (!src || src === window.location.href) return;
+
+					try {
+						event.preventDefault();
+						const response = await fetch(src);
+						if (!response.ok) throw new Error("download failed");
+						const blob = await response.blob();
+						const objectUrl = URL.createObjectURL(blob);
+						const temp = document.createElement("a");
+						temp.href = objectUrl;
+						temp.download = downloadLink.getAttribute("download") || "image";
+						document.body.appendChild(temp);
+						temp.click();
+						temp.remove();
+						URL.revokeObjectURL(objectUrl);
+					} catch {
+						window.open(src, "_blank", "noopener,noreferrer");
+					}
+				});
+			}
+
 			initCopyLink();
 			initCodeSnippets();
+			linkifyBareUrls();
+			initImageLightbox();
 			document.addEventListener('astro:page-load', () => {
 				initCopyLink();
 				initCodeSnippets();
+				linkifyBareUrls();
+				initImageLightbox();
 			});
 		</script>
 	</body>

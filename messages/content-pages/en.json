@@ -1,0 +1,236 @@
+{
+  "ui": {
+    "signInContinue": "Sign in to continue",
+    "signInRequest": "Sign in to request care",
+    "overview": "Overview",
+    "expect": "What you can expect",
+    "viewAll": "VIEW ALL RESOURCES",
+    "partOf": "Part of",
+    "viewPage": "View {title}",
+    "resourcesSubtitle": "Explore every BILLIANT topic — then sign in to request care, diagnostics, or a provider account.",
+    "ourValueContext": "Why it matters",
+    "exploreValue": "Explore Our Value",
+    "relatedValue": "More under Our Value"
+  },
+  "pages": {
+    "heart-disease": {
+      "overview": "BILLIANT connects you with verified cardiology specialists for chest pain review, blood-pressure management, post-procedure follow-up, and prevention plans. Sign in to request a remote consultation and share labs securely.",
+      "topics": ["Chest pain and palpitations", "High blood pressure", "Cholesterol management", "Heart failure follow-up", "Post-procedure care", "Prevention and lifestyle"],
+      "highlights": [
+        { "title": "Remote ECG & file review", "text": "Upload reports for physician-led review from home or on the go." },
+        { "title": "Verified specialists", "text": "Licensed cardiology professionals — not automated diagnosis." },
+        { "title": "Faster follow-up", "text": "Medication adjustments and care plans in minutes, not weeks." }
+      ]
+    },
+    "mental-health": {
+      "overview": "Access therapy and psychiatry for anxiety, depression, stress, PTSD, and more. Sign in to match with a verified clinician and start a remote visit.",
+      "topics": ["Anxiety", "Depression", "Stress", "PTSD", "Medication management", "Youth mental health"],
+      "highlights": [
+        { "title": "Therapy & psychiatry", "text": "Talk therapy and specialist medication review in one platform." },
+        { "title": "Private by design", "text": "Encrypted visits and records. You control what you share." },
+        { "title": "Continuity of care", "text": "Follow-ups that travel with you — at home or worldwide." }
+      ]
+    },
+    "diabetes": {
+      "overview": "Manage type 1, type 2, and prediabetes with remote check-ins, lab review, and medication guidance. Sign in to share glucose logs and request a consult.",
+      "topics": ["Type 2 diabetes", "Type 1 diabetes", "Prediabetes", "Medication review", "Diet and activity", "Complication screening"],
+      "highlights": [
+        { "title": "Lab-ready reviews", "text": "Upload A1C and metabolic panels for clinician interpretation." },
+        { "title": "Medication plans", "text": "Refills and adjustments coordinated by verified doctors." },
+        { "title": "Everyday support", "text": "Practical plans you can follow at home or on the go." }
+      ]
+    },
+    "respiratory": {
+      "overview": "Get specialist input on cough, asthma flares, COPD, and sinus or lung infections. Sign in to upload imaging or peak-flow notes and request care.",
+      "topics": ["Asthma", "COPD", "Sinus infections", "Cough and bronchitis", "Allergies", "Post-viral recovery"],
+      "highlights": [
+        { "title": "Imaging review", "text": "Share X-rays and reports for physician-led interpretation." },
+        { "title": "Action plans", "text": "Clear steps for flares, inhalers, and when to escalate." },
+        { "title": "Infection follow-up", "text": "Remote check-ins after cold, flu, or COVID." }
+      ]
+    },
+    "eye-health": {
+      "overview": "Request remote triage for red eye, infections, dry eye, and chronic vision issues. Sign in to share photos or prior exam notes.",
+      "topics": ["Pink eye", "Dry eye", "Red eye and irritation", "Allergy-related symptoms", "Follow-up after exams", "When to see in person"],
+      "highlights": [
+        { "title": "Photo-assisted review", "text": "Securely upload eye photos for specialist screening." },
+        { "title": "Fast triage", "text": "Know what can be treated remotely vs. in clinic." },
+        { "title": "Prescription support", "text": "Drops and refills coordinated after clinician review." }
+      ]
+    },
+    "bone-joint": {
+      "overview": "Sprains, joint pain, back pain, and post-injury follow-up with verified orthopedic and sports-medicine clinicians. Sign in to share imaging and start a request.",
+      "topics": ["Back and neck pain", "Knee and hip pain", "Sprains and strains", "Sports injuries", "Arthritis follow-up", "Rehab guidance"],
+      "highlights": [
+        { "title": "Imaging first", "text": "Upload MRI or X-ray reports before your remote visit." },
+        { "title": "Movement plans", "text": "Home-based rehab steps reviewed by specialists." },
+        { "title": "Faster access", "text": "Skip long orthopedic waitlists for many follow-ups." }
+      ]
+    },
+    "clinical-support": {
+      "overview": "BILLIANT clinical decision support helps patients and care teams review symptoms, files, and next steps with verified specialists. Sign in to start a remote diagnostic request.",
+      "topics": ["Symptom triage", "Specialty matching", "Evidence summaries", "Care-plan drafts", "Second opinions", "Follow-up checkpoints"],
+      "highlights": [
+        { "title": "Human-confirmed", "text": "AI may assist triage; a licensed doctor confirms every plan." },
+        { "title": "File-aware", "text": "Labs, imaging, and notes sit beside the clinical recommendation." },
+        { "title": "Built for distance care", "text": "Designed for fully remote diagnostics, not waiting rooms." }
+      ]
+    },
+    "drug-support": {
+      "overview": "Review medications, interactions, and refill needs with clinicians who can see your history. Sign in to share your current list and request a prescription review.",
+      "topics": ["Interaction checks", "Refill requests", "Allergy screening", "Dose adjustments", "New therapy questions", "Adherence support"],
+      "highlights": [
+        { "title": "Safer lists", "text": "Catch conflicts before a new medication is added." },
+        { "title": "Clinician sign-off", "text": "Prescriptions stay with licensed professionals." },
+        { "title": "Anywhere access", "text": "Update your med list from home or while traveling." }
+      ]
+    },
+    "innovation": {
+      "overview": "Eclipse LLM and BILLIANT workflows bring encrypted file review, specialty triage, and video consults into one platform. Sign in to try remote diagnostics.",
+      "topics": ["Eclipse LLM", "Encrypted uploads", "Specialty routing", "Video and chat visits", "Multi-language support", "Care-team handoff"],
+      "highlights": [
+        { "title": "Distance-first", "text": "Built for patients who cannot wait in clinic queues." },
+        { "title": "Connected steps", "text": "From upload to physician report in one thread." },
+        { "title": "Enterprise-ready", "text": "Same stack for individuals, groups, and health systems." }
+      ]
+    },
+    "education": {
+      "overview": "Clinicians can follow evidence updates and case-based learning tied to real remote-care workflows. Sign in with a provider account to continue.",
+      "topics": ["Case reviews", "Guideline updates", "Remote-care best practices", "Diagnostic reasoning", "Team-based care", "Editorial standards"],
+      "highlights": [
+        { "title": "Practice-linked", "text": "Learn from the same pathways used in live consultations." },
+        { "title": "Editorial rigor", "text": "Content reviewed by BILLIANT Clinical Affairs." },
+        { "title": "Provider access", "text": "Sign in as a doctor to unlock education tools." }
+      ]
+    },
+    "insights": {
+      "overview": "Groups and enterprises get reporting on access times, specialty mix, and remote consult volume. Sign in to the business suite to view insights.",
+      "topics": ["Access metrics", "Specialty demand", "Workforce health", "Quality indicators", "Coverage reporting", "Scale planning"],
+      "highlights": [
+        { "title": "Operational clarity", "text": "See where wait times drop after remote routing." },
+        { "title": "Quality with cost", "text": "Balance outcomes and spend with transparent reporting." },
+        { "title": "Suite access", "text": "Sign in for Pro and Enterprise dashboards." }
+      ]
+    },
+    "why-choose": {
+      "mission": "Our mission is to help you live better, longer — with real doctors, not waiting rooms.",
+      "context": "BILLIANT brings verified specialists, remote diagnostics, and encrypted records into one distance-first platform. We focus on human-powered care: AI may assist triage, but licensed clinicians own every decision.",
+      "overview": "BILLIANT is built for people who need real doctors without waiting rooms. Sign in to request a remote consultation or join as a provider.",
+      "topics": ["Verified professionals", "Remote diagnostics", "Faster access", "Transparent pricing", "Encrypted records", "Human-powered care"],
+      "highlights": [
+        { "title": "Not a chatbot clinic", "text": "AI assists; licensed clinicians decide." },
+        { "title": "One platform", "text": "Consults, records, labs, and prescriptions together." },
+        { "title": "Ready when you are", "text": "At home, on the go, or worldwide." }
+      ]
+    },
+    "benefits": {
+      "mission": "Better access for every member of your workforce — without clinic downtime.",
+      "context": "Pro and Enterprise suites give groups and health systems remote specialist access, utilization reporting, and care navigation. Leaders see outcomes; employees get care in minutes.",
+      "overview": "Give employees and members faster specialist access with BILLIANT Pro and Enterprise. Sign in to explore business suites.",
+      "topics": ["Workforce access", "Member coverage", "Reporting", "Care navigation", "Remote diagnostics", "Admin controls"],
+      "highlights": [
+        { "title": "Less downtime", "text": "Employees get care without day-long clinic trips." },
+        { "title": "Clear reporting", "text": "Utilization and outcomes in one view." },
+        { "title": "Scales with you", "text": "From groups to health systems." }
+      ]
+    },
+    "editorial": {
+      "mission": "Clinical content you can trust — reviewed, attributed, and kept current.",
+      "context": "BILLIANT Clinical Affairs reviews the pathways behind remote diagnostics. Every recommendation stays transparent: sources, specialist sign-off, and an audit trail you can follow.",
+      "overview": "BILLIANT Clinical Affairs reviews pathways used in remote diagnostics. Sign in to see how your case is prepared for a physician.",
+      "topics": ["Source review", "Specialist sign-off", "Update cadence", "Conflict checks", "Patient-plain language", "Audit trail"],
+      "highlights": [
+        { "title": "Medically reviewed", "text": "Pathways attributed to Clinical Affairs." },
+        { "title": "Living content", "text": "Updates when guidelines change." },
+        { "title": "Transparent steps", "text": "You can see how a recommendation was formed." }
+      ]
+    },
+    "ai-content": {
+      "mission": "AI that prepares the case — never replaces the clinician.",
+      "context": "Eclipse LLM organizes symptoms and documents so doctors receive a cleaner file. Diagnosis and treatment stay with verified physicians. You control what you upload and share.",
+      "overview": "Eclipse LLM helps organize symptoms and documents. A verified physician still owns diagnosis and treatment. Sign in to start a remote request.",
+      "topics": ["Triage assist", "Document summary", "Specialty suggestion", "Language support", "Physician confirmation", "Safety limits"],
+      "highlights": [
+        { "title": "Assist, don’t replace", "text": "No autonomous diagnosis on BILLIANT." },
+        { "title": "Faster prep", "text": "Doctors receive a cleaner case file." },
+        { "title": "You stay in control", "text": "Sign in to submit only what you choose to share." }
+      ]
+    },
+    "aligning-teams": {
+      "overview": "Remote care fails when teams do not share the same file. BILLIANT keeps the request, documents, and report in one thread. Sign in to collaborate.",
+      "topics": ["Shared care plans", "Role-based access", "Handoffs", "Patient visibility", "Notes and files", "Follow-up owners"],
+      "highlights": [
+        { "title": "One thread", "text": "No scattered emails or lost attachments." },
+        { "title": "Clear owners", "text": "See who reviews, quotes, and follows up." },
+        { "title": "Patient included", "text": "Status updates without a phone tree." }
+      ]
+    },
+    "quality-costs": {
+      "overview": "Remote specialist review can avoid duplicate tests and long travel. Sign in to request care with transparent pricing.",
+      "topics": ["Avoid duplicate tests", "Transparent visit cost", "Right specialty first", "Fewer no-shows", "Insurance and cash paths", "Outcome tracking"],
+      "highlights": [
+        { "title": "Right first visit", "text": "Route to the specialty that actually fits." },
+        { "title": "Cost you can see", "text": "Estimates before you commit — sign in for your rate." },
+        { "title": "Quality intact", "text": "Licensed clinicians, not cheapest-bot care." }
+      ]
+    },
+    "equity": {
+      "overview": "Geography and waitlists should not decide who gets a specialist. BILLIANT is built for remote access. Sign in to request care from anywhere.",
+      "topics": ["Rural access", "Language support", "After-hours options", "Disability-friendly visits", "Travel and mobility", "Fair routing"],
+      "highlights": [
+        { "title": "Distance is not a barrier", "text": "Same specialist network at home or worldwide." },
+        { "title": "Languages that travel", "text": "Multi-language intake and physician matching." },
+        { "title": "Sign in to start", "text": "Your location does not block a request." }
+      ]
+    },
+    "burnout": {
+      "overview": "Providers get structured cases, not inbox chaos. Sign in as a doctor to see consultation queues and respond on your schedule.",
+      "topics": ["Structured intakes", "Async file review", "Fewer admin loops", "Clearer queues", "Protected focus time", "Remote-first days"],
+      "highlights": [
+        { "title": "Cases arrive ready", "text": "Symptoms, files, and triage in one view." },
+        { "title": "Flexible response", "text": "Review when you can — not only in clinic hours." },
+        { "title": "Provider login", "text": "Doctor accounts unlock the clinical inbox." }
+      ]
+    },
+    "outcomes": {
+      "overview": "Every request can produce a physician report, next steps, and follow-up. Sign in to keep your outcomes in one record.",
+      "topics": ["Physician reports", "Follow-up rates", "Time-to-specialist", "Patient-reported progress", "Closed loops", "Quality review"],
+      "highlights": [
+        { "title": "Written plans", "text": "Leave with a report, not only a call." },
+        { "title": "Track what changed", "text": "Labs, meds, and visits stay together." },
+        { "title": "Account required", "text": "Sign in so outcomes attach to you, not a guest session." }
+      ]
+    },
+    "care-management": {
+      "overview": "Care management should not reset at every clinic door. BILLIANT keeps the thread moving. Sign in to continue an existing request or start a new one.",
+      "topics": ["Ongoing follow-up", "Task lists", "Family visibility options", "Chronic pathways", "Enterprise scale", "Handoffs that stick"],
+      "highlights": [
+        { "title": "The thread persists", "text": "New symptoms add to the same story." },
+        { "title": "Scale without chaos", "text": "Groups and enterprises share one playbook." },
+        { "title": "Sign in to continue", "text": "Care management is tied to your account." }
+      ]
+    },
+    "mental-wellbeing": {
+      "title": "Mental Well-Being",
+      "subtitle": "Support for anxiety, mood, sleep, and everyday stress — with real clinicians.",
+      "overview": "Mental well-being is part of every BILLIANT journey. Sign in to request therapy or psychiatry, or explore related conditions.",
+      "topics": ["Anxiety", "Depression", "Sleep", "Stress", "Grief", "Couples support"],
+      "highlights": [
+        { "title": "Human support", "text": "Licensed therapists and psychiatrists." },
+        { "title": "Remote by default", "text": "Private visits from home." },
+        { "title": "Sign in to book", "text": "Accounts keep your history safe." }
+      ]
+    },
+    "living-well": {
+      "title": "Living Well",
+      "subtitle": "Prevention, lifestyle, and everyday care that fits your schedule.",
+      "overview": "Living well means checkups, prevention, and answers before a crisis. Sign in to request primary care or browse conditions.",
+      "topics": ["Prevention", "Nutrition basics", "Sleep and energy", "Chronic follow-up", "Family care", "Travel-ready records"],
+      "highlights": [
+        { "title": "Prevention first", "text": "Catch issues before they wait in a queue." },
+        { "title": "Records that travel", "text": "Your history stays with you." },
+        { "title": "Start with login", "text": "Personalized plans require an account." }
+      ]
+    }
+  }
+}

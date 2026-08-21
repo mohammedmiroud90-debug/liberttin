@@ -1,0 +1,447 @@
+---
+import BaseHead from "../components/BaseHead.astro";
+import BrandLogo from "../components/BrandLogo.astro";
+import { DEFAULT_LOCALE, getDir, localizedPath, type Locale } from "../i18n/locales";
+import { t } from "../i18n/ui";
+import { pageTitle } from "../i18n/title";
+
+type Props = { locale?: Locale };
+const locale = Astro.props.locale ?? DEFAULT_LOCALE;
+const dir = getDir(locale);
+const loginHref = localizedPath(locale, "/login/");
+const homeHref = localizedPath(locale, "/");
+const adminHref = localizedPath(locale, "/admin/");
+---
+
+<!doctype html>
+<html lang={locale} dir={dir}>
+	<head>
+		<BaseHead
+			title={pageTitle(locale, "nav.dashboard")}
+			description={t(locale, "admin.subtitle")}
+			locale={locale}
+			noindex={true}
+		/>
+	</head>
+	<body class="admin-body">
+		<header class="admin-header">
+			<div class="admin-header-inner">
+				<a class="admin-brand" href={adminHref}>
+					<BrandLogo href={adminHref} text="Libertta" variant="dark" fontSize={28} fontWeight={700} />
+				</a>
+				<nav class="admin-nav">
+					<a href={adminHref} data-admin-nav="posts">{t(locale, "admin.nav.posts")}</a>
+					<a href={localizedPath(locale, "/admin/comments/")} data-admin-nav="comments">{t(locale, "admin.nav.comments")}</a>
+					<a href={localizedPath(locale, "/admin/subscribers/")} data-admin-nav="subscribers">{t(locale, "admin.nav.subscribers")}</a>
+					<a href={localizedPath(locale, "/admin/analytics/")} data-admin-nav="analytics">{t(locale, "admin.nav.analytics")}</a>
+					<a href={localizedPath(locale, "/admin/settings/")} data-admin-nav="settings">{t(locale, "admin.nav.settings")}</a>
+				</nav>
+				<div class="admin-user">
+					<span data-admin-user-name></span>
+					<button type="button" data-admin-logout>{t(locale, "admin.logout")}</button>
+				</div>
+			</div>
+		</header>
+
+		<main class="admin-main" data-admin-main>
+			<section class="admin-gate" data-admin-gate>
+				<h1>{t(locale, "admin.accessRequired")}</h1>
+				<p>{t(locale, "admin.accessBody")}</p>
+				<a class="sign-in-btn" href={loginHref}>{t(locale, "nav.signIn")}</a>
+			</section>
+
+			<section class="admin-content" data-admin-content hidden>
+				<div class="admin-toolbar">
+					<div>
+						<h1>{t(locale, "admin.title")}</h1>
+						<p>{t(locale, "admin.subtitle")}</p>
+					</div>
+					<a class="new-post-btn" href={loginHref} data-admin-refresh>{t(locale, "admin.refresh")}</a>
+				</div>
+
+				<input
+					type="search"
+					class="admin-search"
+					placeholder={t(locale, "admin.searchPlaceholder")}
+					data-admin-search
+				/>
+
+				<p class="admin-error" data-admin-error hidden></p>
+				<p class="admin-loading" data-admin-loading>{t(locale, "admin.loading")}</p>
+
+				<div class="admin-table-wrap" data-admin-table-wrap hidden>
+					<table class="admin-table">
+						<thead>
+							<tr>
+								<th>{t(locale, "admin.col.title")}</th>
+								<th>{t(locale, "admin.col.category")}</th>
+								<th>{t(locale, "admin.col.status")}</th>
+								<th>{t(locale, "admin.col.date")}</th>
+								<th></th>
+							</tr>
+						</thead>
+						<tbody data-admin-rows></tbody>
+					</table>
+					<p class="admin-empty" data-admin-empty hidden>{t(locale, "admin.empty")}</p>
+				</div>
+			</section>
+		</main>
+	</body>
+</html>
+
+<script>
+	import { isAdminUser, userDisplayName } from "../lib/blog/auth";
+	import { getAllAdminPosts, type AdminPost } from "../lib/blog/admin";
+	import { clearStoredUser, readStoredUser } from "../lib/auth-session";
+
+	const gate = document.querySelector<HTMLElement>("[data-admin-gate]");
+	const content = document.querySelector<HTMLElement>("[data-admin-content]");
+	const loadingEl = document.querySelector<HTMLElement>("[data-admin-loading]");
+	const errorEl = document.querySelector<HTMLElement>("[data-admin-error]");
+	const tableWrap = document.querySelector<HTMLElement>("[data-admin-table-wrap]");
+	const rowsEl = document.querySelector<HTMLElement>("[data-admin-rows]");
+	const emptyEl = document.querySelector<HTMLElement>("[data-admin-empty]");
+	const searchInput = document.querySelector<HTMLInputElement>("[data-admin-search]");
+	const nameEl = document.querySelector<HTMLElement>("[data-admin-user-name]");
+	const logoutBtn = document.querySelector<HTMLButtonElement>("[data-admin-logout]");
+	const refreshBtn = document.querySelector<HTMLAnchorElement>("[data-admin-refresh]");
+
+	let posts: AdminPost[] = [];
+
+	function loginPath() {
+		const parts = window.location.pathname.split("/").filter(Boolean);
+		const locale = parts[0] && /^[a-z]{2}$/.test(parts[0]) ? parts[0] : "en";
+		return `/${locale}/login/`;
+	}
+
+	function showError(message: string) {
+		if (!errorEl) return;
+		errorEl.hidden = !message;
+		errorEl.textContent = message;
+	}
+
+	function formatDate(value: string) {
+		if (!value) return "—";
+		const date = new Date(value);
+		if (Number.isNaN(date.getTime())) return value;
+		return date.toLocaleDateString(undefined, {
+			year: "numeric",
+			month: "short",
+			day: "numeric",
+		});
+	}
+
+	function renderRows(list: AdminPost[]) {
+		if (!rowsEl || !emptyEl || !tableWrap) return;
+		rowsEl.innerHTML = "";
+		emptyEl.hidden = list.length > 0;
+		tableWrap.hidden = false;
+
+		for (const post of list) {
+			const tr = document.createElement("tr");
+			const publicHref = post.slug ? `/en/blog/${post.slug}/` : "#";
+			tr.innerHTML = `
+				<td>
+					<div class="title-cell">${escapeHtml(post.title)}</div>
+					<div class="slug-cell">${escapeHtml(post.slug || post.id)}</div>
+				</td>
+				<td>${escapeHtml(post.category || "—")}</td>
+				<td><span class="status-pill">${escapeHtml(post.status || "published")}</span></td>
+				<td>${escapeHtml(formatDate(post.publishedAt))}</td>
+				<td class="actions-cell">
+					<a href="${publicHref}" target="_blank" rel="noopener noreferrer">View</a>
+				</td>
+			`;
+			rowsEl.appendChild(tr);
+		}
+	}
+
+	function escapeHtml(value: string) {
+		return value
+			.replace(/&/g, "&amp;")
+			.replace(/</g, "&lt;")
+			.replace(/>/g, "&gt;")
+			.replace(/"/g, "&quot;");
+	}
+
+	function applyFilter() {
+		const q = (searchInput?.value || "").trim().toLowerCase();
+		const filtered = !q
+			? posts
+			: posts.filter((post) => `${post.title} ${post.category} ${post.slug}`.toLowerCase().includes(q));
+		renderRows(filtered);
+	}
+
+	async function loadPosts() {
+		showError("");
+		if (loadingEl) loadingEl.hidden = false;
+		if (tableWrap) tableWrap.hidden = true;
+		try {
+			posts = await getAllAdminPosts();
+			applyFilter();
+		} catch (err) {
+			showError(err instanceof Error ? err.message : "Could not load posts.");
+		} finally {
+			if (loadingEl) loadingEl.hidden = true;
+		}
+	}
+
+	const user = readStoredUser();
+	if (!user || !isAdminUser(user)) {
+		if (gate) gate.hidden = false;
+		if (content) content.hidden = true;
+	} else {
+		if (gate) gate.hidden = true;
+		if (content) content.hidden = false;
+		if (nameEl) nameEl.textContent = userDisplayName(user);
+		void loadPosts();
+	}
+
+	logoutBtn?.addEventListener("click", () => {
+		clearStoredUser();
+		window.location.assign(loginPath());
+	});
+
+	searchInput?.addEventListener("input", applyFilter);
+
+	refreshBtn?.addEventListener("click", (event) => {
+		event.preventDefault();
+		void loadPosts();
+	});
+</script>
+
+<style>
+	.admin-body {
+		margin: 0;
+		min-height: 100vh;
+		background: #f3f4f6;
+		font-family: "Atkinson", system-ui, sans-serif;
+	}
+
+	.admin-header {
+		position: sticky;
+		top: 0;
+		z-index: 40;
+		background: #000;
+		color: #fff;
+	}
+
+	.admin-header-inner {
+		max-width: 72rem;
+		margin: 0 auto;
+		padding: 0 1rem;
+		min-height: 3.75rem;
+		display: flex;
+		align-items: center;
+		gap: 1.25rem;
+	}
+
+	.admin-brand {
+		display: inline-flex;
+		align-items: center;
+		gap: 0.55rem;
+		text-decoration: none;
+		color: inherit;
+	}
+
+	.admin-nav {
+		display: flex;
+		align-items: center;
+		gap: 0.35rem;
+		flex: 1;
+	}
+
+	.admin-nav a {
+		color: rgba(255, 255, 255, 0.8);
+		text-decoration: none;
+		font-size: 0.9rem;
+		padding: 0.4rem 0.75rem;
+		border-radius: 999px;
+	}
+
+	.admin-nav a:hover,
+	.admin-nav a.active {
+		background: rgba(255, 255, 255, 0.1);
+		color: #fff;
+	}
+
+	.admin-user {
+		display: flex;
+		align-items: center;
+		gap: 0.75rem;
+		font-size: 0.85rem;
+	}
+
+	.admin-user button {
+		background: #fff;
+		color: #000;
+		border: none;
+		padding: 0.4rem 0.85rem;
+		font-weight: 700;
+		font-size: 0.85rem;
+		cursor: pointer;
+	}
+
+	.admin-main {
+		max-width: 72rem;
+		margin: 0 auto;
+		padding: 2rem 1rem 3rem;
+	}
+
+	.admin-gate {
+		max-width: 28rem;
+		margin: 4rem auto;
+		text-align: center;
+		background: #fff;
+		border: 1px solid #e5e7eb;
+		padding: 2.5rem 1.5rem;
+	}
+
+	.admin-gate h1 {
+		margin: 0;
+		font-size: 1.4rem;
+	}
+
+	.admin-gate p {
+		margin: 0.65rem 0 1.35rem;
+		color: #667;
+		font-size: 0.95rem;
+	}
+
+	.sign-in-btn {
+		display: inline-block;
+		background: #000;
+		color: #fff;
+		text-decoration: none;
+		font-weight: 700;
+		padding: 0.7rem 1.4rem;
+	}
+
+	.admin-toolbar {
+		display: flex;
+		flex-wrap: wrap;
+		align-items: flex-start;
+		justify-content: space-between;
+		gap: 1rem;
+		margin-bottom: 1.25rem;
+	}
+
+	.admin-toolbar h1 {
+		margin: 0;
+		font-size: 1.6rem;
+		color: #111;
+	}
+
+	.admin-toolbar p {
+		margin: 0.35rem 0 0;
+		color: #667;
+		font-size: 0.95rem;
+	}
+
+	.new-post-btn {
+		display: inline-flex;
+		align-items: center;
+		background: #0d9488;
+		color: #fff;
+		text-decoration: none;
+		font-weight: 700;
+		font-size: 0.9rem;
+		padding: 0.65rem 1.1rem;
+		border-radius: 999px;
+	}
+
+	.admin-search {
+		width: 100%;
+		max-width: 22rem;
+		padding: 0.7rem 1rem;
+		border: 1px solid #e5e7eb;
+		border-radius: 999px;
+		background: #fff;
+		font-size: 0.95rem;
+		margin-bottom: 1rem;
+	}
+
+	.admin-error {
+		background: #fef2f2;
+		color: #b91c1c;
+		padding: 0.75rem 1rem;
+		margin-bottom: 1rem;
+	}
+
+	.admin-loading {
+		color: #667;
+		font-size: 0.95rem;
+	}
+
+	.admin-table-wrap {
+		background: #fff;
+		border: 1px solid #e5e7eb;
+		overflow: auto;
+	}
+
+	.admin-table {
+		width: 100%;
+		border-collapse: collapse;
+		font-size: 0.92rem;
+	}
+
+	.admin-table th,
+	.admin-table td {
+		padding: 0.85rem 1rem;
+		text-align: start;
+		border-bottom: 1px solid #f3f4f6;
+		vertical-align: top;
+	}
+
+	.admin-table th {
+		font-size: 0.8rem;
+		text-transform: uppercase;
+		letter-spacing: 0.04em;
+		color: #667;
+		background: #fafafa;
+	}
+
+	.title-cell {
+		font-weight: 600;
+		color: #111;
+	}
+
+	.slug-cell {
+		margin-top: 0.2rem;
+		font-size: 0.8rem;
+		color: #889;
+	}
+
+	.status-pill {
+		display: inline-block;
+		padding: 0.15rem 0.55rem;
+		border-radius: 999px;
+		background: #ecfdf5;
+		color: #047857;
+		font-size: 0.75rem;
+		font-weight: 600;
+		text-transform: capitalize;
+	}
+
+	.actions-cell a {
+		color: #0f766e;
+		text-decoration: none;
+		font-weight: 600;
+	}
+
+	.admin-empty {
+		padding: 1.25rem 1rem;
+		color: #667;
+		margin: 0;
+	}
+
+	@media (max-width: 720px) {
+		.admin-nav {
+			display: none;
+		}
+
+		.admin-header-inner {
+			gap: 0.75rem;
+		}
+	}
+</style>

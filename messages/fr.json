@@ -1,0 +1,702 @@
+{
+  "common": {
+    "appName": "BILLIANT",
+    "tagline": "Soins de Santé Sans Attente",
+    "getStarted": "Commencer",
+    "learnMore": "En Savoir Plus",
+    "bookAppointment": "Prendre Rendez-vous",
+    "findDoctor": "Trouver un Médecin",
+    "signIn": "Se Connecter",
+    "signUp": "S'inscrire",
+    "signOut": "Se Déconnecter",
+    "loading": "Chargement...",
+    "search": "Rechercher",
+    "submit": "Soumettre",
+    "cancel": "Annuler",
+    "save": "Enregistrer",
+    "edit": "Modifier",
+    "delete": "Supprimer",
+    "view": "Voir",
+    "download": "Télécharger",
+    "upload": "Téléverser"
+  },
+  "nav": {
+    "home": "Accueil",
+    "services": "Services",
+    "forPatients": "Pour les Patients",
+    "forDoctors": "Pour les Médecins",
+    "about": "À Propos",
+    "contact": "Contact",
+    "pricing": "Tarifs",
+    "blog": "Blog"
+  },
+  "hero": {
+    "title": "Des soins de santé sans attente",
+    "rotatingWords": {
+      "atHome": "à domicile",
+      "onTheGo": "en déplacement",
+      "worldwide": "partout",
+      "anywhere": "dans le monde",
+      "inMinutes": "en minutes"
+    },
+    "subtitle": "Soutenir votre santé et votre bien-être à chaque étape de votre parcours de soins",
+    "description": "Accédez à des soins de qualité avec des professionnels agréés. Pas de salle d'attente. Pas de diagnostic par IA. De vrais médecins, de vrais soins.",
+    "viewAllResources": "VOIR TOUTES LES RESSOURCES",
+    "quickLinks": {
+      "remoteDiagnostics": "Diagnostics à Distance",
+      "treatments": "Traitements",
+      "mbc": "MBC",
+      "mentalWellbeing": "Bien-être Mental",
+      "livingWell": "Bien Vivre"
+    },
+    "cta": {
+      "patient": "Trouver un Médecin",
+      "provider": "Rejoindre comme Professionnel"
+    }
+  },
+  "features": {
+    "eyebrow": "Nos services",
+    "title": "Services de Santé Complets",
+    "subtitle": "Tout ce dont vous avez besoin pour une meilleure santé, sur une seule plateforme",
+    "connectedCare": "Consultations, dossiers, laboratoires et prescriptions — réunis en un seul endroit.",
+    "explore": "Démarrer une consultation",
+    "consultation": {
+      "title": "Consultations en Ligne",
+      "description": "Connectez-vous avec des médecins vérifiés par vidéo, voix ou chat"
+    },
+    "appointments": {
+      "title": "Rendez-vous Instantanés",
+      "description": "Prenez rendez-vous avec des spécialistes sans longs délais d'attente"
+    },
+    "records": {
+      "title": "Dossiers Médicaux",
+      "description": "Stockage sécurisé de tout votre historique médical et documents"
+    },
+    "laboratory": {
+      "title": "Services de Laboratoire",
+      "description": "Réservez des tests de laboratoire et recevez les résultats numériquement"
+    },
+    "pharmacy": {
+      "title": "Prescriptions Numériques",
+      "description": "Obtenez vos prescriptions remplies et livrées à votre porte"
+    },
+    "emergency": {
+      "title": "Soins d'Urgence",
+      "description": "Coordination rapide avec les services d'urgence et les spécialistes"
+    }
+  },
+  "patientPortal": {
+    "title": "Portail Patient",
+    "welcome": "Bienvenue sur votre tableau de bord santé",
+    "dashboard": "Tableau de Bord",
+    "appointments": "Mes Rendez-vous",
+    "doctors": "Mes Médecins",
+    "prescriptions": "Prescriptions",
+    "labResults": "Résultats de Laboratoire",
+    "medicalRecords": "Dossiers Médicaux",
+    "family": "Membres de la Famille",
+    "settings": "Paramètres"
+  },
+  "doctorPortal": {
+    "title": "Portail Professionnel de Santé",
+    "welcome": "Bienvenue, Docteur",
+    "dashboard": "Tableau de Bord",
+    "patients": "Mes Patients",
+    "appointments": "Rendez-vous",
+    "consultations": "Consultations",
+    "schedule": "Mon Emploi du Temps",
+    "earnings": "Revenus",
+    "settings": "Paramètres"
+  },
+  "auth": {
+    "login": "Connexion",
+    "register": "Inscription",
+    "forgotPassword": "Mot de Passe Oublié?",
+    "email": "Adresse Email",
+    "password": "Mot de Passe",
+    "confirmPassword": "Confirmer le Mot de Passe",
+    "fullName": "Nom Complet",
+    "phone": "Numéro de Téléphone",
+    "dob": "Date de Naissance",
+    "gender": "Genre",
+    "male": "Homme",
+    "female": "Femme",
+    "other": "Autre",
+    "agreeToTerms": "J'accepte les Conditions d'Utilisation et la Politique de Confidentialité",
+    "alreadyHaveAccount": "Vous avez déjà un compte?",
+    "dontHaveAccount": "Vous n'avez pas de compte?",
+    "patientRegistration": "Inscription Patient",
+    "providerRegistration": "Inscription Professionnel de Santé"
+  },
+  "footer": {
+    "description": "Rendre les soins de santé de qualité accessibles, abordables et disponibles pour tous grâce à des professionnels médicaux vérifiés.",
+    "forPatients": "Pour les Patients",
+    "forProviders": "Pour les Professionnels",
+    "company": "Entreprise",
+    "support": "Support",
+    "legal": "Légal",
+    "findDoctor": "Trouver un Médecin",
+    "bookAppointment": "Prendre Rendez-vous",
+    "telehealth": "Télésanté",
+    "pharmacy": "Pharmacie",
+    "joinAsDr": "Rejoindre comme Médecin",
+    "joinAsHospital": "Rejoindre comme Hôpital",
+    "joinAsLab": "Rejoindre comme Laboratoire",
+    "aboutUs": "À Propos",
+    "careers": "Carrières",
+    "blog": "Blog",
+    "pressKit": "Kit Presse",
+    "helpCenter": "Centre d'Aide",
+    "contactUs": "Nous Contacter",
+    "faq": "FAQ",
+    "privacyPolicy": "Politique de Confidentialité",
+    "termsOfService": "Conditions d'Utilisation",
+    "hipaaCompliance": "Conformité HIPAA",
+    "allRightsReserved": "Tous droits réservés.",
+    "advertise": "Publicité",
+    "remoteDiagnostics": "Diagnostics à Distance",
+    "resources": "Ressources",
+    "sitemap": "Plan du site"
+  },
+  "Newsletter": {
+    "title": "Recevez notre bulletin de bien-être",
+    "description": "Filtrez le bruit et nourrissez votre boîte de réception avec des conseils de santé et de bien-être inclusifs et fondés sur l'expertise médicale.",
+    "emailPlaceholder": "Entrez votre email",
+    "signUp": "S'INSCRIRE",
+    "privacyNote": "Votre vie privée est importante pour nous. Toute information que vous nous fournissez via ce site Web peut être placée par nous sur des serveurs situés dans des pays en dehors de l'UE. Si vous n'acceptez pas cet emplacement, ne fournissez pas les informations.",
+    "company": "Entreprise",
+    "resources": "Ressources",
+    "legal": "Légal",
+    "aboutUs": "À Propos",
+    "contactUs": "Nous Contacter",
+    "privacyNotice": "Avis de Confidentialité",
+    "privacySettings": "Paramètres de Confidentialité",
+    "sitemap": "Plan du Site",
+    "medicalAffairs": "Affaires Médicales",
+    "contentIntegrity": "Intégrité du Contenu",
+    "newsletters": "Bulletins",
+    "advertisingPolicy": "Politique Publicitaire",
+    "healthTopics": "Sujets de Santé",
+    "termsOfUse": "Conditions d'Utilisation",
+    "accessibility": "Accessibilité",
+    "copyright": "© 2026 Billiant Media LLC. Tous droits réservés. Billiant Media est une société RVO Health. Notre contenu et nos produits sont à titre informatif uniquement. Billiant Media ne fournit pas de conseils médicaux, de diagnostic ou de traitement.",
+    "additionalInfo": "Voir les informations supplémentaires"
+  },
+  "Header": {
+    "healthConditions": "Conditions de Santé",
+    "wellness": "Bien-être",
+    "tools": "Outils",
+    "featured": "En Vedette",
+    "connect": "Connecter",
+    "subscribe": "S'abonner",
+    "signIn": "Se connecter",
+    "signUp": "S'inscrire",
+    "searchPlaceholder": "Rechercher articles, sujets ou auteurs...",
+    "searchButton": "Rechercher",
+    "categories": "Catégories",
+    "tags": "Tags",
+    "noCategories": "Aucune catégorie pour le moment",
+    "noTags": "Aucun tag pour le moment",
+    "nav": {
+      "categories": "Catégories",
+      "project": "Projet",
+      "founder": "Fondateur",
+      "more": "Plus",
+      "why": "Pourquoi UpToDate",
+      "whatWeDo": "Ce Que Nous Faisons",
+      "ourValue": "Notre Valeur",
+      "challenges": "Défis de Santé",
+      "tags": "Tags",
+      "noCategories": "Aucune catégorie pour le moment",
+      "noTags": "Aucun tag pour le moment"
+    },
+    "menus": {
+      "explore": "Explorer",
+      "allArticles": "Tous les articles",
+      "search": "Rechercher",
+      "resources": "Ressources",
+      "company": "Entreprise",
+      "about": "À propos",
+      "contact": "Nous contacter",
+      "topics": "Sujets",
+      "andMore": "Et plus",
+      "exploreAll": "Explorer toutes les options",
+      "healthConditions": {
+        "title": "Pourquoi UpToDate",
+        "blurb": "Des conseils fondés sur les preuves pour les questions les plus fréquentes.",
+        "heartDisease": "Maladies Cardiaques",
+        "heartDiseaseDesc": "Cardiologie, prévention et suivi à distance",
+        "mentalHealth": "Santé Mentale",
+        "mentalHealthDesc": "Thérapie, psychiatrie et accompagnement",
+        "diabetes": "Diabète",
+        "diabetesDesc": "Suivi, médicaments et plans de vie",
+        "respiratory": "Respiratoire",
+        "respiratoryDesc": "Asthme, BPCO et infections",
+        "eyeHealth": "Santé Oculaire",
+        "eyeHealthDesc": "Avis de spécialistes de la vision",
+        "boneJoint": "Os et Articulations",
+        "boneJointDesc": "Évaluation orthopédique sans salle d'attente"
+      },
+      "wellness": {
+        "title": "Ce Que Nous Faisons",
+        "blurb": "Des outils cliniques pour faire avancer les soins, où que vous soyez.",
+        "clinicalSupport": "Aide à la Décision Clinique",
+        "clinicalSupportDesc": "Recommandations menées par des médecins",
+        "drugSupport": "Aide à la Décision Médicamenteuse",
+        "drugSupportDesc": "Prescription plus sûre et interactions",
+        "innovation": "Innovation en Santé",
+        "innovationDesc": "Diagnostics à distance et parcours connectés",
+        "education": "Formation Médicale Continue",
+        "educationDesc": "Apprentissage fiable pour les cliniciens",
+        "insights": "Perspectives pour les Entreprises de Santé",
+        "insightsDesc": "Des données pour déployer des soins de qualité"
+      },
+      "tools": {
+        "title": "Notre Valeur",
+        "blurb": "Ce que BILLIANT apporte aux patients et aux équipes de soins.",
+        "whyChoose": "Pourquoi Choisir BILLIANT",
+        "whyChooseDesc": "Spécialistes humains, accès plus rapide, soins vérifiés",
+        "benefits": "Avantages pour les Entreprises",
+        "benefitsDesc": "Couverture, reporting et santé au travail",
+        "editorial": "Processus Éditorial",
+        "editorialDesc": "Comment le contenu clinique est revu",
+        "aiContent": "IA dans le Contenu Clinique Fiable",
+        "aiContentDesc": "Triage assisté, toujours confirmé par un médecin",
+        "remoteDiagnostics": "Diagnostics à Distance (Eclipse LLM)",
+        "remoteDiagnosticsDesc": "Revue sécurisée de dossiers et diagnostics à distance"
+      },
+      "featured": {
+        "title": "Défis de Santé",
+        "blurb": "Des réponses concrètes aux freins des soins aujourd'hui.",
+        "aligningTeams": "Aligner les Équipes de Soins",
+        "aligningTeamsDesc": "Plans partagés entre médecins, patients et équipes",
+        "qualityCosts": "Équilibre Qualité et Coûts",
+        "qualityCostsDesc": "De meilleurs résultats sans dépenses inutiles",
+        "equity": "Équité en Santé",
+        "equityDesc": "Accès aux spécialistes où que vous soyez",
+        "burnout": "Épuisement des Soignants",
+        "burnoutDesc": "Des flux plus légers pour les cliniciens en déplacement",
+        "outcomes": "Qualité des Soins et Résultats",
+        "outcomesDesc": "Résultats mesurés des consultations à distance",
+        "careManagement": "Gestion des Soins à Grande Échelle",
+        "careManagementDesc": "Un suivi qui voyage avec le patient"
+      }
+    }
+  },
+  "HomePage": {
+    "whyChoose": "Pourquoi Choisir BILLIANT?",
+    "whyChooseSubtitle": "Des soins de santé qui vous mettent au premier plan",
+    "featuredSpecialists": {
+      "title": "Nos Spécialistes en Vedette",
+      "subtitle": "Rencontrez nos professionnels de santé hautement qualifiés — disponibles pour des consultations entièrement à distance",
+      "requestConsultation": "Demander une Consultation à Distance",
+      "viewAllDoctors": "Voir Tous les Médecins"
+    },
+    "benefits": {
+      "fasterCare": {
+        "title": "Soins Plus Rapides",
+        "description": "Obtenez une attention médicale en minutes, pas en jours"
+      },
+      "affordable": {
+        "title": "Abordable",
+        "description": "Tarification transparente, coûts réduits"
+      },
+      "verified": {
+        "title": "Professionnels Vérifiés",
+        "description": "Tous les prestataires de soins sont agréés et vérifiés"
+      },
+      "humanPowered": {
+        "title": "Alimenté par l'Humain",
+        "description": "De vrais médecins, pas d'IA. Des soins de qualité en qui vous pouvez avoir confiance"
+      }
+    },
+    "cta": {
+      "title": "Prêt à Vivre une Meilleure Expérience de Santé?",
+      "subtitle": "Rejoignez des milliers de patients qui font confiance à BILLIANT pour leurs besoins de santé",
+      "getStarted": "Commencer Gratuitement",
+      "findDoctor": "Trouver un Médecin"
+    },
+    "banner": {
+      "title": "Prêt à découvrir des soins de santé complets ?",
+      "getStarted": "Commencer Aujourd'hui"
+    },
+    "careServices": {
+      "insuranceNote": "Nous acceptons la plupart des assurances, ce qui signifie que votre consultation pourrait être gratuite.",
+      "andMore": "Et plus",
+      "categories": {
+        "urgentCare": {
+          "title": "Soins Urgents",
+          "items": [
+            "Rhume et grippe",
+            "COVID",
+            "Infections sinusales",
+            "Infections de l'oreille",
+            "Infections urinaires",
+            "Infections à levures",
+            "Traitement IST",
+            "Traitement BV",
+            "Angine",
+            "Conjonctivite"
+          ],
+          "viewLink": "Voir les soins urgents",
+          "href": "/doctors?specialty=urgent"
+        },
+        "therapy": {
+          "title": "Thérapie",
+          "items": [
+            "Anxiété",
+            "Dépression",
+            "Stress",
+            "Deuil",
+            "Post-partum",
+            "TSPT",
+            "Thérapie de couple",
+            "EMDR",
+            "TCC",
+            "Santé mentale des jeunes"
+          ],
+          "viewLink": "Voir la thérapie en ligne",
+          "href": "/doctors?specialty=therapy"
+        },
+        "psychiatry": {
+          "title": "Psychiatrie",
+          "items": [
+            "Troubles de l'humeur",
+            "Évaluations psychiatriques",
+            "Diagnostic initial",
+            "Gestion des médicaments",
+            "Trouble bipolaire",
+            "TDAH",
+            "TSPT",
+            "Ordonnances en ligne"
+          ],
+          "viewLink": "Voir la psychiatrie en ligne",
+          "href": "/doctors?specialty=psychiatry"
+        },
+        "primaryCare": {
+          "title": "Soins Primaires*",
+          "items": [
+            "Gestion des maladies chroniques",
+            "Santé mentale",
+            "Bilans annuels",
+            "Hypertension",
+            "Rhume, grippe et infections",
+            "Renouvellements d'ordonnances",
+            "Soins préventifs"
+          ],
+          "viewLink": "Voir les soins primaires",
+          "href": "/doctors?specialty=primary"
+        }
+      }
+    }
+  },
+  "ReasonsSection": {
+    "eyebrow": "Solutions Cliniques",
+    "heroTitle": "Diagnostics Cliniques à Distance",
+    "heroDescription": "BILLIANT connecte les patients à des spécialistes vérifiés grâce à des diagnostics à distance sécurisés et assistés par l'IA — du triage des symptômes à l'examen de fichiers chiffrés et aux rapports médicaux. Obtenez une aide à la décision clinique fondée sur des preuves sans salle d'attente, depuis chez vous.",
+    "forLabel": "Pour :",
+    "forValue": "Individus, équipes de soins et systèmes de santé",
+    "reviewedByLabel": "Revu médicalement par :",
+    "reviewedByName": "Affaires Cliniques BILLIANT",
+    "heroCta": "Obtenir un diagnostic à distance",
+    "title": "Des solutions cliniques de premier plan pour les individus, les groupes et les entreprises",
+    "descriptionIntro": "Découvrez nos suites professionnelles et entreprises —",
+    "descriptionAnd": "et",
+    "descriptionOutro": "— conçues pour le diagnostic entièrement à distance.",
+    "brandBilliant": "BILLIANT®",
+    "brandLexidrug": "BILLIANT Lexidrug™",
+    "brandEngagement": "Engagement Patient et Membre",
+    "brandArchitect": "Digital Architect",
+    "learnMore": "En savoir plus",
+    "whyChoose": "Pourquoi Choisir BILLIANT?",
+    "trusted": "Approuvé par plus de 3 millions de professionnels de santé dans le monde",
+    "cta": "Commencer le Diagnostic à Distance",
+    "audiences": {
+      "individuals": {
+        "label": "Individus",
+        "title": "Soins Personnels, Partout",
+        "description": "Consultations à distance, triage assisté par IA et dossiers médicaux sécurisés — pour les patients qui ont besoin de soins sans salle d'attente."
+      },
+      "groups": {
+        "label": "Groupes",
+        "title": "BILLIANT Pro Suite",
+        "description": "Aide à la décision clinique et médicamenteuse fondée sur des preuves pour les petites pratiques et équipes de soins — approuvé par plus de 3 millions de professionnels."
+      },
+      "enterprises": {
+        "label": "Entreprises",
+        "title": "BILLIANT Enterprise Suite",
+        "description": "CDS unifié, informations médicamenteuses de référence, engagement patient et éducation pour hôpitaux, payeurs et écosystèmes de santé modernes."
+      }
+    },
+    "highlights": {
+      "evidence": {
+        "title": "Excellence Fondée sur les Preuves",
+        "text": "Informations cliniques précises et à jour, reconnues mondialement."
+      },
+      "ai": {
+        "title": "Diagnostics à Distance Assistés par IA",
+        "text": "Eclipse LLM trie les symptômes et prépare les cas pour l'examen du médecin."
+      },
+      "security": {
+        "title": "Sécurité de Niveau Entreprise",
+        "text": "Chiffrement AES-256, journalisation des consentements et flux conformes HIPAA."
+      },
+      "scale": {
+        "title": "Adapté à Toute Échelle",
+        "text": "Des praticiens solo aux grands systèmes de santé — une seule plateforme."
+      }
+    }
+  },
+  "LoginPage": {
+    "title": "Connectez-vous à votre compte",
+    "subtitle": "Connectez-vous pour accéder à votre compte",
+    "usernameOrEmail": "Nom d'utilisateur ou Email",
+    "emailPlaceholder": "vous@exemple.com",
+    "continue": "Continuer",
+    "signingIn": "Connexion...",
+    "forgotUsername": "Nom d'utilisateur oublié",
+    "noAccount": "Vous n'avez pas de compte?",
+    "createAccount": "Créer un compte maintenant",
+    "backToHome": "Retour à l'accueil",
+    "demoAccess": "Accès Démo Rapide:",
+    "loginSuccess": "Connexion réussie! Redirection vers votre tableau de bord...",
+    "loginSuccessUnverified": "Connexion réussie! Veuillez vérifier votre email pour accéder à toutes les fonctionnalités.",
+    "loginFailed": "Échec de la connexion. Vérifiez vos identifiants.",
+    "signIn": "Se Connecter",
+    "chooseAccountType": "Choisissez votre type de compte",
+    "patient": "Patient",
+    "doctor": "Médecin",
+    "emailAddress": "Adresse Email",
+    "password": "Mot de Passe",
+    "passwordPlaceholder": "Entrez votre mot de passe",
+    "rememberMe": "Se souvenir de moi",
+    "forgotPassword": "Mot de passe oublié?",
+    "signInButton": "Se Connecter",
+    "orContinueWith": "Ou continuer avec",
+    "google": "Google",
+    "facebook": "Facebook",
+    "signUp": "S'inscrire",
+    "admin": "Admin",
+    "continueSubtitle": "Connectez-vous pour continuer sur BILLIANT"
+  },
+  "RegisterPage": {
+    "title": "Créez Votre Compte",
+    "subtitle": "Rejoignez BILLIANT pour un accès plus rapide aux soins de santé",
+    "patientRegistration": "Inscription Patient",
+    "fillDetails": "Remplissez vos coordonnées pour commencer",
+    "firstName": "Prénom",
+    "firstNamePlaceholder": "Jean",
+    "lastName": "Nom de Famille",
+    "lastNamePlaceholder": "Dupont",
+    "emailAddress": "Adresse Email",
+    "emailPlaceholder": "jean.dupont@exemple.com",
+    "phoneNumber": "Numéro de Téléphone",
+    "phonePlaceholder": "+33 6 12 34 56 78",
+    "dateOfBirth": "Date de Naissance",
+    "gender": "Genre",
+    "selectGender": "Sélectionner le genre",
+    "male": "Homme",
+    "female": "Femme",
+    "other": "Autre",
+    "preferNotToSay": "Je préfère ne pas dire",
+    "password": "Mot de Passe",
+    "passwordPlaceholder": "Minimum 8 caractères",
+    "confirmPassword": "Confirmer le Mot de Passe",
+    "confirmPasswordPlaceholder": "Saisissez à nouveau votre mot de passe",
+    "agreeToTerms": "J'accepte les",
+    "termsOfService": "Conditions d'Utilisation",
+    "and": "et",
+    "privacyPolicy": "Politique de Confidentialité",
+    "createAccount": "Créer un Compte",
+    "healthcareProfessional": "Êtes-vous un professionnel de santé?",
+    "registerAsDoctor": "S'inscrire comme Médecin",
+    "alreadyHaveAccount": "Vous avez déjà un compte?",
+    "signIn": "Se connecter",
+    "required": "*",
+    "creatingAccount": "Création du compte...",
+    "registrationSuccess": "Inscription réussie !",
+    "redirectingToLogin": "Redirection vers la connexion...",
+    "passwordsDoNotMatch": "Les mots de passe ne correspondent pas",
+    "passwordTooShort": "Le mot de passe doit contenir au moins 8 caractères",
+    "registrationFailed": "Échec de l'inscription. Veuillez réessayer.",
+    "backToHome": "Retour à l'accueil"
+  },
+  "AboutPage": {
+    "title": "À Propos de BILLIANT",
+    "subtitle": "Nous sommes en mission pour rendre les soins de santé de qualité accessibles, abordables et disponibles pour tous grâce à des professionnels médicaux vérifiés.",
+    "ourMission": "Notre Mission",
+    "missionText1": "Simplifier les soins de santé en construisant une plateforme numérique complète qui connecte les patients avec des professionnels médicaux qualifiés, des hôpitaux, des laboratoires, des pharmacies et des prestataires de soins de santé, permettant un diagnostic plus rapide, un accès plus facile au traitement et de meilleurs résultats pour les patients.",
+    "missionText2": "Nous maintenons les plus hauts standards de qualité médicale, de confidentialité et de confiance tout en tirant parti de la technologie pour éliminer les retards inutiles et améliorer la prestation des soins de santé.",
+    "ourValues": "Nos Valeurs",
+    "values": {
+      "patientCentered": {
+        "title": "Centré sur le Patient",
+        "description": "Nous plaçons les patients au premier plan dans tout ce que nous faisons"
+      },
+      "humanPowered": {
+        "title": "Alimenté par l'Humain",
+        "description": "De vrais professionnels de santé, pas des algorithmes d'IA"
+      },
+      "trustPrivacy": {
+        "title": "Confiance et Confidentialité",
+        "description": "Vos données de santé sont sécurisées et protégées"
+      },
+      "qualityCare": {
+        "title": "Soins de Qualité",
+        "description": "Des professionnels vérifiés offrant d'excellents soins"
+      }
+    },
+    "stats": {
+      "doctors": "Médecins Vérifiés",
+      "patients": "Patients Servis",
+      "consultations": "Consultations",
+      "rating": "Note des Patients"
+    }
+  },
+  "ContactPage": {
+    "title": "Contactez-Nous",
+    "subtitle": "Nous sommes là pour vous aider. Contactez-nous.",
+    "sendMessage": "Envoyez-nous un message",
+    "fullName": "Nom Complet",
+    "fullNamePlaceholder": "Jean Dupont",
+    "email": "Email",
+    "emailPlaceholder": "jean@exemple.com",
+    "subject": "Sujet",
+    "subjectPlaceholder": "Comment pouvons-nous vous aider?",
+    "message": "Message",
+    "messagePlaceholder": "Votre message...",
+    "sendButton": "Envoyer le Message",
+    "emailLabel": "Email",
+    "phoneLabel": "Téléphone",
+    "phoneHours": "Lun-Ven 9h-18h EST",
+    "officeLabel": "Bureau",
+    "officeAddress": "123 Avenue des Soins de Santé\nNew York, NY 10001\nÉtats-Unis",
+    "businessHoursLabel": "Heures d'Ouverture",
+    "businessHours": "Lundi - Vendredi: 9h00 - 18h00\nSamedi: 10h00 - 16h00\nDimanche: Fermé"
+  },
+  "DoctorsPage": {
+    "title": "Trouver un Médecin",
+    "subtitle": "Connectez-vous avec des professionnels de santé vérifiés",
+    "searchPlaceholder": "Rechercher par nom, spécialité ou condition...",
+    "searchButton": "Rechercher",
+    "verifiedProfessionals": "professionnels médicaux vérifiés",
+    "filters": "Filtres",
+    "specialty": "Spécialité",
+    "sortBy": "Trier par",
+    "highestRated": "Mieux Notés",
+    "mostExperienced": "Plus Expérimentés",
+    "lowestFee": "Tarif le Plus Bas",
+    "highestFee": "Tarif le Plus Élevé",
+    "acceptingNewPatients": "Accepte de Nouveaux Patients",
+    "clearFilters": "Effacer les Filtres",
+    "noDoctorsFound": "Aucun médecin trouvé correspondant à vos critères.",
+    "loading": "Chargement des médecins...",
+    "yearsExperience": "ans d'expérience",
+    "consultation": "consultation",
+    "acceptingPatients": "Accepte de Nouveaux Patients",
+    "viewProfile": "Voir le Profil",
+    "allSpecialties": "Toutes les Spécialités",
+    "cardiology": "Cardiologie",
+    "dermatology": "Dermatologie",
+    "pediatrics": "Pédiatrie",
+    "orthopedics": "Orthopédie",
+    "neurology": "Neurologie",
+    "psychiatry": "Psychiatrie",
+    "gynecology": "Gynécologie",
+    "ophthalmology": "Ophtalmologie",
+    "generalMedicine": "Médecine Générale"
+  },
+  "DoctorProfile": {
+    "about": "À propos",
+    "availability": "Disponibilité",
+    "reviews": "Avis",
+    "location": "Emplacement",
+    "bookAppointment": "Prendre Rendez-vous",
+    "message": "Message",
+    "officeHours": "Heures de Bureau",
+    "scheduleAppointment": "Planifiez votre rendez-vous pendant ces heures",
+    "patientReviews": "Avis des Patients",
+    "readReviews": "Lisez ce que les patients disent du Dr. {name}",
+    "reviewsComingSoon": "Avis à venir...",
+    "clinicLocation": "Emplacement de la Clinique",
+    "mapPlaceholder": "Emplacement de la carte",
+    "educationCredentials": "Éducation et Références",
+    "education": "Éducation",
+    "certifications": "Certifications",
+    "licenseNumber": "Numéro de Licence",
+    "notFoundTitle": "Profil du médecin introuvable ou non disponible.",
+    "goBack": "Retour",
+    "loadingProfile": "Chargement du profil..."
+  },
+  "SubscribeModal": {
+    "title": "Vous avez un ami dans cette bataille.",
+    "subtitle": "Recevez les dernières nouvelles sur la santé, les options de traitement, les conseils pour les visites chez le médecin, ainsi que des histoires inspirantes.",
+    "emailPlaceholder": "Entrez votre email",
+    "subscribeButton": "S'ABONNER",
+    "subscribing": "ABONNEMENT EN COURS...",
+    "successTitle": "Abonnement réussi!",
+    "successMessage": "Bienvenue chez BILLIANT",
+    "privacyNote": "Votre vie privée est importante pour nous. Toute information que vous nous fournissez via ce site web peut être placée par nous sur des serveurs situés dans des pays en dehors de l'UE. Si vous n'acceptez pas ce placement, ne fournissez pas les informations.",
+    "privacySettings": "Paramètres de Confidentialité",
+    "newsletters": "Bulletins",
+    "healthTopics": "Sujets de Santé",
+    "copyright": "© 2026 BILLIANT Health LLC. Tous droits réservés. BILLIANT Health est une organisation à but non lucratif 501(c)(3). Nos services web, contenu et produits sont à des fins d'information uniquement.",
+    "stayConnected": "Restez Connecté",
+    "joinCommunity": "Rejoignez notre communauté de santé"
+  },
+  "AuthLanguage": {
+    "label": "Langue",
+    "english": "English",
+    "arabic": "العربية",
+    "french": "Français"
+  },
+  "NotFound": {
+    "title": "Page introuvable",
+    "description": "Désolé, nous n'avons pas trouvé la page que vous cherchez. Elle a peut‑être été déplacée, supprimée ou n'a jamais existé.",
+    "goHome": "Retour à l'accueil",
+    "findDoctor": "Trouver un médecin",
+    "popularPages": "Pages populaires",
+    "needHelp": "Besoin d'aide ?",
+    "helpDescription": "Si vous pensez qu'il s'agit d'une erreur, contactez notre équipe d'assistance.",
+    "contactSupport": "Contacter l'assistance",
+    "searchArticles": "Rechercher des articles",
+    "articles": "Articles",
+    "about": "À propos",
+    "resources": "Ressources",
+    "contact": "Contact"
+  },
+  "Blog": {
+    "latestArticles": "Derniers articles",
+    "publishedCount": "{count} {count, plural, one {article publié} other {articles publiés}}",
+    "freshWriting": "De nouveaux textes, publiés au fil de l’eau.",
+    "newer": "← Articles plus récents",
+    "older": "Articles plus anciens →",
+    "pageOf": "Page {page} sur {total}",
+    "readArticle": "Lire l'article",
+    "minRead": "{count} min de lecture",
+    "relatedArticles": "Articles connexes",
+    "newsletterEyebrow": "Newsletter",
+    "newsletterTitle": "Recevez nos meilleurs articles par e‑mail",
+    "newsletterBody": "Des conseils fondés sur la recherche et des insights pratiques, chaque semaine.",
+    "newsletterEmail": "Votre adresse e‑mail",
+    "newsletterSubscribe": "S'abonner",
+    "newsletterPrivacy": "Pas de spam. Désabonnement à tout moment. Enregistré dans notre liste d’abonnés.",
+    "newsletterDoneTitle": "Vous êtes abonné",
+    "newsletterDoneBody": "Surveillez votre boîte de réception pour le prochain numéro.",
+    "helpfulQuestion": "Cet article vous a‑t‑il été utile ?",
+    "helpfulYes": "Oui",
+    "helpfulNo": "Non",
+    "helpfulThanks": "Merci pour votre retour",
+    "helpfulStats": "{yes} lecteurs sur {total} l’ont trouvé utile",
+    "helpfulError": "Impossible d’enregistrer votre vote.",
+    "advertisement": "Publicité",
+    "emptyArticles": "Aucun article pour le moment. Revenez bientôt.",
+    "allArticles": "Tous les articles",
+    "moreIn": "Plus dans {category}",
+    "seeAllIn": "Voir tous les articles {category}",
+    "categoryCount": "{count} {count, plural, one {article} other {articles}} dans {category}",
+    "tagCount": "{count} {count, plural, one {article} other {articles}} étiquetés {tag}",
+    "emptyCategory": "Aucun article dans cette catégorie pour le moment.",
+    "emptyTag": "Aucun article avec cette étiquette pour le moment."
+  }
+}

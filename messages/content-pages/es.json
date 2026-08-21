@@ -1,0 +1,604 @@
+{
+  "ui": {
+    "signInContinue": "Inicia sesión para continuar",
+    "signInRequest": "Inicia sesión para solicitar atención",
+    "overview": "Resumen",
+    "expect": "Qué puedes esperar",
+    "viewAll": "VER TODOS LOS RECURSOS",
+    "partOf": "Parte de",
+    "viewPage": "Ver {title}",
+    "resourcesSubtitle": "Explora todos los temas de BILLIANT — luego inicia sesión para solicitar atención, diagnóstico o una cuenta de profesional.",
+    "ourValueContext": "Por qué importa",
+    "exploreValue": "Explorar Nuestro valor",
+    "relatedValue": "Más en Nuestro valor"
+  },
+  "pages": {
+    "heart-disease": {
+      "overview": "BILLIANT te conecta con cardiólogos verificados para dolor de pecho, presión arterial, seguimiento postprocedimiento y prevención. Inicia sesión para una consulta remota y compartir analíticas de forma segura.",
+      "topics": [
+        "Dolor de pecho y palpitaciones",
+        "Hipertensión",
+        "Control del colesterol",
+        "Seguimiento de insuficiencia cardíaca",
+        "Cuidado postprocedimiento",
+        "Prevención y estilo de vida"
+      ],
+      "highlights": [
+        {
+          "title": "ECG y archivos a distancia",
+          "text": "Sube informes para revisión médica desde casa o en movimiento."
+        },
+        {
+          "title": "Especialistas verificados",
+          "text": "Cardiólogos licenciados — no un diagnóstico automatizado."
+        },
+        {
+          "title": "Seguimiento más rápido",
+          "text": "Ajustes de medicación y planes en minutos, no semanas."
+        }
+      ]
+    },
+    "mental-health": {
+      "overview": "Accede a terapia y psiquiatría para ansiedad, depresión, estrés, TEPT y más. Inicia sesión para coincidir con un clínico verificado y empezar una visita remota.",
+      "topics": [
+        "Ansiedad",
+        "Depresión",
+        "Estrés",
+        "TEPT",
+        "Gestión de medicamentos",
+        "Salud mental juvenil"
+      ],
+      "highlights": [
+        {
+          "title": "Terapia y psiquiatría",
+          "text": "Conversación y revisión de medicación especializada en una plataforma."
+        },
+        {
+          "title": "Privado por diseño",
+          "text": "Visitas y registros cifrados. Tú controlas lo que compartes."
+        },
+        {
+          "title": "Continuidad de la atención",
+          "text": "Seguimientos que viajan contigo — en casa o en cualquier lugar."
+        }
+      ]
+    },
+    "diabetes": {
+      "overview": "Gestiona diabetes tipo 1, tipo 2 y prediabetes con controles remotos, revisión de analíticas y orientación farmacológica. Inicia sesión para compartir registros de glucosa.",
+      "topics": [
+        "Diabetes tipo 2",
+        "Diabetes tipo 1",
+        "Prediabetes",
+        "Revisión de medicación",
+        "Dieta y actividad",
+        "Cribado de complicaciones"
+      ],
+      "highlights": [
+        {
+          "title": "Revisión de analíticas",
+          "text": "Sube A1C y paneles metabólicos para interpretación clínica."
+        },
+        {
+          "title": "Planes de medicación",
+          "text": "Recargas y ajustes coordinados por médicos verificados."
+        },
+        {
+          "title": "Apoyo cotidiano",
+          "text": "Planes prácticos que puedes seguir en casa o en movimiento."
+        }
+      ]
+    },
+    "respiratory": {
+      "overview": "Obtén criterio especialista sobre tos, crisis de asma, EPOC e infecciones. Inicia sesión para subir imagen o notas de flujo pico y solicitar atención.",
+      "topics": [
+        "Asma",
+        "EPOC",
+        "Infecciones sinusales",
+        "Tos y bronquitis",
+        "Alergias",
+        "Recuperación posviral"
+      ],
+      "highlights": [
+        {
+          "title": "Revisión de imagen",
+          "text": "Comparte radiografías e informes para interpretación médica."
+        },
+        {
+          "title": "Planes de acción",
+          "text": "Pasos claros para crisis, inhaladores y cuándo escalar."
+        },
+        {
+          "title": "Seguimiento de infección",
+          "text": "Controles remotos tras resfriado, gripe o COVID."
+        }
+      ]
+    },
+    "eye-health": {
+      "overview": "Solicita triaje remoto para ojo rojo, infecciones, sequedad y problemas crónicos. Inicia sesión para compartir fotos o notas de exámenes previos.",
+      "topics": [
+        "Conjuntivitis",
+        "Ojo seco",
+        "Ojo rojo e irritación",
+        "Síntomas alérgicos",
+        "Seguimiento tras exámenes",
+        "Cuándo acudir en persona"
+      ],
+      "highlights": [
+        {
+          "title": "Revisión con fotos",
+          "text": "Sube fotos del ojo de forma segura para cribado especialista."
+        },
+        {
+          "title": "Triaje rápido",
+          "text": "Sabe qué se puede tratar a distancia frente a la clínica."
+        },
+        {
+          "title": "Apoyo de recetas",
+          "text": "Gotas y recargas tras la revisión clínica."
+        }
+      ]
+    },
+    "bone-joint": {
+      "overview": "Esguinces, dolor articular, de espalda y seguimiento postlesión con clínicos de ortopedia y medicina deportiva. Inicia sesión para compartir imagen y empezar una solicitud.",
+      "topics": [
+        "Dolor de espalda y cuello",
+        "Dolor de rodilla y cadera",
+        "Esguinces y distensiones",
+        "Lesiones deportivas",
+        "Seguimiento de artritis",
+        "Orientación de rehabilitación"
+      ],
+      "highlights": [
+        {
+          "title": "Imagen primero",
+          "text": "Sube informes de RM o radiografía antes de la visita remota."
+        },
+        {
+          "title": "Planes de movimiento",
+          "text": "Pasos de rehabilitación en casa revisados por especialistas."
+        },
+        {
+          "title": "Acceso más rápido",
+          "text": "Evita largas listas de espera de ortopedia en muchos seguimientos."
+        }
+      ]
+    },
+    "clinical-support": {
+      "overview": "El apoyo a decisiones clínicas de BILLIANT ayuda a pacientes y equipos a revisar síntomas, archivos y siguientes pasos con especialistas verificados. Inicia sesión para un diagnóstico remoto.",
+      "topics": [
+        "Triaje de síntomas",
+        "Emparejamiento de especialidad",
+        "Resúmenes basados en evidencia",
+        "Borradores de plan de atención",
+        "Segundas opiniones",
+        "Puntos de seguimiento"
+      ],
+      "highlights": [
+        {
+          "title": "Confirmado por un humano",
+          "text": "La IA puede ayudar en el triaje; un médico licenciado confirma cada plan."
+        },
+        {
+          "title": "Con archivos",
+          "text": "Analíticas, imagen y notas junto a la recomendación clínica."
+        },
+        {
+          "title": "Hecho para la distancia",
+          "text": "Diseñado para diagnóstico totalmente remoto, no salas de espera."
+        }
+      ]
+    },
+    "drug-support": {
+      "overview": "Revisa medicamentos, interacciones y recargas con clínicos que ven tu historial. Inicia sesión para compartir tu lista actual y solicitar una revisión de receta.",
+      "topics": [
+        "Comprobación de interacciones",
+        "Solicitudes de recarga",
+        "Cribado de alergias",
+        "Ajustes de dosis",
+        "Nuevas terapias",
+        "Apoyo a la adherencia"
+      ],
+      "highlights": [
+        {
+          "title": "Listas más seguras",
+          "text": "Detecta conflictos antes de añadir un medicamento."
+        },
+        {
+          "title": "Validación clínica",
+          "text": "Las recetas quedan con profesionales licenciados."
+        },
+        {
+          "title": "Acceso en cualquier lugar",
+          "text": "Actualiza tu lista desde casa o de viaje."
+        }
+      ]
+    },
+    "innovation": {
+      "overview": "Eclipse LLM y los flujos de BILLIANT unen revisión cifrada, triaje de especialidad y consultas por video. Inicia sesión para probar el diagnóstico remoto.",
+      "topics": [
+        "Eclipse LLM",
+        "Cargas cifradas",
+        "Enrutamiento de especialidad",
+        "Visitas por video y chat",
+        "Soporte multilingüe",
+        "Traspaso del equipo"
+      ],
+      "highlights": [
+        {
+          "title": "La distancia primero",
+          "text": "Para pacientes que no pueden esperar en colas de clínica."
+        },
+        {
+          "title": "Pasos conectados",
+          "text": "De la carga al informe médico en un solo hilo."
+        },
+        {
+          "title": "Listo para empresa",
+          "text": "La misma plataforma para personas, grupos y sistemas de salud."
+        }
+      ]
+    },
+    "education": {
+      "overview": "Los clínicos pueden seguir actualizaciones y aprendizaje basado en casos ligado a la atención remota. Inicia sesión con una cuenta de profesional para continuar.",
+      "topics": [
+        "Revisión de casos",
+        "Actualizaciones de guías",
+        "Buenas prácticas remotas",
+        "Razonamiento diagnóstico",
+        "Atención en equipo",
+        "Estándares editoriales"
+      ],
+      "highlights": [
+        {
+          "title": "Ligado a la práctica",
+          "text": "Aprende de las mismas vías usadas en consultas en vivo."
+        },
+        {
+          "title": "Rigor editorial",
+          "text": "Contenido revisado por BILLIANT Clinical Affairs."
+        },
+        {
+          "title": "Acceso de profesional",
+          "text": "Inicia sesión como médico para desbloquear herramientas educativas."
+        }
+      ]
+    },
+    "insights": {
+      "overview": "Grupos y empresas obtienen informes de tiempos de acceso, mix de especialidades y volumen de consultas remotas. Inicia sesión en la suite de negocio para ver insights.",
+      "topics": [
+        "Métricas de acceso",
+        "Demanda por especialidad",
+        "Salud de la plantilla",
+        "Indicadores de calidad",
+        "Informes de cobertura",
+        "Planificación de escala"
+      ],
+      "highlights": [
+        {
+          "title": "Claridad operativa",
+          "text": "Ve dónde bajan las esperas tras el enrutamiento remoto."
+        },
+        {
+          "title": "Calidad con costo",
+          "text": "Equilibra resultados y gasto con informes transparentes."
+        },
+        {
+          "title": "Acceso a suites",
+          "text": "Inicia sesión en paneles Pro y Enterprise."
+        }
+      ]
+    },
+    "why-choose": {
+      "overview": "BILLIANT está hecho para quien necesita médicos reales sin salas de espera. Inicia sesión para una consulta remota o únete como profesional.",
+      "topics": [
+        "Profesionales verificados",
+        "Diagnóstico remoto",
+        "Acceso más rápido",
+        "Precios transparentes",
+        "Registros cifrados",
+        "Atención humana"
+      ],
+      "highlights": [
+        {
+          "title": "No es una clínica chatbot",
+          "text": "La IA asiste; los clínicos licenciados deciden."
+        },
+        {
+          "title": "Una plataforma",
+          "text": "Consultas, registros, analíticas y recetas juntos."
+        },
+        {
+          "title": "Listo cuando tú lo estás",
+          "text": "En casa, en movimiento o en cualquier lugar."
+        }
+      ],
+      "mission": "Nuestra misión es ayudarte a vivir mejor y más tiempo — con médicos reales, no salas de espera.",
+      "context": "BILLIANT reúne especialistas verificados, diagnósticos remotos e historiales cifrados en una plataforma pensada para la distancia. La IA puede ayudar en el triage; los clínicos con licencia deciden."
+    },
+    "benefits": {
+      "overview": "Da a empleados y miembros acceso más rápido a especialistas con BILLIANT Pro y Enterprise. Inicia sesión para explorar las suites de negocio.",
+      "topics": [
+        "Acceso de la plantilla",
+        "Cobertura de miembros",
+        "Informes",
+        "Navegación de atención",
+        "Diagnóstico remoto",
+        "Controles de administración"
+      ],
+      "highlights": [
+        {
+          "title": "Menos tiempo perdido",
+          "text": "Los empleados reciben atención sin un día entero en clínica."
+        },
+        {
+          "title": "Informes claros",
+          "text": "Uso y resultados en una sola vista."
+        },
+        {
+          "title": "Escala contigo",
+          "text": "De grupos a sistemas de salud."
+        }
+      ],
+      "mission": "Mejor acceso para cada miembro de tu equipo — sin tiempo perdido en la clínica.",
+      "context": "Las suites Pro y Enterprise dan a grupos y sistemas de salud acceso remoto a especialistas, informes de uso y orientación de cuidados. Los líderes ven resultados; los empleados reciben atención en minutos."
+    },
+    "editorial": {
+      "overview": "BILLIANT Clinical Affairs revisa las vías usadas en diagnóstico remoto. Inicia sesión para ver cómo se prepara tu caso para un médico.",
+      "topics": [
+        "Revisión de fuentes",
+        "Validación de especialista",
+        "Cadencia de actualización",
+        "Controles de conflicto",
+        "Lenguaje claro para el paciente",
+        "Pista de auditoría"
+      ],
+      "highlights": [
+        {
+          "title": "Revisión médica",
+          "text": "Vías atribuidas a Clinical Affairs."
+        },
+        {
+          "title": "Contenido vivo",
+          "text": "Actualizaciones cuando cambian las guías."
+        },
+        {
+          "title": "Pasos transparentes",
+          "text": "Puedes ver cómo se formó una recomendación."
+        }
+      ],
+      "mission": "Contenido clínico en el que puedes confiar — revisado, atribuido y actualizado.",
+      "context": "BILLIANT Clinical Affairs revisa las rutas detrás del diagnóstico remoto. Cada recomendación es transparente: fuentes, firma del especialista y rastro de auditoría."
+    },
+    "ai-content": {
+      "overview": "Eclipse LLM ayuda a organizar síntomas y documentos. Un médico verificado sigue siendo dueño del diagnóstico y el tratamiento. Inicia sesión para una solicitud remota.",
+      "topics": [
+        "Asistencia de triaje",
+        "Resumen de documentos",
+        "Sugerencia de especialidad",
+        "Soporte de idioma",
+        "Confirmación médica",
+        "Límites de seguridad"
+      ],
+      "highlights": [
+        {
+          "title": "Asistir, no reemplazar",
+          "text": "Sin diagnóstico autónomo en BILLIANT."
+        },
+        {
+          "title": "Preparación más rápida",
+          "text": "Los médicos reciben un expediente más claro."
+        },
+        {
+          "title": "Tú mantienes el control",
+          "text": "Inicia sesión para enviar solo lo que eliges compartir."
+        }
+      ],
+      "mission": "IA que prepara el caso — nunca reemplaza al clínico.",
+      "context": "Eclipse LLM organiza síntomas y documentos para que los médicos reciban un expediente más claro. El diagnóstico y el tratamiento siguen en manos de médicos verificados. Tú controlas lo que compartes."
+    },
+    "aligning-teams": {
+      "overview": "La atención remota falla cuando los equipos no comparten el mismo archivo. BILLIANT mantiene la solicitud, documentos e informe en un hilo. Inicia sesión para colaborar.",
+      "topics": [
+        "Planes de atención compartidos",
+        "Acceso por rol",
+        "Traspasos",
+        "Visibilidad del paciente",
+        "Notas y archivos",
+        "Responsables de seguimiento"
+      ],
+      "highlights": [
+        {
+          "title": "Un solo hilo",
+          "text": "Sin correos dispersos ni adjuntos perdidos."
+        },
+        {
+          "title": "Dueños claros",
+          "text": "Ve quién revisa, cotiza y hace seguimiento."
+        },
+        {
+          "title": "Paciente incluido",
+          "text": "Actualizaciones de estado sin árbol telefónico."
+        }
+      ]
+    },
+    "quality-costs": {
+      "overview": "La revisión especialista remota puede evitar pruebas duplicadas y viajes largos. Inicia sesión para solicitar atención con precios transparentes.",
+      "topics": [
+        "Evitar pruebas duplicadas",
+        "Costo de visita transparente",
+        "La especialidad correcta primero",
+        "Menos inasistencias",
+        "Vías de seguro y pago",
+        "Seguimiento de resultados"
+      ],
+      "highlights": [
+        {
+          "title": "La primera visita correcta",
+          "text": "Dirige a la especialidad que realmente encaja."
+        },
+        {
+          "title": "Un costo visible",
+          "text": "Estimaciones antes de comprometerte — inicia sesión para tu tarifa."
+        },
+        {
+          "title": "Calidad intacta",
+          "text": "Clínicos licenciados, no el bot más barato."
+        }
+      ]
+    },
+    "equity": {
+      "overview": "La geografía y las listas de espera no deben decidir quién ve a un especialista. BILLIANT está hecho para el acceso remoto. Inicia sesión para solicitar atención desde cualquier lugar.",
+      "topics": [
+        "Acceso rural",
+        "Soporte de idioma",
+        "Opciones fuera de horario",
+        "Visitas accesibles",
+        "Viaje y movilidad",
+        "Enrutamiento justo"
+      ],
+      "highlights": [
+        {
+          "title": "La distancia no es barrera",
+          "text": "La misma red de especialistas en casa o en el mundo."
+        },
+        {
+          "title": "Idiomas que viajan",
+          "text": "Admisión e emparejamiento médico multilingüe."
+        },
+        {
+          "title": "Inicia sesión para empezar",
+          "text": "Tu ubicación no bloquea una solicitud."
+        }
+      ]
+    },
+    "burnout": {
+      "overview": "Los profesionales reciben casos estructurados, no caos de bandeja. Inicia sesión como médico para ver colas de consulta y responder a tu ritmo.",
+      "topics": [
+        "Ingresos estructurados",
+        "Revisión asíncrona de archivos",
+        "Menos bucles administrativos",
+        "Colas más claras",
+        "Tiempo de enfoque protegido",
+        "Días remotos primero"
+      ],
+      "highlights": [
+        {
+          "title": "Los casos llegan listos",
+          "text": "Síntomas, archivos y triaje en una vista."
+        },
+        {
+          "title": "Respuesta flexible",
+          "text": "Revisa cuando puedas — no solo en horario de clínica."
+        },
+        {
+          "title": "Acceso de profesional",
+          "text": "Las cuentas de médico desbloquean la bandeja clínica."
+        }
+      ]
+    },
+    "outcomes": {
+      "overview": "Cada solicitud puede producir un informe médico, siguientes pasos y seguimiento. Inicia sesión para guardar tus resultados en un solo registro.",
+      "topics": [
+        "Informes médicos",
+        "Tasas de seguimiento",
+        "Tiempo hasta el especialista",
+        "Progreso reportado por el paciente",
+        "Bucles cerrados",
+        "Revisión de calidad"
+      ],
+      "highlights": [
+        {
+          "title": "Planes escritos",
+          "text": "Sal con un informe, no solo una llamada."
+        },
+        {
+          "title": "Sigue lo que cambió",
+          "text": "Analíticas, medicamentos y visitas juntos."
+        },
+        {
+          "title": "Se requiere cuenta",
+          "text": "Inicia sesión para que los resultados se vinculen a ti, no a un invitado."
+        }
+      ]
+    },
+    "care-management": {
+      "overview": "La gestión de atención no debe reiniciarse en cada puerta de clínica. BILLIANT mantiene el hilo. Inicia sesión para continuar una solicitud o empezar una nueva.",
+      "topics": [
+        "Seguimiento continuo",
+        "Listas de tareas",
+        "Visibilidad familiar",
+        "Vías crónicas",
+        "Escala empresarial",
+        "Traspasos que permanecen"
+      ],
+      "highlights": [
+        {
+          "title": "El hilo persiste",
+          "text": "Los síntomas nuevos se suman a la misma historia."
+        },
+        {
+          "title": "Escala sin caos",
+          "text": "Grupos y empresas comparten un mismo playbook."
+        },
+        {
+          "title": "Inicia sesión para continuar",
+          "text": "La gestión de atención está ligada a tu cuenta."
+        }
+      ]
+    },
+    "mental-wellbeing": {
+      "title": "Bienestar mental",
+      "subtitle": "Apoyo para ansiedad, ánimo, sueño y estrés cotidiano — con clínicos reales.",
+      "overview": "El bienestar mental forma parte de cada recorrido BILLIANT. Inicia sesión para solicitar terapia o psiquiatría, o explora condiciones relacionadas.",
+      "topics": [
+        "Ansiedad",
+        "Depresión",
+        "Sueño",
+        "Estrés",
+        "Duelo",
+        "Apoyo de pareja"
+      ],
+      "highlights": [
+        {
+          "title": "Apoyo humano",
+          "text": "Terapeutas y psiquiatras licenciados."
+        },
+        {
+          "title": "Remoto por defecto",
+          "text": "Visitas privadas desde casa."
+        },
+        {
+          "title": "Inicia sesión para reservar",
+          "text": "Las cuentas mantienen tu historial seguro."
+        }
+      ]
+    },
+    "living-well": {
+      "title": "Vivir bien",
+      "subtitle": "Prevención, estilo de vida y atención cotidiana que encaja en tu horario.",
+      "overview": "Vivir bien significa chequeos, prevención y respuestas antes de una crisis. Inicia sesión para solicitar atención primaria o explorar condiciones.",
+      "topics": [
+        "Prevención",
+        "Nutrición básica",
+        "Sueño y energía",
+        "Seguimiento crónico",
+        "Cuidado familiar",
+        "Registros listos para viajar"
+      ],
+      "highlights": [
+        {
+          "title": "Prevención primero",
+          "text": "Detecta problemas antes de que esperen en una cola."
+        },
+        {
+          "title": "Registros que viajan",
+          "text": "Tu historial permanece contigo."
+        },
+        {
+          "title": "Empieza con el inicio de sesión",
+          "text": "Los planes personalizados requieren una cuenta."
+        }
+      ]
+    }
+  }
+}

@@ -3,6 +3,7 @@ import HeaderLink from "./HeaderLink.astro";
 import BrandLogo from "./BrandLogo.astro";
 import HeaderSearch from "./HeaderSearch.astro";
 import LanguageSwitcher from "./LanguageSwitcher.astro";
+import LoginModal from "./LoginModal.astro";
 import { getLocaleFromPath, localizedPath, type Locale } from "../i18n/locales";
 import { t } from "../i18n/ui";
 
@@ -17,9 +18,11 @@ const aboutHref = localizedPath(locale, "/about/");
 const categoriesHref = localizedPath(locale, "/categories/");
 const contactHref = localizedPath(locale, "/contact/");
 const policiesHref = localizedPath(locale, "/policies/");
+const loginHref = localizedPath(locale, "/login/");
+const adminHref = localizedPath(locale, "/admin/");
 ---
 
-<header>
+<header data-admin-href={adminHref}>
 	<nav>
 		<h2>
 			<BrandLogo href={homeHref} text="Libertta" variant="dark" fontSize={36} fontWeight={700} />
@@ -33,6 +36,26 @@ const policiesHref = localizedPath(locale, "/policies/");
 			<HeaderLink href={policiesHref}>{t(locale, "nav.policies")}</HeaderLink>
 		</div>
 		<div class="header-actions">
+			<button
+				type="button"
+				class="header-subscribe"
+				data-subscribe-open
+			>
+				{t(locale, "nav.subscribe")}
+			</button>
+			<button
+				type="button"
+				class="header-user"
+				data-header-user
+				data-login-open
+				aria-label={t(locale, "nav.signIn")}
+				title={t(locale, "nav.signIn")}
+			>
+				<svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+					<path d="M20 21a8 8 0 0 0-16 0"></path>
+					<circle cx="12" cy="8" r="4"></circle>
+				</svg>
+			</button>
 			<HeaderSearch locale={locale} />
 			<LanguageSwitcher locale={locale} />
 			<button class="mobile-menu-toggle" aria-label={t(locale, "nav.menu")} data-mobile-menu-toggle>
@@ -80,6 +103,71 @@ const policiesHref = localizedPath(locale, "/policies/");
 			<a href={categoriesHref} class="mobile-menu-link">{t(locale, "nav.categories")}</a>
 			<a href={contactHref} class="mobile-menu-link">{t(locale, "nav.contact")}</a>
 			<a href={policiesHref} class="mobile-menu-link">{t(locale, "nav.policies")}</a>
+			<button type="button" class="mobile-menu-link mobile-menu-subscribe" data-subscribe-open>
+				{t(locale, "nav.subscribe")}
+			</button>
+			<button type="button" class="mobile-menu-link" data-login-open data-mobile-user>
+				{t(locale, "nav.signIn")}
+			</button>
+		</div>
+	</div>
+
+	<div class="subscribe-modal" data-subscribe-modal hidden>
+		<div class="subscribe-modal__backdrop" data-subscribe-close></div>
+		<div class="subscribe-modal__panel" role="dialog" aria-modal="true" aria-labelledby="subscribe-modal-title">
+			<button type="button" class="subscribe-modal__close" aria-label="Close" data-subscribe-close>
+				<svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+					<path d="M18 6L6 18M6 6l12 12"></path>
+				</svg>
+			</button>
+
+			<div class="subscribe-modal__grid">
+				<aside class="subscribe-modal__aside" aria-hidden="true">
+					<div class="subscribe-modal__orb subscribe-modal__orb--one"></div>
+					<div class="subscribe-modal__orb subscribe-modal__orb--two"></div>
+					<div class="subscribe-modal__aside-inner">
+						<span class="subscribe-modal__mark">L</span>
+						<h3>{t(locale, "subscribe.asideTitle")}</h3>
+						<p>{t(locale, "subscribe.asideBody")}</p>
+					</div>
+				</aside>
+
+				<div class="subscribe-modal__content">
+					<p class="subscribe-modal__eyebrow">{t(locale, "subscribe.eyebrow")}</p>
+					<h2 id="subscribe-modal-title">{t(locale, "subscribe.title")}</h2>
+					<p class="subscribe-modal__lead">{t(locale, "subscribe.body")}</p>
+
+					<div class="subscribe-modal__success" data-subscribe-success hidden>
+						<div class="subscribe-modal__success-icon" aria-hidden="true">
+							<svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="currentColor" stroke-width="2.25">
+								<path d="M20 6 9 17l-5-5"></path>
+							</svg>
+						</div>
+						<strong data-subscribe-success-title>{t(locale, "subscribe.success")}</strong>
+						<p data-subscribe-success-body>{t(locale, "subscribe.successBody")}</p>
+					</div>
+
+					<div class="subscribe-modal__form-wrap" data-subscribe-form-wrap>
+						<p class="subscribe-modal__status" data-subscribe-status hidden></p>
+						<form class="subscribe-modal__form" data-subscribe-form>
+							<label class="subscribe-modal__label" for="subscribe-email-input">
+								{t(locale, "subscribe.email")}
+							</label>
+							<input
+								id="subscribe-email-input"
+								type="email"
+								name="email"
+								required
+								autocomplete="email"
+								placeholder={t(locale, "subscribe.email")}
+								data-subscribe-email
+							/>
+							<button type="submit" data-subscribe-submit>{t(locale, "subscribe.submit")}</button>
+						</form>
+						<p class="subscribe-modal__privacy">{t(locale, "subscribe.privacy")}</p>
+					</div>
+				</div>
+			</div>
 		</div>
 	</div>
 	<div class="search-mobile-panel" hidden data-search-mobile>
@@ -100,7 +188,12 @@ const policiesHref = localizedPath(locale, "/policies/");
 		</form>
 	</div>
 </header>
+<LoginModal locale={locale} />
 <script>
+	import { isAdminUser, loginUser } from "../lib/blog/auth";
+	import { readStoredUser, storeUser } from "../lib/auth-session";
+	import { addNewsletterSubscription } from "../lib/blog/newsletter";
+
 	// Mobile menu toggle
 	const toggleBtn = document.querySelector('[data-mobile-menu-toggle]') as HTMLButtonElement;
 	const mobileMenu = document.querySelector('[data-mobile-menu]') as HTMLElement;
@@ -132,6 +225,230 @@ const policiesHref = localizedPath(locale, "/policies/");
 			});
 		});
 	}
+
+	const user = readStoredUser();
+	const isAdmin = isAdminUser(user);
+	const userBtn = document.querySelector<HTMLElement>("[data-header-user]");
+	const mobileUser = document.querySelector<HTMLElement>("[data-mobile-user]");
+	const adminPath = document.querySelector<HTMLElement>("header")?.dataset.adminHref;
+
+	const loginModal = document.querySelector<HTMLElement>("[data-login-modal]");
+	const loginError = document.querySelector<HTMLElement>("[data-login-error]");
+	const loginProviders = document.querySelector<HTMLElement>('[data-login-step="providers"]');
+	const loginForm = document.querySelector<HTMLFormElement>("[data-login-form]");
+	const loginEmail = document.querySelector<HTMLInputElement>("[data-login-email]");
+	const loginPassword = document.querySelector<HTMLInputElement>("[data-login-password]");
+	const loginSubmit = document.querySelector<HTMLButtonElement>("[data-login-submit]");
+	const loginAdminHref = loginModal?.dataset.adminHref || adminPath || "/en/admin/";
+
+	const showLoginError = (message: string) => {
+		if (!loginError) return;
+		loginError.hidden = !message;
+		loginError.textContent = message;
+	};
+
+	const showLoginStep = (step: "providers" | "email") => {
+		if (loginProviders) loginProviders.hidden = step !== "providers";
+		if (loginForm) loginForm.hidden = step !== "email";
+	};
+
+	const openLogin = () => {
+		if (!loginModal) return;
+		loginModal.hidden = false;
+		document.body.style.overflow = "hidden";
+		showLoginStep("providers");
+		showLoginError("");
+	};
+
+	const closeLogin = () => {
+		if (!loginModal) return;
+		loginModal.hidden = true;
+		document.body.style.overflow = "";
+		showLoginError("");
+		if (loginPassword) loginPassword.value = "";
+		showLoginStep("providers");
+	};
+
+	const goAdminOrOpenLogin = (event: Event) => {
+		if (isAdmin && adminPath) {
+			event.preventDefault();
+			window.location.href = adminPath;
+			return;
+		}
+		event.preventDefault();
+		openLogin();
+	};
+
+	userBtn?.addEventListener("click", goAdminOrOpenLogin);
+	mobileUser?.addEventListener("click", goAdminOrOpenLogin);
+
+	document.querySelectorAll("[data-login-open]").forEach((el) => {
+		if (el === userBtn || el === mobileUser) return;
+		el.addEventListener("click", (event) => {
+			event.preventDefault();
+			openLogin();
+		});
+	});
+
+	document.querySelectorAll("[data-login-close]").forEach((el) => {
+		el.addEventListener("click", () => closeLogin());
+	});
+
+	document.querySelectorAll("[data-login-provider]").forEach((el) => {
+		el.addEventListener("click", () => {
+			const provider = (el as HTMLElement).dataset.loginProvider;
+			showLoginError(
+				provider === "apple"
+					? "Apple sign-in is not available yet. Continue with email."
+					: "Google sign-in is not available yet. Continue with email."
+			);
+			showLoginStep("email");
+		});
+	});
+
+	document.querySelector("[data-login-email-step]")?.addEventListener("click", () => {
+		showLoginError("");
+		showLoginStep("email");
+		loginEmail?.focus();
+	});
+
+	document.querySelector("[data-login-back]")?.addEventListener("click", () => {
+		showLoginError("");
+		showLoginStep("providers");
+	});
+
+	document.addEventListener("keydown", (event) => {
+		if (event.key === "Escape" && loginModal && !loginModal.hidden) {
+			closeLogin();
+		}
+	});
+
+	loginForm?.addEventListener("submit", async (event) => {
+		event.preventDefault();
+		const email = loginEmail?.value?.trim() || "";
+		const password = loginPassword?.value || "";
+		if (!email || !password) return;
+
+		if (loginSubmit) {
+			loginSubmit.disabled = true;
+			loginSubmit.textContent = "Signing in…";
+		}
+		showLoginError("");
+
+		try {
+			const nextUser = await loginUser(email, password);
+			storeUser(nextUser);
+			if (!isAdminUser(nextUser)) {
+				showLoginError("This account is not an administrator.");
+				return;
+			}
+			window.location.href = loginAdminHref;
+		} catch (err) {
+			showLoginError(err instanceof Error ? err.message : "Sign in failed.");
+		} finally {
+			if (loginSubmit) {
+				loginSubmit.disabled = false;
+				loginSubmit.textContent = "Continue with email";
+			}
+		}
+	});
+
+	// Deep-link: /login or ?signin=1 opens the popup on the current page.
+	const params = new URLSearchParams(window.location.search);
+	if (params.get("signin") === "1" || /\/login\/?$/.test(window.location.pathname)) {
+		if (!isAdmin) openLogin();
+	}
+
+	const subscribeModal = document.querySelector<HTMLElement>("[data-subscribe-modal]");
+	const subscribeForm = document.querySelector<HTMLFormElement>("[data-subscribe-form]");
+	const subscribeFormWrap = document.querySelector<HTMLElement>("[data-subscribe-form-wrap]");
+	const subscribeSuccess = document.querySelector<HTMLElement>("[data-subscribe-success]");
+	const subscribeStatus = document.querySelector<HTMLElement>("[data-subscribe-status]");
+	const subscribeSubmit = document.querySelector<HTMLButtonElement>("[data-subscribe-submit]");
+	const subscribeEmail = document.querySelector<HTMLInputElement>("[data-subscribe-email]");
+	const subscribeLabels = {
+		submit: subscribeSubmit?.textContent || "Subscribe",
+		submitting: "Subscribing…",
+		success: "You're subscribed.",
+		error: "Could not subscribe. Please try again.",
+	};
+
+	const resetSubscribeView = () => {
+		if (subscribeFormWrap) subscribeFormWrap.hidden = false;
+		if (subscribeSuccess) subscribeSuccess.hidden = true;
+		if (subscribeStatus) {
+			subscribeStatus.hidden = true;
+			subscribeStatus.textContent = "";
+			subscribeStatus.classList.remove("is-error", "is-success");
+		}
+	};
+
+	const openSubscribe = () => {
+		if (!subscribeModal) return;
+		resetSubscribeView();
+		subscribeModal.hidden = false;
+		document.body.style.overflow = "hidden";
+		subscribeEmail?.focus();
+	};
+
+	const closeSubscribe = () => {
+		if (!subscribeModal) return;
+		subscribeModal.hidden = true;
+		document.body.style.overflow = "";
+		resetSubscribeView();
+	};
+
+	document.querySelectorAll("[data-subscribe-open]").forEach((el) => {
+		el.addEventListener("click", (event) => {
+			event.preventDefault();
+			openSubscribe();
+		});
+	});
+
+	document.querySelectorAll("[data-subscribe-close]").forEach((el) => {
+		el.addEventListener("click", () => closeSubscribe());
+	});
+
+	document.addEventListener("keydown", (event) => {
+		if (event.key === "Escape" && subscribeModal && !subscribeModal.hidden) {
+			closeSubscribe();
+		}
+	});
+
+	subscribeForm?.addEventListener("submit", async (event) => {
+		event.preventDefault();
+		const email = subscribeEmail?.value?.trim() || "";
+		if (!email) return;
+
+		if (subscribeSubmit) {
+			subscribeSubmit.disabled = true;
+			subscribeSubmit.textContent = subscribeLabels.submitting;
+		}
+		if (subscribeStatus) {
+			subscribeStatus.hidden = true;
+			subscribeStatus.classList.remove("is-error", "is-success");
+		}
+
+		try {
+			await addNewsletterSubscription(email, "header-subscribe");
+			if (subscribeEmail) subscribeEmail.value = "";
+			if (subscribeFormWrap) subscribeFormWrap.hidden = true;
+			if (subscribeSuccess) subscribeSuccess.hidden = false;
+			window.setTimeout(() => closeSubscribe(), 2200);
+		} catch (err) {
+			if (subscribeStatus) {
+				subscribeStatus.hidden = false;
+				subscribeStatus.classList.add("is-error");
+				subscribeStatus.textContent =
+					err instanceof Error ? err.message : subscribeLabels.error;
+			}
+		} finally {
+			if (subscribeSubmit) {
+				subscribeSubmit.disabled = false;
+				subscribeSubmit.textContent = subscribeLabels.submit;
+			}
+		}
+	});
 </script>
 <style>
 	header {
@@ -188,6 +505,62 @@ const policiesHref = localizedPath(locale, "/policies/");
 		gap: 0.5rem;
 	}
 
+	.header-subscribe {
+		display: inline-flex;
+		align-items: center;
+		justify-content: center;
+		padding: 0.35rem 0.95rem;
+		margin: 0;
+		border: 1px solid #fff;
+		border-radius: 999px;
+		background: transparent;
+		color: #fff;
+		font-size: 0.875rem;
+		font-weight: 600;
+		letter-spacing: 0.02em;
+		line-height: 1.2;
+		white-space: nowrap;
+		cursor: pointer;
+		transition: background 0.15s ease, color 0.15s ease;
+	}
+
+	.header-subscribe:hover,
+	.header-subscribe:focus-visible {
+		background: #fff;
+		color: #000;
+		outline: none;
+	}
+
+	.header-user {
+		display: inline-flex;
+		align-items: center;
+		justify-content: center;
+		width: 2.25rem;
+		height: 2.25rem;
+		padding: 0;
+		margin: 0;
+		background: none;
+		border: none;
+		box-shadow: none;
+		outline: none;
+		color: #fff;
+		text-decoration: none;
+		cursor: pointer;
+		font: inherit;
+		transition: color 0.15s ease, opacity 0.15s ease;
+	}
+
+	.header-user:hover,
+	.header-user:focus,
+	.header-user:focus-visible {
+		background: none;
+		border: none;
+		box-shadow: none;
+		outline: none;
+		text-decoration: none;
+		color: #d1d5db;
+	}
+
 	.social-links,
 	.social-links a {
 		display: flex;
@@ -196,6 +569,7 @@ const policiesHref = localizedPath(locale, "/policies/");
 	.social-links a {
 		padding: 0.25rem;
 		color: #fff;
+		text-decoration: none;
 	}
 	.social-links a:hover {
 		color: #d1d5db;
@@ -225,10 +599,6 @@ const policiesHref = localizedPath(locale, "/policies/");
 		transition: max-height 0.3s ease;
 	}
 
-	.mobile-menu.open {
-		max-height: 400px;
-	}
-
 	.mobile-menu-links {
 		display: flex;
 		flex-direction: column;
@@ -246,6 +616,323 @@ const policiesHref = localizedPath(locale, "/policies/");
 		min-height: 44px;
 		display: flex;
 		align-items: center;
+		background: none;
+		border-top: none;
+		border-right: none;
+		border-bottom: none;
+		width: 100%;
+		text-align: start;
+		cursor: pointer;
+		font-family: inherit;
+	}
+
+	.mobile-menu.open {
+		max-height: 520px;
+	}
+
+	.subscribe-modal[hidden] {
+		display: none !important;
+	}
+
+	.subscribe-modal {
+		position: fixed;
+		inset: 0;
+		z-index: 100;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		padding: 1rem;
+	}
+
+	.subscribe-modal__backdrop {
+		position: absolute;
+		inset: 0;
+		background: rgba(10, 12, 18, 0.58);
+		backdrop-filter: blur(7px);
+	}
+
+	.subscribe-modal__panel {
+		position: relative;
+		z-index: 1;
+		width: min(100%, 52rem);
+		background: #fff;
+		color: #111;
+		overflow: hidden;
+		border: 1px solid rgba(0, 0, 0, 0.08);
+		box-shadow: 0 28px 64px rgba(0, 0, 0, 0.24);
+		animation: subscribe-modal-in 0.28s ease;
+	}
+
+	@keyframes subscribe-modal-in {
+		from {
+			opacity: 0;
+			transform: translateY(10px) scale(0.98);
+		}
+		to {
+			opacity: 1;
+			transform: none;
+		}
+	}
+
+	.subscribe-modal__grid {
+		display: grid;
+		grid-template-columns: 1fr 1.15fr;
+		min-height: 22rem;
+	}
+
+	.subscribe-modal__aside {
+		position: relative;
+		overflow: hidden;
+		background: #000;
+		color: #fff;
+		padding: 2.25rem 1.75rem;
+		display: flex;
+		align-items: flex-end;
+	}
+
+	.subscribe-modal__orb {
+		position: absolute;
+		border-radius: 999px;
+		pointer-events: none;
+	}
+
+	.subscribe-modal__orb--one {
+		width: 14rem;
+		height: 14rem;
+		top: -4rem;
+		right: -4rem;
+		background: rgba(37, 99, 235, 0.35);
+	}
+
+	.subscribe-modal__orb--two {
+		width: 10rem;
+		height: 10rem;
+		bottom: -3rem;
+		left: -3rem;
+		background: rgba(255, 255, 255, 0.08);
+	}
+
+	.subscribe-modal__aside-inner {
+		position: relative;
+		z-index: 1;
+	}
+
+	.subscribe-modal__mark {
+		display: inline-flex;
+		align-items: center;
+		justify-content: center;
+		width: 2.75rem;
+		height: 2.75rem;
+		margin-bottom: 1.25rem;
+		border-radius: 999px;
+		background: #fff;
+		color: #000;
+		font-weight: 800;
+		font-size: 1.15rem;
+	}
+
+	.subscribe-modal__aside h3 {
+		margin: 0 0 0.65rem;
+		font-size: 1.65rem;
+		line-height: 1.2;
+		font-weight: 700;
+	}
+
+	.subscribe-modal__aside p {
+		margin: 0;
+		max-width: 16rem;
+		color: rgba(255, 255, 255, 0.78);
+		font-size: 0.95rem;
+		line-height: 1.5;
+	}
+
+	.subscribe-modal__content {
+		position: relative;
+		padding: 2.1rem 1.85rem 1.75rem;
+	}
+
+	.subscribe-modal__close {
+		position: absolute;
+		top: 0.85rem;
+		right: 0.85rem;
+		z-index: 2;
+		width: 2.15rem;
+		height: 2.15rem;
+		display: inline-flex;
+		align-items: center;
+		justify-content: center;
+		border: none;
+		border-radius: 999px;
+		background: transparent;
+		color: #666;
+		cursor: pointer;
+	}
+
+	.subscribe-modal__close:hover {
+		background: rgba(0, 0, 0, 0.06);
+		color: #111;
+	}
+
+	.subscribe-modal__eyebrow {
+		margin: 0 0 0.55rem;
+		font-size: 0.72rem;
+		font-weight: 700;
+		letter-spacing: 0.1em;
+		text-transform: uppercase;
+		color: #6b7280;
+	}
+
+	.subscribe-modal__content h2 {
+		margin: 0 0 0.65rem;
+		font-size: 1.85rem;
+		line-height: 1.15;
+		color: #111;
+	}
+
+	.subscribe-modal__lead {
+		margin: 0 0 1.35rem;
+		color: #4b5563;
+		font-size: 0.98rem;
+		line-height: 1.55;
+		max-width: 28rem;
+	}
+
+	.subscribe-modal__form {
+		display: flex;
+		flex-direction: column;
+		gap: 0.65rem;
+	}
+
+	.subscribe-modal__label {
+		position: absolute;
+		width: 1px;
+		height: 1px;
+		padding: 0;
+		margin: -1px;
+		overflow: hidden;
+		clip: rect(0, 0, 0, 0);
+		border: 0;
+	}
+
+	.subscribe-modal__form input {
+		width: 100%;
+		padding: 0.9rem 1rem;
+		border: 1px solid #d1d5db;
+		background: #fff;
+		font-size: 1rem;
+		box-sizing: border-box;
+		outline: none;
+		transition: border-color 0.15s ease, box-shadow 0.15s ease;
+	}
+
+	.subscribe-modal__form input:focus {
+		border-color: #2563eb;
+		box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15);
+	}
+
+	.subscribe-modal__form button {
+		padding: 0.9rem 1.1rem;
+		border: none;
+		background: #000;
+		color: #fff;
+		font-weight: 700;
+		font-size: 0.95rem;
+		letter-spacing: 0.04em;
+		text-transform: uppercase;
+		cursor: pointer;
+		transition: background 0.15s ease;
+	}
+
+	.subscribe-modal__form button:hover {
+		background: #1f1f1f;
+	}
+
+	.subscribe-modal__form button:disabled {
+		opacity: 0.7;
+		cursor: wait;
+	}
+
+	.subscribe-modal__status {
+		margin: 0 0 0.75rem;
+		padding: 0.7rem 0.85rem;
+		font-size: 0.9rem;
+		line-height: 1.4;
+	}
+
+	.subscribe-modal__status.is-success {
+		background: #ecfdf5;
+		color: #166534;
+	}
+
+	.subscribe-modal__status.is-error {
+		background: #fef2f2;
+		color: #b91c1c;
+	}
+
+	.subscribe-modal__privacy {
+		margin: 0.9rem 0 0;
+		font-size: 0.75rem;
+		line-height: 1.45;
+		color: #888;
+	}
+
+	.subscribe-modal__success {
+		display: flex;
+		flex-direction: column;
+		align-items: flex-start;
+		gap: 0.45rem;
+		padding: 0.35rem 0 0.5rem;
+	}
+
+	.subscribe-modal__success[hidden] {
+		display: none !important;
+	}
+
+	.subscribe-modal__success-icon {
+		display: inline-flex;
+		align-items: center;
+		justify-content: center;
+		width: 2.75rem;
+		height: 2.75rem;
+		margin-bottom: 0.35rem;
+		border-radius: 999px;
+		background: #ecfdf5;
+		color: #15803d;
+	}
+
+	.subscribe-modal__success strong {
+		font-size: 1.25rem;
+		color: #111;
+	}
+
+	.subscribe-modal__success p {
+		margin: 0;
+		color: #4b5563;
+		font-size: 0.95rem;
+		line-height: 1.5;
+	}
+
+	@media (max-width: 720px) {
+		.subscribe-modal__grid {
+			grid-template-columns: 1fr;
+		}
+
+		.subscribe-modal__aside {
+			min-height: 9.5rem;
+			padding: 1.5rem 1.35rem;
+		}
+
+		.subscribe-modal__aside h3 {
+			font-size: 1.35rem;
+		}
+
+		.subscribe-modal__content {
+			padding: 1.5rem 1.25rem 1.35rem;
+		}
+
+		.subscribe-modal__content h2 {
+			font-size: 1.55rem;
+		}
 	}
 
 	.mobile-menu-link:hover,
@@ -325,6 +1012,11 @@ const policiesHref = localizedPath(locale, "/policies/");
 
 		.header-actions {
 			gap: 0.35rem;
+		}
+
+		.header-subscribe,
+		.header-user {
+			display: none;
 		}
 	}
 

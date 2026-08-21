@@ -1,0 +1,6 @@
+@import "tailwindcss";
+
+/* Scope admin utility styles; original Billientt admin classes rely on Tailwind. */
+.admin-react-root {
+	font-family: system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+}

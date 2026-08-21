@@ -24,7 +24,39 @@ const dir = getDir(locale);
 		<BaseHead title={pageTitle(locale, "nav.home")} description={t(locale, "site.description")} locale={locale} />
 		<style>
 			.hero { margin-bottom: 2rem; }
-			.hero h1 { margin-bottom: 0.5rem; }
+			.hero h1 {
+				margin-bottom: 0.5rem;
+				display: inline-flex;
+				align-items: center;
+				gap: 0.4rem;
+			}
+			.hero-wave {
+				display: inline-block;
+				font-size: 0.85em;
+				line-height: 1;
+				color: #000;
+				filter: grayscale(1) brightness(0);
+				transform-origin: 70% 70%;
+				animation: hero-wave 1.8s ease-in-out infinite;
+			}
+			@keyframes hero-wave {
+				0%,
+				100% {
+					transform: rotate(0deg);
+				}
+				15% {
+					transform: rotate(16deg);
+				}
+				30% {
+					transform: rotate(-8deg);
+				}
+				45% {
+					transform: rotate(14deg);
+				}
+				60% {
+					transform: rotate(0deg);
+				}
+			}
 			.latest-header {
 				display: flex;
 				align-items: center;
@@ -50,8 +82,11 @@ const dir = getDir(locale);
 		<Header locale={locale} />
 		<main>
 			<section class="hero">
-				<h1>{SITE_TITLE}</h1>
-				<p>{t(locale, "site.description")}</p>
+				<h1>
+					{SITE_TITLE}
+					<span class="hero-wave" aria-hidden="true">👋</span>
+				</h1>
+				<p>{t(locale, "home.tagline")}</p>
 			</section>
 			<section>
 				<div class="latest-header">

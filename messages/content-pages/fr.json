@@ -1,0 +1,604 @@
+{
+  "ui": {
+    "signInContinue": "Connectez-vous pour continuer",
+    "signInRequest": "Connectez-vous pour demander des soins",
+    "overview": "Aperçu",
+    "expect": "Ce que vous pouvez attendre",
+    "viewAll": "VOIR TOUTES LES RESSOURCES",
+    "partOf": "Fait partie de",
+    "viewPage": "Voir {title}",
+    "resourcesSubtitle": "Parcourez tous les sujets BILLIANT — puis connectez-vous pour demander des soins, un diagnostic ou un compte professionnel.",
+    "ourValueContext": "Pourquoi c’est important",
+    "exploreValue": "Explorer Notre valeur",
+    "relatedValue": "Plus sous Notre valeur"
+  },
+  "pages": {
+    "heart-disease": {
+      "overview": "BILLIANT vous met en relation avec des cardiologues vérifiés pour la douleur thoracique, la tension, le suivi post-procédure et la prévention. Connectez-vous pour une consultation à distance et partager vos analyses en toute sécurité.",
+      "topics": [
+        "Douleur thoracique et palpitations",
+        "Hypertension",
+        "Gestion du cholestérol",
+        "Suivi de l'insuffisance cardiaque",
+        "Soins post-procédure",
+        "Prévention et mode de vie"
+      ],
+      "highlights": [
+        {
+          "title": "ECG et dossiers à distance",
+          "text": "Téléversez vos comptes rendus pour une revue médicale, chez vous ou en déplacement."
+        },
+        {
+          "title": "Spécialistes vérifiés",
+          "text": "Cardiologues agréés — pas un diagnostic automatisé."
+        },
+        {
+          "title": "Suivi plus rapide",
+          "text": "Ajustements de traitement et plans de soins en minutes, pas en semaines."
+        }
+      ]
+    },
+    "mental-health": {
+      "overview": "Accédez à la thérapie et à la psychiatrie pour l'anxiété, la dépression, le stress, le TSPT et plus. Connectez-vous pour être mis en relation avec un clinicien vérifié.",
+      "topics": [
+        "Anxiété",
+        "Dépression",
+        "Stress",
+        "TSPT",
+        "Gestion des médicaments",
+        "Santé mentale des jeunes"
+      ],
+      "highlights": [
+        {
+          "title": "Thérapie et psychiatrie",
+          "text": "Entretiens et revue médicamenteuse spécialisée sur une même plateforme."
+        },
+        {
+          "title": "Privé par conception",
+          "text": "Visites et dossiers chiffrés. Vous contrôlez ce que vous partagez."
+        },
+        {
+          "title": "Continuité des soins",
+          "text": "Des suivis qui vous accompagnent — chez vous ou partout dans le monde."
+        }
+      ]
+    },
+    "diabetes": {
+      "overview": "Gérez le diabète de type 1, de type 2 et le prédiabète avec des points de suivi, la revue d'analyses et un guidage médicamenteux. Connectez-vous pour partager vos journaux de glycémie.",
+      "topics": [
+        "Diabète de type 2",
+        "Diabète de type 1",
+        "Prédiabète",
+        "Revue médicamenteuse",
+        "Alimentation et activité",
+        "Dépistage des complications"
+      ],
+      "highlights": [
+        {
+          "title": "Revue des analyses",
+          "text": "Téléversez l'HbA1c et le bilan métabolique pour interprétation clinique."
+        },
+        {
+          "title": "Plans médicamenteux",
+          "text": "Renouvellements et ajustements coordonnés par des médecins vérifiés."
+        },
+        {
+          "title": "Soutien au quotidien",
+          "text": "Des plans concrets à suivre chez vous ou en déplacement."
+        }
+      ]
+    },
+    "respiratory": {
+      "overview": "Obtenez un avis spécialisé sur la toux, les crises d'asthme, la BPCO et les infections. Connectez-vous pour téléverser imagerie ou débit de pointe et demander des soins.",
+      "topics": [
+        "Asthme",
+        "BPCO",
+        "Infections sinusales",
+        "Toux et bronchite",
+        "Allergies",
+        "Récupération post-virale"
+      ],
+      "highlights": [
+        {
+          "title": "Revue d'imagerie",
+          "text": "Partagez radios et comptes rendus pour une interprétation médicale."
+        },
+        {
+          "title": "Plans d'action",
+          "text": "Étapes claires pour les crises, les inhalateurs et l'escalade."
+        },
+        {
+          "title": "Suivi d'infection",
+          "text": "Contrôles à distance après rhume, grippe ou COVID."
+        }
+      ]
+    },
+    "eye-health": {
+      "overview": "Demandez un triage à distance pour l'œil rouge, les infections, la sécheresse et les troubles chroniques. Connectez-vous pour partager photos ou notes d'examen.",
+      "topics": [
+        "Conjonctivite",
+        "Sécheresse oculaire",
+        "Œil rouge et irritation",
+        "Symptômes allergiques",
+        "Suivi après examen",
+        "Quand consulter en personne"
+      ],
+      "highlights": [
+        {
+          "title": "Revue assistée par photo",
+          "text": "Téléversez des photos de l'œil pour un dépistage spécialisé."
+        },
+        {
+          "title": "Triage rapide",
+          "text": "Sachez ce qui peut être traité à distance vs. en clinique."
+        },
+        {
+          "title": "Soutien aux prescriptions",
+          "text": "Gouttes et renouvellements après revue clinique."
+        }
+      ]
+    },
+    "bone-joint": {
+      "overview": "Entorses, douleurs articulaires, mal de dos et suivi post-blessure avec des cliniciens d'orthopédie et de médecine du sport. Connectez-vous pour partager l'imagerie.",
+      "topics": [
+        "Douleur du dos et du cou",
+        "Genou et hanche",
+        "Entorses et foulures",
+        "Blessures sportives",
+        "Suivi de l'arthrose",
+        "Conseils de rééducation"
+      ],
+      "highlights": [
+        {
+          "title": "L'imagerie d'abord",
+          "text": "Téléversez IRM ou radios avant la visite à distance."
+        },
+        {
+          "title": "Plans de mouvement",
+          "text": "Étapes de rééducation à domicile revues par des spécialistes."
+        },
+        {
+          "title": "Accès plus rapide",
+          "text": "Évitez de longues listes d'attente pour de nombreux suivis."
+        }
+      ]
+    },
+    "clinical-support": {
+      "overview": "L'aide à la décision clinique BILLIANT aide patients et équipes à revoir symptômes, dossiers et prochaines étapes avec des spécialistes vérifiés. Connectez-vous pour un diagnostic à distance.",
+      "topics": [
+        "Triage des symptômes",
+        "Orientation spécialisée",
+        "Synthèses fondées sur les preuves",
+        "Brouillons de plan de soins",
+        "Seconds avis",
+        "Points de suivi"
+      ],
+      "highlights": [
+        {
+          "title": "Confirmé par un humain",
+          "text": "L'IA peut aider au triage ; un médecin agréé confirme chaque plan."
+        },
+        {
+          "title": "Dossiers inclus",
+          "text": "Analyses, imagerie et notes accompagnent la recommandation."
+        },
+        {
+          "title": "Conçu pour la distance",
+          "text": "Pensé pour le diagnostic entièrement à distance, pas les salles d'attente."
+        }
+      ]
+    },
+    "drug-support": {
+      "overview": "Passez en revue médicaments, interactions et renouvellements avec des cliniciens qui voient votre historique. Connectez-vous pour partager votre liste actuelle.",
+      "topics": [
+        "Vérification des interactions",
+        "Demandes de renouvellement",
+        "Dépistage d'allergies",
+        "Ajustements de dose",
+        "Nouvelles thérapies",
+        "Soutien à l'observance"
+      ],
+      "highlights": [
+        {
+          "title": "Listes plus sûres",
+          "text": "Repérez les conflits avant d'ajouter un médicament."
+        },
+        {
+          "title": "Validation clinique",
+          "text": "Les prescriptions restent entre les mains de professionnels agréés."
+        },
+        {
+          "title": "Accès partout",
+          "text": "Mettez à jour votre liste chez vous ou en voyage."
+        }
+      ]
+    },
+    "innovation": {
+      "overview": "Eclipse LLM et les flux BILLIANT réunissent revue chiffrée, triage spécialisé et visites vidéo. Connectez-vous pour essayer le diagnostic à distance.",
+      "topics": [
+        "Eclipse LLM",
+        "Téléversements chiffrés",
+        "Routage spécialisé",
+        "Visites vidéo et chat",
+        "Support multilingue",
+        "Transfert d'équipe"
+      ],
+      "highlights": [
+        {
+          "title": "La distance d'abord",
+          "text": "Conçu pour les patients qui ne peuvent pas attendre en file."
+        },
+        {
+          "title": "Étapes connectées",
+          "text": "Du téléversement au rapport médical dans un même fil."
+        },
+        {
+          "title": "Prêt pour l'entreprise",
+          "text": "La même stack pour les particuliers, les groupes et les systèmes de santé."
+        }
+      ]
+    },
+    "education": {
+      "overview": "Les cliniciens suivent les mises à jour et l'apprentissage par cas lié aux soins à distance. Connectez-vous avec un compte professionnel pour continuer.",
+      "topics": [
+        "Revues de cas",
+        "Mises à jour des recommandations",
+        "Bonnes pratiques à distance",
+        "Raisonnement diagnostique",
+        "Soins en équipe",
+        "Standards éditoriaux"
+      ],
+      "highlights": [
+        {
+          "title": "Lié à la pratique",
+          "text": "Apprenez à partir des mêmes parcours que les consultations en direct."
+        },
+        {
+          "title": "Rigueur éditoriale",
+          "text": "Contenu revu par BILLIANT Clinical Affairs."
+        },
+        {
+          "title": "Accès prestataire",
+          "text": "Connectez-vous en tant que médecin pour débloquer les outils de formation."
+        }
+      ]
+    },
+    "insights": {
+      "overview": "Groupes et entreprises obtiennent des rapports sur les délais d'accès, le mix de spécialités et le volume de consultations. Connectez-vous à la suite business.",
+      "topics": [
+        "Indicateurs d'accès",
+        "Demande par spécialité",
+        "Santé des équipes",
+        "Indicateurs de qualité",
+        "Reporting de couverture",
+        "Planification à l'échelle"
+      ],
+      "highlights": [
+        {
+          "title": "Clarté opérationnelle",
+          "text": "Voyez où les délais chutent après le routage à distance."
+        },
+        {
+          "title": "Qualité et coût",
+          "text": "Équilibrez résultats et dépenses avec un reporting transparent."
+        },
+        {
+          "title": "Accès aux suites",
+          "text": "Connectez-vous aux tableaux de bord Pro et Enterprise."
+        }
+      ]
+    },
+    "why-choose": {
+      "overview": "BILLIANT est conçu pour ceux qui ont besoin de vrais médecins sans salle d'attente. Connectez-vous pour une consultation à distance ou rejoignez-nous en tant que prestataire.",
+      "topics": [
+        "Professionnels vérifiés",
+        "Diagnostics à distance",
+        "Accès plus rapide",
+        "Tarifs transparents",
+        "Dossiers chiffrés",
+        "Soins humains"
+      ],
+      "highlights": [
+        {
+          "title": "Pas une clinique chatbot",
+          "text": "L'IA assiste ; les cliniciens agréés décident."
+        },
+        {
+          "title": "Une seule plateforme",
+          "text": "Consultations, dossiers, analyses et prescriptions ensemble."
+        },
+        {
+          "title": "Prêt quand vous l'êtes",
+          "text": "Chez vous, en déplacement ou partout dans le monde."
+        }
+      ],
+      "mission": "Notre mission : vous aider à vivre mieux et plus longtemps — avec de vrais médecins, pas des salles d’attente.",
+      "context": "BILLIANT réunit des spécialistes vérifiés, des diagnostics à distance et des dossiers chiffrés sur une plateforme conçue pour la distance. L’IA peut aider au triage ; les cliniciens agréés restent responsables de chaque décision."
+    },
+    "benefits": {
+      "overview": "Offrez aux employés et adhérents un accès plus rapide aux spécialistes avec BILLIANT Pro et Enterprise. Connectez-vous pour explorer les suites business.",
+      "topics": [
+        "Accès des équipes",
+        "Couverture des membres",
+        "Reporting",
+        "Orientation des soins",
+        "Diagnostics à distance",
+        "Contrôles d'administration"
+      ],
+      "highlights": [
+        {
+          "title": "Moins d'arrêts",
+          "text": "Les employés se soignent sans journée entière en clinique."
+        },
+        {
+          "title": "Reporting clair",
+          "text": "Utilisation et résultats dans une même vue."
+        },
+        {
+          "title": "S'adapte à vous",
+          "text": "Des groupes aux systèmes de santé."
+        }
+      ],
+      "mission": "Un meilleur accès pour chaque membre de votre équipe — sans temps d’arrêt en clinique.",
+      "context": "Les suites Pro et Enterprise offrent aux groupes et systèmes de santé un accès distant aux spécialistes, du reporting d’utilisation et une orientation des soins. Les dirigeants voient les résultats ; les employés obtiennent des soins en quelques minutes."
+    },
+    "editorial": {
+      "overview": "BILLIANT Clinical Affairs revoit les parcours utilisés en diagnostic à distance. Connectez-vous pour voir comment votre dossier est préparé pour un médecin.",
+      "topics": [
+        "Revue des sources",
+        "Validation par un spécialiste",
+        "Rythme de mise à jour",
+        "Contrôles de conflits",
+        "Langage accessible",
+        "Piste d'audit"
+      ],
+      "highlights": [
+        {
+          "title": "Revue médicale",
+          "text": "Parcours attribués à Clinical Affairs."
+        },
+        {
+          "title": "Contenu vivant",
+          "text": "Mises à jour quand les recommandations changent."
+        },
+        {
+          "title": "Étapes transparentes",
+          "text": "Vous voyez comment une recommandation a été formée."
+        }
+      ],
+      "mission": "Un contenu clinique digne de confiance — revu, attribué et tenu à jour.",
+      "context": "BILLIANT Clinical Affairs revoit les parcours derrière les diagnostics à distance. Chaque recommandation reste transparente : sources, validation par un spécialiste et piste d’audit."
+    },
+    "ai-content": {
+      "overview": "Eclipse LLM aide à organiser symptômes et documents. Un médecin vérifié reste responsable du diagnostic et du traitement. Connectez-vous pour une demande à distance.",
+      "topics": [
+        "Aide au triage",
+        "Synthèse de documents",
+        "Suggestion de spécialité",
+        "Support linguistique",
+        "Confirmation médicale",
+        "Limites de sécurité"
+      ],
+      "highlights": [
+        {
+          "title": "Assister, pas remplacer",
+          "text": "Aucun diagnostic autonome sur BILLIANT."
+        },
+        {
+          "title": "Préparation plus rapide",
+          "text": "Les médecins reçoivent un dossier plus clair."
+        },
+        {
+          "title": "Vous restez maître",
+          "text": "Connectez-vous pour ne partager que ce que vous choisissez."
+        }
+      ],
+      "mission": "Une IA qui prépare le dossier — jamais qui remplace le clinicien.",
+      "context": "Eclipse LLM organise symptômes et documents pour que les médecins reçoivent un dossier plus clair. Diagnostic et traitement restent aux médecins vérifiés. Vous contrôlez ce que vous partagez."
+    },
+    "aligning-teams": {
+      "overview": "Les soins à distance échouent si les équipes n'ont pas le même dossier. BILLIANT garde demande, documents et rapport dans un seul fil. Connectez-vous pour collaborer.",
+      "topics": [
+        "Plans de soins partagés",
+        "Accès selon le rôle",
+        "Transferts",
+        "Visibilité patient",
+        "Notes et fichiers",
+        "Responsables de suivi"
+      ],
+      "highlights": [
+        {
+          "title": "Un seul fil",
+          "text": "Plus d'e-mails dispersés ni de pièces perdues."
+        },
+        {
+          "title": "Responsables clairs",
+          "text": "Voyez qui revoit, estime et assure le suivi."
+        },
+        {
+          "title": "Patient inclus",
+          "text": "Des mises à jour de statut sans arbre téléphonique."
+        }
+      ]
+    },
+    "quality-costs": {
+      "overview": "La revue spécialisée à distance peut éviter les examens en double et les longs déplacements. Connectez-vous pour des soins à tarif transparent.",
+      "topics": [
+        "Éviter les examens en double",
+        "Coût de visite transparent",
+        "La bonne spécialité d'abord",
+        "Moins d'absences",
+        "Parcours assurance et cash",
+        "Suivi des résultats"
+      ],
+      "highlights": [
+        {
+          "title": "La bonne première visite",
+          "text": "Orientez vers la spécialité qui convient vraiment."
+        },
+        {
+          "title": "Un coût visible",
+          "text": "Estimations avant engagement — connectez-vous pour votre tarif."
+        },
+        {
+          "title": "Qualité intacte",
+          "text": "Cliniciens agréés, pas le bot le moins cher."
+        }
+      ]
+    },
+    "equity": {
+      "overview": "La géographie et les listes d'attente ne doivent pas décider qui voit un spécialiste. BILLIANT est conçu pour l'accès à distance. Connectez-vous depuis n'importe où.",
+      "topics": [
+        "Accès rural",
+        "Support linguistique",
+        "Options hors horaires",
+        "Visites accessibles",
+        "Voyage et mobilité",
+        "Routage équitable"
+      ],
+      "highlights": [
+        {
+          "title": "La distance n'est pas un obstacle",
+          "text": "Le même réseau de spécialistes chez vous ou dans le monde."
+        },
+        {
+          "title": "Des langues qui voyagent",
+          "text": "Admission et appariement médicaux multilingues."
+        },
+        {
+          "title": "Connectez-vous pour commencer",
+          "text": "Votre lieu ne bloque pas une demande."
+        }
+      ]
+    },
+    "burnout": {
+      "overview": "Les prestataires reçoivent des dossiers structurés, pas le chaos de la boîte mail. Connectez-vous en tant que médecin pour voir les files et répondre à votre rythme.",
+      "topics": [
+        "Admissions structurées",
+        "Revue asynchrone des dossiers",
+        "Moins de boucles admin",
+        "Files plus claires",
+        "Temps de concentration protégé",
+        "Journées à distance d'abord"
+      ],
+      "highlights": [
+        {
+          "title": "Dossiers prêts",
+          "text": "Symptômes, fichiers et triage dans une seule vue."
+        },
+        {
+          "title": "Réponse flexible",
+          "text": "Revoyez quand vous pouvez — pas seulement aux heures de clinique."
+        },
+        {
+          "title": "Connexion prestataire",
+          "text": "Les comptes médecins débloquent la boîte clinique."
+        }
+      ]
+    },
+    "outcomes": {
+      "overview": "Chaque demande peut produire un rapport médical, des prochaines étapes et un suivi. Connectez-vous pour garder vos résultats dans un seul dossier.",
+      "topics": [
+        "Rapports médicaux",
+        "Taux de suivi",
+        "Délai jusqu'au spécialiste",
+        "Progrès rapportés par le patient",
+        "Boucles fermées",
+        "Revue qualité"
+      ],
+      "highlights": [
+        {
+          "title": "Plans écrits",
+          "text": "Partez avec un rapport, pas seulement un appel."
+        },
+        {
+          "title": "Suivez ce qui a changé",
+          "text": "Analyses, médicaments et visites restent ensemble."
+        },
+        {
+          "title": "Compte requis",
+          "text": "Connectez-vous pour que les résultats vous soient rattachés."
+        }
+      ]
+    },
+    "care-management": {
+      "overview": "La gestion des soins ne doit pas se réinitialiser à chaque porte de clinique. BILLIANT fait avancer le fil. Connectez-vous pour poursuivre ou démarrer une demande.",
+      "topics": [
+        "Suivi continu",
+        "Listes de tâches",
+        "Visibilité familiale",
+        "Parcours chroniques",
+        "Échelle entreprise",
+        "Transferts durables"
+      ],
+      "highlights": [
+        {
+          "title": "Le fil persiste",
+          "text": "Les nouveaux symptômes s'ajoutent à la même histoire."
+        },
+        {
+          "title": "Scaler sans chaos",
+          "text": "Groupes et entreprises partagent un même playbook."
+        },
+        {
+          "title": "Connectez-vous pour continuer",
+          "text": "La gestion des soins est liée à votre compte."
+        }
+      ]
+    },
+    "mental-wellbeing": {
+      "title": "Bien-être mental",
+      "subtitle": "Soutien pour l'anxiété, l'humeur, le sommeil et le stress du quotidien — avec de vrais cliniciens.",
+      "overview": "Le bien-être mental fait partie de chaque parcours BILLIANT. Connectez-vous pour demander une thérapie ou une psychiatrie, ou explorer les conditions liées.",
+      "topics": [
+        "Anxiété",
+        "Dépression",
+        "Sommeil",
+        "Stress",
+        "Deuil",
+        "Soutien de couple"
+      ],
+      "highlights": [
+        {
+          "title": "Soutien humain",
+          "text": "Thérapeutes et psychiatres agréés."
+        },
+        {
+          "title": "À distance par défaut",
+          "text": "Visites privées depuis chez vous."
+        },
+        {
+          "title": "Connectez-vous pour réserver",
+          "text": "Les comptes protègent votre historique."
+        }
+      ]
+    },
+    "living-well": {
+      "title": "Bien vivre",
+      "subtitle": "Prévention, mode de vie et soins du quotidien adaptés à votre emploi du temps.",
+      "overview": "Bien vivre, c'est les contrôles, la prévention et des réponses avant la crise. Connectez-vous pour des soins primaires ou parcourir les conditions.",
+      "topics": [
+        "Prévention",
+        "Bases nutritionnelles",
+        "Sommeil et énergie",
+        "Suivi chronique",
+        "Soins familiaux",
+        "Dossiers prêts pour le voyage"
+      ],
+      "highlights": [
+        {
+          "title": "La prévention d'abord",
+          "text": "Repérez les problèmes avant qu'ils n'attendent en file."
+        },
+        {
+          "title": "Des dossiers qui voyagent",
+          "text": "Votre historique reste avec vous."
+        },
+        {
+          "title": "Commencez par la connexion",
+          "text": "Les plans personnalisés nécessitent un compte."
+        }
+      ]
+    }
+  }
+}

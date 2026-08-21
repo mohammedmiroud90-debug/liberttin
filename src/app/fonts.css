@@ -1,0 +1,193 @@
+@font-face {
+  font-family: 'Proxima Nova';
+  src: url('/ProximaNovaRegular.eot');
+  src: url('/ProximaNovaRegular.eot?#iefix') format('embedded-opentype'),
+       url('/ProximaNovaRegular.woff') format('woff'),
+       url('/ProximaNovaRegular.ttf') format('truetype');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* Real bold cut for headings. The licensed files are not in the repo yet, so
+   this face fails to load and the display stack falls through to Montserrat,
+   which is metrically close. Drop ProximaNovaBold.woff2 into /public and this
+   face takes over automatically — no other change needed. */
+@font-face {
+  font-family: 'Proxima Nova Bold';
+  src: url('/ProximaNovaBold.woff2') format('woff2'),
+       url('/ProximaNovaBold.woff') format('woff'),
+       url('/ProximaNovaBold.ttf') format('truetype');
+  font-weight: 700 900;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Proxima Nova Condensed';
+  src: url('/ProximaNovaRegular.eot');
+  src: url('/ProximaNovaRegular.eot?#iefix') format('embedded-opentype'),
+       url('/ProximaNovaRegular.woff') format('woff'),
+       url('/ProximaNovaRegular.ttf') format('truetype');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+  font-stretch: condensed;
+}
+
+/* The real condensed cut. Also serves the light/thin end of the
+   'Proxima Nova Condensed' family, which previously fell back to the
+   regular-width file. */
+@font-face {
+  font-family: 'Proxima Nova Cond Thin';
+  src: url('/Proxima-Nova-Cond-Thin.ttf') format('truetype');
+  font-weight: 100 300;
+  font-style: normal;
+  font-display: swap;
+  font-stretch: condensed;
+}
+
+@font-face {
+  font-family: 'Proxima Nova Condensed';
+  src: url('/Proxima-Nova-Cond-Thin.ttf') format('truetype');
+  font-weight: 100 300;
+  font-style: normal;
+  font-display: swap;
+  font-stretch: condensed;
+}
+
+@font-face {
+  font-family: 'GeogrotesqueCyr';
+  src: url('/GeogrotesqueCyr-Regular.ttf') format('truetype');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Slow Tempo W01 XBold';
+  src: url('https://db.onlinewebfonts.com/t/2e5f1a557bc108771d2c29f534ea9152.eot');
+  src: url('https://db.onlinewebfonts.com/t/2e5f1a557bc108771d2c29f534ea9152.eot?#iefix') format('embedded-opentype'),
+       url('https://db.onlinewebfonts.com/t/2e5f1a557bc108771d2c29f534ea9152.woff2') format('woff2'),
+       url('https://db.onlinewebfonts.com/t/2e5f1a557bc108771d2c29f534ea9152.woff') format('woff'),
+       url('https://db.onlinewebfonts.com/t/2e5f1a557bc108771d2c29f534ea9152.ttf') format('truetype'),
+       url('https://db.onlinewebfonts.com/t/2e5f1a557bc108771d2c29f534ea9152.svg#Slow Tempo W01 XBold') format('svg');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* Source Serif Pro - Medium-style serif for reading */
+@font-face {
+  font-family: 'Source Serif Pro';
+  src: url('/NEWFONT/source-serif-pro.regular.ttf') format('truetype');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* Adora MICRO family - Modern serif alternative */
+@font-face {
+  font-family: 'Adora MICRO';
+  src: url('/NEWFONT/AdoraMICRO-45.otf') format('opentype');
+  font-weight: 300;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Adora MICRO';
+  src: url('/NEWFONT/AdoraMICRO-46.otf') format('opentype');
+  font-weight: 300;
+  font-style: italic;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Adora MICRO';
+  src: url('/NEWFONT/AdoraMICRO-55.otf') format('opentype');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Adora MICRO';
+  src: url('/NEWFONT/AdoraMICRO-56.otf') format('opentype');
+  font-weight: 400;
+  font-style: italic;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Adora MICRO';
+  src: url('/NEWFONT/AdoraMICRO-65.otf') format('opentype');
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Adora MICRO';
+  src: url('/NEWFONT/AdoraMICRO-66.otf') format('opentype');
+  font-weight: 500;
+  font-style: italic;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Adora MICRO';
+  src: url('/NEWFONT/AdoraMICRO-75.otf') format('opentype');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Adora MICRO';
+  src: url('/NEWFONT/AdoraMICRO-76.otf') format('opentype');
+  font-weight: 700;
+  font-style: italic;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Adora MICRO';
+  src: url('/NEWFONT/AdoraMICRO-85.otf') format('opentype');
+  font-weight: 800;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Adora MICRO';
+  src: url('/NEWFONT/AdoraMICRO-86.otf') format('opentype');
+  font-weight: 800;
+  font-style: italic;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Adora MICRO';
+  src: url('/NEWFONT/AdoraMICRO-95.otf') format('opentype');
+  font-weight: 900;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Adora MICRO';
+  src: url('/NEWFONT/AdoraMICRO-96.otf') format('opentype');
+  font-weight: 900;
+  font-style: italic;
+  font-display: swap;
+}
+
+/* Piazzolla - Modern serif for post content */
+@font-face {
+  font-family: 'Piazzolla';
+  src: url('https://fonts.gstatic.com/s/piazzolla/v13/N0b72SlTPu5rIkWIZjVgI-TekS6fowoxee0b_VY185w.woff2') format('woff2');
+  font-weight: 100 900;
+  font-style: normal;
+  font-display: swap;
+}

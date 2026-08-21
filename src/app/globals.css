@@ -1,0 +1,780 @@
+@import "tailwindcss";
+@import "./fonts.css";
+
+@layer base {
+  :root {
+    --background: 0 0% 100%;
+    --foreground: 222.2 84% 4.9%;
+    --card: 0 0% 100%;
+    --card-foreground: 222.2 84% 4.9%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 222.2 84% 4.9%;
+    --primary: 173 80% 40%;
+    --primary-foreground: 0 0% 100%;
+    --secondary: 210 40% 96.1%;
+    --secondary-foreground: 222.2 47.4% 11.2%;
+    --muted: 210 40% 96.1%;
+    --muted-foreground: 215.4 16.3% 46.9%;
+    --accent: 210 40% 96.1%;
+    --accent-foreground: 222.2 47.4% 11.2%;
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 210 40% 98%;
+    --border: 214.3 31.8% 91.4%;
+    --input: 214.3 31.8% 91.4%;
+    --ring: 173 80% 40%;
+    --radius: 0.5rem;
+    --hero-bg: #A8C5CB;
+    --hero-bg-light: #B8D4D8;
+    --hero-link: #007A80;
+  }
+
+  .dark {
+    --background: 222.2 84% 4.9%;
+    --foreground: 210 40% 98%;
+    --card: 222.2 84% 4.9%;
+    --card-foreground: 210 40% 98%;
+    --popover: 222.2 84% 4.9%;
+    --popover-foreground: 210 40% 98%;
+    --primary: 173 80% 40%;
+    --primary-foreground: 0 0% 100%;
+    --secondary: 217.2 32.6% 17.5%;
+    --secondary-foreground: 210 40% 98%;
+    --muted: 217.2 32.6% 17.5%;
+    --muted-foreground: 215 20.2% 65.1%;
+    --accent: 217.2 32.6% 17.5%;
+    --accent-foreground: 210 40% 98%;
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 210 40% 98%;
+    --border: 217.2 32.6% 17.5%;
+    --input: 217.2 32.6% 17.5%;
+    --ring: 173 80% 40%;
+  }
+}
+
+@layer base {
+  * {
+    border-color: hsl(var(--border));
+  }
+  
+  body {
+    background-color: hsl(var(--background));
+    color: hsl(var(--foreground));
+    font-family: 'Proxima Nova', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    font-feature-settings: "rlig" 1, "calt" 1;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+  
+  h1, h2, h3, h4, h5, h6 {
+    font-family: 'Proxima Nova Condensed', 'Proxima Nova', sans-serif;
+    font-weight: 700;
+  }
+
+  .blog-post-content,
+  .article-body {
+    font-family: 'Proxima Nova', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  }
+
+  /* Headings need a face that actually ships a bold. 'Proxima Nova' only has a
+     400 cut, so asking it for 700 gets a synthesised bold that reads soft. */
+  .post-title,
+  .blog-post-content h1,
+  .blog-post-content h2,
+  .blog-post-content h3,
+  .blog-post-content h4,
+  .blog-post-content h5,
+  .blog-post-content h6,
+  .article-body h1,
+  .article-body h2,
+  .article-body h3,
+  .article-body h4,
+  .article-body h5,
+  .article-body h6 {
+    font-family: 'Proxima Nova Bold', 'Montserrat', 'Proxima Nova', -apple-system,
+      BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    font-weight: 700;
+    font-synthesis-weight: none;
+    letter-spacing: -0.019em;
+    color: #1a1a1a;
+  }
+
+  .post-title {
+    font-weight: 800;
+    line-height: 1.12;
+  }
+
+  /* Hands typography back to the ancestor that carries the admin's content
+     settings. Must come after the .blog-post-content rule to win on specificity. */
+  .typography-inherit {
+    font-family: inherit;
+    font-size: inherit;
+    line-height: inherit;
+  }
+
+  /* In-article links: teal, no underline by default (matches editorial screenshots). */
+  .blog-post-content a,
+  .article-body a {
+    color: #2a8a8e;
+    text-decoration: none;
+    font-weight: 500;
+  }
+
+  .blog-post-content a:hover,
+  .article-body a:hover {
+    color: #1a5f62;
+    text-decoration: underline;
+    text-underline-offset: 2px;
+  }
+
+  /* Newsletter uses inline black/white utilities on NewsletterCard. */
+
+  .font-cond-thin {
+    font-family: 'Proxima Nova Cond Thin', 'Proxima Nova Condensed', 'Proxima Nova', sans-serif;
+    letter-spacing: -0.005em;
+  }
+
+  .font-hero-heading {
+    font-family: 'Fira Sans', 'Proxima Nova Condensed', 'Proxima Nova', sans-serif;
+    font-weight: 300;
+    letter-spacing: 0.01em;
+    line-height: 1.2;
+  }
+
+  h1.font-hero-heading {
+    font-weight: 300;
+  }
+
+  /* Auth forms (login / signup) — Open Sans, ~10% denser */
+  .auth-form-shell {
+    font-family: 'Open Sans', system-ui, sans-serif;
+    font-optical-sizing: auto;
+    -webkit-font-smoothing: antialiased;
+    font-size: 0.9rem;
+  }
+
+  .auth-form-shell h1,
+  .auth-form-shell h2,
+  .auth-form-shell h3 {
+    font-family: 'Open Sans', system-ui, sans-serif;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+  }
+
+  .auth-form-shell label {
+    font-family: 'Open Sans', system-ui, sans-serif;
+    font-weight: 600;
+    letter-spacing: 0.01em;
+  }
+
+  .auth-form-shell input,
+  .auth-form-shell select,
+  .auth-form-shell button,
+  .auth-form-shell a,
+  .auth-form-shell p,
+  .auth-form-shell span {
+    font-family: 'Open Sans', system-ui, sans-serif;
+  }
+
+  .auth-form-panel {
+    padding: 1.5rem 1.65rem;
+    box-shadow: 0 16px 40px rgba(15, 23, 42, 0.14);
+  }
+
+  @media (min-width: 640px) {
+    .auth-form-panel {
+      padding: 1.75rem 1.9rem;
+    }
+  }
+
+  .auth-form-input {
+    width: 100%;
+    padding: 0.7rem 0.85rem;
+    border: 1.5px solid #d1d5db;
+    background: #fff;
+    color: #111827;
+    font-size: 0.875rem;
+    font-weight: 500;
+    line-height: 1.35;
+    transition: border-color 0.15s ease, box-shadow 0.15s ease;
+  }
+
+  .auth-form-input::placeholder {
+    color: #9ca3af;
+    font-weight: 400;
+  }
+
+  .auth-form-input:focus {
+    outline: none;
+    border-color: #0d9488;
+    box-shadow: 0 0 0 3px rgba(13, 148, 136, 0.15);
+  }
+
+  .auth-form-input:disabled {
+    opacity: 0.65;
+    cursor: not-allowed;
+  }
+
+  /* Dashboard forms — sharp, Open Sans, no radius */
+  .dash-form-shell {
+    font-family: 'Open Sans', system-ui, sans-serif;
+    font-optical-sizing: auto;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .dash-form-shell h1,
+  .dash-form-shell h2,
+  .dash-form-shell h3 {
+    font-family: 'Open Sans', system-ui, sans-serif;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+  }
+
+  .dash-form-shell label {
+    font-family: 'Open Sans', system-ui, sans-serif;
+    font-weight: 600;
+  }
+
+  .dash-form-shell input,
+  .dash-form-shell select,
+  .dash-form-shell textarea,
+  .dash-form-shell button,
+  .dash-form-shell a,
+  .dash-form-shell p,
+  .dash-form-shell span {
+    font-family: 'Open Sans', system-ui, sans-serif;
+  }
+
+  .dash-form-panel {
+    background: #fff;
+    border: 1px solid #e5e7eb;
+    box-shadow: 0 18px 40px rgba(15, 23, 42, 0.08);
+  }
+
+  .dash-form-input {
+    width: 100%;
+    padding: 0.8rem 1rem;
+    border: 1.5px solid #d1d5db;
+    border-radius: 0;
+    background: #fff;
+    color: #111827;
+    font-size: 0.9375rem;
+    font-weight: 500;
+    line-height: 1.4;
+    transition: border-color 0.15s ease, box-shadow 0.15s ease;
+  }
+
+  .dash-form-input::placeholder {
+    color: #9ca3af;
+    font-weight: 400;
+  }
+
+  .dash-form-input:focus {
+    outline: none;
+    border-color: #0f766e;
+    box-shadow: 0 0 0 3px rgba(15, 118, 110, 0.14);
+  }
+
+  .dash-form-input:disabled {
+    background: #f9fafb;
+    color: #6b7280;
+    cursor: not-allowed;
+  }
+
+  .dash-form-select {
+    appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%236b7280' d='M2.5 4.5L6 8l3.5-3.5'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 1rem center;
+    padding-right: 2.5rem;
+  }
+
+  .dash-form-btn {
+    border-radius: 0;
+    font-weight: 700;
+    letter-spacing: 0.02em;
+  }
+
+  .dash-form-btn-primary {
+    background: #0f766e;
+    color: #fff;
+    border: 1.5px solid #0f766e;
+  }
+
+  .dash-form-btn-primary:hover:not(:disabled) {
+    background: #0d9488;
+    border-color: #0d9488;
+  }
+
+  .dash-form-btn-primary:disabled {
+    opacity: 0.55;
+    cursor: not-allowed;
+  }
+
+  .dash-form-btn-ghost {
+    background: #fff;
+    color: #111827;
+    border: 1.5px solid #d1d5db;
+  }
+
+  .dash-form-btn-ghost:hover:not(:disabled) {
+    border-color: #0f766e;
+    color: #0f766e;
+    background: #f0fdfa;
+  }
+
+  .dash-choice {
+    width: 100%;
+    text-align: left;
+    border: 1.5px solid #e5e7eb;
+    background: #fff;
+    border-radius: 0;
+    transition: border-color 0.15s ease, background 0.15s ease, box-shadow 0.15s ease;
+  }
+
+  .dash-choice:hover {
+    border-color: #99f6e4;
+  }
+
+  .dash-choice.is-active {
+    border-color: #0f766e;
+    background: #f0fdfa;
+    box-shadow: inset 3px 0 0 #0f766e;
+  }
+}
+
+@layer utilities {
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+      transform: translateY(-10px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  
+  .animate-fadeIn {
+    animation: fadeIn 0.2s ease-out;
+  }
+}
+
+
+/* Custom Animations */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fadeIn {
+  animation: fadeIn 0.2s ease-out;
+}
+
+@keyframes slideInFromTop {
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-in {
+  animation: slideInFromTop 0.3s ease-out;
+}
+
+.slide-in-from-top-2 {
+  animation: slideInFromTop 0.3s ease-out;
+}
+
+@keyframes slideInFromLeft {
+  from {
+    opacity: 0.6;
+    transform: translateX(-100%);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+.slide-in-from-left {
+  animation: slideInFromLeft 0.28s ease-out;
+}
+
+@keyframes slideInFromRight {
+  from {
+    opacity: 0.6;
+    transform: translateX(100%);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+.slide-in-from-right {
+  animation: slideInFromRight 0.28s ease-out;
+}
+
+@keyframes heroWave {
+  0%, 100% {
+    d: path("M2 8 C 28 2, 52 11, 80 6 S 132 2, 158 8");
+  }
+  50% {
+    d: path("M2 7 C 30 11, 54 2, 80 8 S 128 11, 158 7");
+  }
+}
+
+.hero-wave-underline path {
+  animation: heroWave 2.8s ease-in-out infinite;
+}
+
+/* App route loader — keyframes live in global CSS so they always apply */
+@keyframes shapeShift1 {
+  0% {
+    width: 6px;
+    height: 6px;
+    border-radius: 2px;
+    transform: translateY(0) rotate(0deg);
+    opacity: 0.4;
+  }
+  25% {
+    width: 9px;
+    height: 34px;
+    border-radius: 5px;
+    transform: translateY(-8px) rotate(180deg);
+    opacity: 1;
+  }
+  50% {
+    width: 3px;
+    height: 46px;
+    border-radius: 2px;
+    transform: translateY(0) rotate(360deg);
+    opacity: 0.7;
+  }
+  75% {
+    width: 9px;
+    height: 34px;
+    border-radius: 5px;
+    transform: translateY(8px) rotate(540deg);
+    opacity: 1;
+  }
+  100% {
+    width: 6px;
+    height: 6px;
+    border-radius: 2px;
+    transform: translateY(0) rotate(720deg);
+    opacity: 0.4;
+  }
+}
+
+@keyframes shapeShift2 {
+  0% {
+    width: 9px;
+    height: 9px;
+    border-radius: 50%;
+    transform: translateY(0) scale(1);
+    opacity: 0.5;
+  }
+  25% {
+    width: 6px;
+    height: 40px;
+    border-radius: 3px;
+    transform: translateY(-11px) scale(1.1);
+    opacity: 1;
+  }
+  50% {
+    width: 12px;
+    height: 12px;
+    border-radius: 6px;
+    transform: translateY(0) scale(1.3);
+    opacity: 0.8;
+  }
+  75% {
+    width: 6px;
+    height: 40px;
+    border-radius: 3px;
+    transform: translateY(11px) scale(1.1);
+    opacity: 1;
+  }
+  100% {
+    width: 9px;
+    height: 9px;
+    border-radius: 50%;
+    transform: translateY(0) scale(1);
+    opacity: 0.5;
+  }
+}
+
+@keyframes shapeShift3 {
+  0% {
+    width: 3px;
+    height: 23px;
+    border-radius: 2px;
+    transform: translateY(0) scaleY(1);
+    opacity: 0.6;
+  }
+  25% {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    transform: translateY(-14px) scaleY(1);
+    opacity: 1;
+  }
+  50% {
+    width: 6px;
+    height: 52px;
+    border-radius: 3px;
+    transform: translateY(0) scaleY(1.2);
+    opacity: 0.9;
+  }
+  75% {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    transform: translateY(14px) scaleY(1);
+    opacity: 1;
+  }
+  100% {
+    width: 3px;
+    height: 23px;
+    border-radius: 2px;
+    transform: translateY(0) scaleY(1);
+    opacity: 0.6;
+  }
+}
+
+@keyframes shapeShift4 {
+  0% {
+    width: 7px;
+    height: 7px;
+    border-radius: 2px;
+    transform: translateY(0) rotate(0deg);
+    opacity: 0.5;
+  }
+  25% {
+    width: 4px;
+    height: 32px;
+    border-radius: 2px;
+    transform: translateY(-6px) rotate(90deg);
+    opacity: 1;
+  }
+  50% {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    transform: translateY(0) rotate(180deg);
+    opacity: 0.8;
+  }
+  75% {
+    width: 4px;
+    height: 32px;
+    border-radius: 2px;
+    transform: translateY(6px) rotate(270deg);
+    opacity: 1;
+  }
+  100% {
+    width: 7px;
+    height: 7px;
+    border-radius: 2px;
+    transform: translateY(0) rotate(360deg);
+    opacity: 0.5;
+  }
+}
+
+.loader-bar {
+  display: block;
+  flex-shrink: 0;
+  transform-origin: center;
+}
+
+.loader-bar-1 {
+  width: 6px;
+  height: 6px;
+  background-color: #000;
+  animation: shapeShift1 2s ease-in-out infinite;
+}
+
+.loader-bar-2 {
+  width: 9px;
+  height: 9px;
+  background-color: #1f2937;
+  animation: shapeShift2 2s ease-in-out infinite;
+  animation-delay: 0.2s;
+}
+
+.loader-bar-3 {
+  width: 3px;
+  height: 23px;
+  background-color: #374151;
+  animation: shapeShift3 2s ease-in-out infinite;
+  animation-delay: 0.4s;
+}
+
+.loader-bar-4 {
+  width: 7px;
+  height: 7px;
+  background-color: #4b5563;
+  animation: shapeShift4 2s ease-in-out infinite;
+  animation-delay: 0.6s;
+}
+
+/* Admin dashboard — Walby is applied on .admin-shell; these are shared chrome. */
+.admin-shell {
+  font-family: var(--font-walby), system-ui, sans-serif;
+}
+
+.admin-panel {
+  border: 1px solid #e5e7eb;
+  background: #fff;
+}
+
+.admin-panel-header {
+  border-bottom: 1px solid #e5e7eb;
+  background: #f9fafb;
+  padding: 0.75rem 1rem;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: #111;
+}
+
+.admin-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.55rem 1rem;
+  font-size: 0.875rem;
+  font-weight: 600;
+  line-height: 1.25;
+  transition: background-color 0.15s ease, color 0.15s ease, border-color 0.15s ease;
+}
+
+.admin-btn-primary {
+  background: #000;
+  color: #fff;
+}
+
+.admin-btn-primary:hover {
+  background: #1f2937;
+}
+
+.admin-btn-ghost {
+  background: transparent;
+  color: #111;
+}
+
+.admin-btn-ghost:hover {
+  background: #f3f4f6;
+}
+
+.admin-btn-outline {
+  border: 1px solid #d1d5db;
+  background: #fff;
+  color: #111;
+}
+
+.admin-btn-outline:hover {
+  background: #f9fafb;
+}
+
+.admin-btn-danger {
+  background: #fff;
+  color: #b91c1c;
+}
+
+.admin-btn-danger:hover {
+  background: #fef2f2;
+}
+
+.admin-field {
+  width: 100%;
+  border: 1px solid #d1d5db;
+  background: #fff;
+  padding: 0.65rem 0.85rem;
+  font-size: 0.875rem;
+  color: #111;
+  outline: none;
+}
+
+.admin-field:focus {
+  border-color: #111;
+}
+
+
+/* Medium-style article typography */
+.article-body.typography-inherit {
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+}
+
+/* Drop cap for first paragraph after image or title */
+.article-body > p:first-of-type::first-letter {
+  float: left;
+  font-size: 3.5em;
+  line-height: 0.85;
+  margin-right: 0.1em;
+  font-weight: 400;
+  color: #1a1a1a;
+}
+
+/* Better paragraph spacing for readability */
+.article-body p + p {
+  margin-top: 1.5em;
+}
+
+/* Figure captions */
+.article-body figcaption {
+  font-size: 0.875rem;
+  line-height: 1.5;
+  color: #6b7280;
+  text-align: center;
+  margin-top: 0.75rem;
+}
+
+/* Code blocks in articles */
+.article-body pre {
+  overflow-x: auto;
+  font-size: 0.9375rem;
+  line-height: 1.6;
+}
+
+.article-body pre code {
+  background: transparent;
+  padding: 0;
+  font-size: inherit;
+}
+
+/* Inline code */
+.article-body :not(pre) > code {
+  font-family: Menlo, Monaco, 'Courier New', monospace;
+  font-size: 0.9em;
+  padding: 0.125em 0.375em;
+  background: #f3f4f6;
+  border-radius: 0.25rem;
+}
+
+/* Better list styling */
+.article-body li + li {
+  margin-top: 0.5em;
+}
+
+/* Nested lists */
+.article-body ul ul,
+.article-body ol ol,
+.article-body ul ol,
+.article-body ol ul {
+  margin-top: 0.5em;
+  margin-bottom: 0.5em;
+}

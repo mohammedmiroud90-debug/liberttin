@@ -19,6 +19,8 @@ export default defineConfig({
 			filter: (page) =>
 				!page.includes("/api/") &&
 				!page.includes("/404") &&
+				!page.includes("/login") &&
+				!page.includes("/admin") &&
 				!page.endsWith("/search/") &&
 				!page.includes("/search/?"),
 			changefreq: "weekly",

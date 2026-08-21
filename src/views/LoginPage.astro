@@ -1,0 +1,279 @@
+---
+import BaseHead from "../components/BaseHead.astro";
+import Header from "../components/Header.astro";
+import Footer from "../components/Footer.astro";
+import CookieBanner from "../components/CookieBanner.astro";
+import { DEFAULT_LOCALE, getDir, localizedPath, type Locale } from "../i18n/locales";
+import { t } from "../i18n/ui";
+import { pageTitle } from "../i18n/title";
+
+type Props = { locale?: Locale };
+const locale = Astro.props.locale ?? DEFAULT_LOCALE;
+const dir = getDir(locale);
+const adminHref = localizedPath(locale, "/admin/");
+const homeHref = localizedPath(locale, "/");
+---
+
+<!doctype html>
+<html lang={locale} dir={dir}>
+	<head>
+		<BaseHead
+			title={pageTitle(locale, "nav.signIn")}
+			description={t(locale, "login.subtitle")}
+			locale={locale}
+			noindex={true}
+		/>
+	</head>
+	<body>
+		<Header locale={locale} />
+		<main class="login-page">
+			<section class="login-card" data-login-card data-admin-href={adminHref}>
+				<h1>{t(locale, "nav.signIn")}</h1>
+				<p class="login-subtitle">{t(locale, "login.subtitle")}</p>
+
+				<p class="login-error" data-login-error hidden></p>
+				<p class="login-status" data-login-status hidden></p>
+
+				<form class="login-form" data-login-form>
+					<label>
+						<span>{t(locale, "login.email")}</span>
+						<input
+							type="text"
+							name="email"
+							autocomplete="username"
+							required
+							placeholder={t(locale, "login.emailPlaceholder")}
+							data-login-email
+						/>
+					</label>
+					<label>
+						<span>{t(locale, "login.password")}</span>
+						<input
+							type="password"
+							name="password"
+							autocomplete="current-password"
+							required
+							placeholder={t(locale, "login.passwordPlaceholder")}
+							data-login-password
+						/>
+					</label>
+					<button type="submit" class="login-submit" data-login-submit>
+						{t(locale, "nav.signIn")}
+					</button>
+				</form>
+
+				<p class="login-hint">{t(locale, "login.adminHint")}</p>
+				<p class="login-back">
+					<a href={homeHref}>{t(locale, "login.backHome")}</a>
+				</p>
+			</section>
+		</main>
+		<Footer locale={locale} />
+		<CookieBanner locale={locale} />
+	</body>
+</html>
+
+<script>
+	import { loginUser, isAdminUser, userDisplayName } from "../lib/blog/auth";
+	import { clearStoredUser, readStoredUser, storeUser } from "../lib/auth-session";
+
+	const card = document.querySelector<HTMLElement>("[data-login-card]");
+	const form = document.querySelector<HTMLFormElement>("[data-login-form]");
+	const errorEl = document.querySelector<HTMLElement>("[data-login-error]");
+	const statusEl = document.querySelector<HTMLElement>("[data-login-status]");
+	const submitBtn = document.querySelector<HTMLButtonElement>("[data-login-submit]");
+	const emailInput = document.querySelector<HTMLInputElement>("[data-login-email]");
+	const passwordInput = document.querySelector<HTMLInputElement>("[data-login-password]");
+	const adminHref = card?.dataset.adminHref || "/en/admin/";
+	const signInLabel = submitBtn?.textContent?.trim() || "Sign in";
+
+	function showError(message: string) {
+		if (!errorEl) return;
+		errorEl.hidden = !message;
+		errorEl.textContent = message;
+	}
+
+	function showStatus(message: string) {
+		if (!statusEl) return;
+		statusEl.hidden = !message;
+		statusEl.textContent = message;
+	}
+
+	const existing = readStoredUser();
+	if (existing && isAdminUser(existing)) {
+		showStatus(`Signed in as ${userDisplayName(existing)}. Opening dashboard…`);
+		window.location.replace(adminHref);
+	} else if (existing) {
+		showStatus(`Signed in as ${userDisplayName(existing)}. Admin access required.`);
+	}
+
+	form?.addEventListener("submit", async (event) => {
+		event.preventDefault();
+		showError("");
+		showStatus("");
+
+		const email = emailInput?.value.trim() ?? "";
+		const password = passwordInput?.value ?? "";
+		if (!email || !password) {
+			showError("Enter your email and password.");
+			return;
+		}
+
+		if (submitBtn) {
+			submitBtn.disabled = true;
+			submitBtn.textContent = "Signing in…";
+		}
+
+		try {
+			const user = await loginUser(email, password);
+			storeUser(user);
+
+			if (!isAdminUser(user)) {
+				clearStoredUser();
+				showError("This account does not have admin access.");
+				return;
+			}
+
+			showStatus("Welcome back. Opening dashboard…");
+			window.location.assign(adminHref);
+		} catch (err) {
+			showError(err instanceof Error ? err.message : "Sign in failed.");
+		} finally {
+			if (submitBtn) {
+				submitBtn.disabled = false;
+				submitBtn.textContent = signInLabel;
+			}
+		}
+	});
+</script>
+
+<style>
+	.login-page {
+		min-height: calc(100vh - 12rem);
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		padding: 2.5rem 1.25rem;
+		background:
+			radial-gradient(ellipse 80% 50% at 50% -20%, rgba(20, 184, 166, 0.12), transparent),
+			linear-gradient(180deg, #f8faf9 0%, #eef2f1 100%);
+	}
+
+	.login-card {
+		width: 100%;
+		max-width: 420px;
+		background: #fff;
+		border: 1px solid rgba(0, 0, 0, 0.08);
+		padding: 2rem 1.75rem 1.75rem;
+		box-shadow: 0 18px 40px rgba(0, 0, 0, 0.06);
+		text-align: center;
+	}
+
+	.login-card h1 {
+		margin: 0;
+		font-family: "Atkinson", sans-serif;
+		font-size: 1.75rem;
+		color: #111;
+	}
+
+	.login-subtitle {
+		margin: 0.5rem 0 1.5rem;
+		color: #667;
+		font-size: 0.95rem;
+		line-height: 1.5;
+	}
+
+	.login-form {
+		display: flex;
+		flex-direction: column;
+		gap: 1rem;
+		text-align: start;
+	}
+
+	.login-form label span {
+		display: block;
+		margin-bottom: 0.4rem;
+		font-family: "Atkinson", sans-serif;
+		font-weight: 600;
+		font-size: 0.9rem;
+		color: #111;
+	}
+
+	.login-form input {
+		width: 100%;
+		padding: 0.8rem 0.95rem;
+		border: 2px solid #e5e7eb;
+		font-size: 1rem;
+		font-family: "Atkinson", sans-serif;
+		background: #fff;
+		color: #111;
+		box-sizing: border-box;
+	}
+
+	.login-form input:focus {
+		outline: none;
+		border-color: #0d9488;
+	}
+
+	.login-submit {
+		margin-top: 0.35rem;
+		width: 100%;
+		padding: 0.85rem 1.25rem;
+		border: none;
+		background: #000;
+		color: #fff;
+		font-family: "Atkinson", sans-serif;
+		font-size: 1rem;
+		font-weight: 700;
+		cursor: pointer;
+		transition: background 0.15s ease;
+	}
+
+	.login-submit:hover:not(:disabled) {
+		background: #222;
+	}
+
+	.login-submit:disabled {
+		opacity: 0.65;
+		cursor: wait;
+	}
+
+	.login-error {
+		margin: 0 0 1rem;
+		padding: 0.75rem 0.9rem;
+		background: #fef2f2;
+		color: #b91c1c;
+		font-size: 0.9rem;
+		text-align: start;
+	}
+
+	.login-status {
+		margin: 0 0 1rem;
+		padding: 0.75rem 0.9rem;
+		background: #ecfdf5;
+		color: #047857;
+		font-size: 0.9rem;
+		text-align: start;
+	}
+
+	.login-hint {
+		margin: 1.25rem 0 0;
+		font-size: 0.8rem;
+		color: #889;
+		line-height: 1.45;
+	}
+
+	.login-back {
+		margin: 0.85rem 0 0;
+		font-size: 0.9rem;
+	}
+
+	.login-back a {
+		color: #0f766e;
+		text-decoration: none;
+	}
+
+	.login-back a:hover {
+		text-decoration: underline;
+	}
+</style>

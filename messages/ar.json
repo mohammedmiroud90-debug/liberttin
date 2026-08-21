@@ -1,0 +1,702 @@
+{
+  "common": {
+    "appName": "بريليانت",
+    "tagline": "الرعاية الصحية بدون انتظار",
+    "getStarted": "ابدأ الآن",
+    "learnMore": "اعرف المزيد",
+    "bookAppointment": "احجز موعد",
+    "findDoctor": "ابحث عن طبيب",
+    "signIn": "تسجيل الدخول",
+    "signUp": "إنشاء حساب",
+    "signOut": "تسجيل الخروج",
+    "loading": "جاري التحميل...",
+    "search": "بحث",
+    "submit": "إرسال",
+    "cancel": "إلغاء",
+    "save": "حفظ",
+    "edit": "تعديل",
+    "delete": "حذف",
+    "view": "عرض",
+    "download": "تحميل",
+    "upload": "رفع"
+  },
+  "nav": {
+    "home": "الرئيسية",
+    "services": "الخدمات",
+    "forPatients": "للمرضى",
+    "forDoctors": "للأطباء",
+    "about": "من نحن",
+    "contact": "اتصل بنا",
+    "pricing": "الأسعار",
+    "blog": "المدونة"
+  },
+  "hero": {
+    "title": "رعاية صحية بدون انتظار",
+    "rotatingWords": {
+      "atHome": "في المنزل",
+      "onTheGo": "أثناء التنقل",
+      "worldwide": "حول العالم",
+      "anywhere": "في أي مكان",
+      "inMinutes": "في دقائق"
+    },
+    "subtitle": "دعم صحتك ورفاهيتك في كل مرحلة من رحلة الرعاية الصحية الخاصة بك",
+    "description": "الوصول إلى رعاية صحية عالية الجودة من متخصصين مرخصين. لا غرف انتظار. لا تشخيص بالذكاء الاصطناعي. أطباء حقيقيون، رعاية حقيقية.",
+    "viewAllResources": "عرض جميع الموارد",
+    "quickLinks": {
+      "remoteDiagnostics": "التشخيص عن بُعد",
+      "treatments": "العلاجات",
+      "mbc": "MBC",
+      "mentalWellbeing": "الرفاهية النفسية",
+      "livingWell": "العيش بصحة"
+    },
+    "cta": {
+      "patient": "ابحث عن طبيب",
+      "provider": "انضم كمزود"
+    }
+  },
+  "features": {
+    "eyebrow": "خدماتنا",
+    "title": "خدمات رعاية صحية شاملة",
+    "subtitle": "كل ما تحتاجه لصحة أفضل، في منصة واحدة",
+    "connectedCare": "الاستشارات والسجلات والمختبرات والوصفات — متصلة في مكان واحد.",
+    "explore": "ابدأ استشارة",
+    "consultation": {
+      "title": "استشارات عبر الإنترنت",
+      "description": "تواصل مع أطباء معتمدين عبر الفيديو أو الصوت أو الدردشة"
+    },
+    "appointments": {
+      "title": "مواعيد فورية",
+      "description": "احجز مواعيد مع متخصصين دون أوقات انتظار طويلة"
+    },
+    "records": {
+      "title": "السجلات الطبية",
+      "description": "تخزين آمن لجميع تاريخك الطبي ووثائقك"
+    },
+    "laboratory": {
+      "title": "خدمات المختبر",
+      "description": "احجز اختبارات المختبر واحصل على النتائج رقميًا"
+    },
+    "pharmacy": {
+      "title": "وصفات طبية رقمية",
+      "description": "احصل على وصفاتك الطبية وتوصيلها إلى باب منزلك"
+    },
+    "emergency": {
+      "title": "رعاية الطوارئ",
+      "description": "تنسيق سريع مع خدمات الطوارئ والمتخصصين"
+    }
+  },
+  "patientPortal": {
+    "title": "بوابة المريض",
+    "welcome": "مرحبًا بك في لوحة التحكم الصحية",
+    "dashboard": "لوحة التحكم",
+    "appointments": "مواعيدي",
+    "doctors": "أطبائي",
+    "prescriptions": "الوصفات الطبية",
+    "labResults": "نتائج المختبر",
+    "medicalRecords": "السجلات الطبية",
+    "family": "أفراد العائلة",
+    "settings": "الإعدادات"
+  },
+  "doctorPortal": {
+    "title": "بوابة مقدم الرعاية الصحية",
+    "welcome": "مرحبًا دكتور",
+    "dashboard": "لوحة التحكم",
+    "patients": "مرضاي",
+    "appointments": "المواعيد",
+    "consultations": "الاستشارات",
+    "schedule": "جدولي",
+    "earnings": "الأرباح",
+    "settings": "الإعدادات"
+  },
+  "auth": {
+    "login": "تسجيل الدخول",
+    "register": "التسجيل",
+    "forgotPassword": "نسيت كلمة المرور؟",
+    "email": "عنوان البريد الإلكتروني",
+    "password": "كلمة المرور",
+    "confirmPassword": "تأكيد كلمة المرور",
+    "fullName": "الاسم الكامل",
+    "phone": "رقم الهاتف",
+    "dob": "تاريخ الميلاد",
+    "gender": "الجنس",
+    "male": "ذكر",
+    "female": "أنثى",
+    "other": "آخر",
+    "agreeToTerms": "أوافق على شروط الخدمة وسياسة الخصوصية",
+    "alreadyHaveAccount": "هل لديك حساب بالفعل؟",
+    "dontHaveAccount": "ليس لديك حساب؟",
+    "patientRegistration": "تسجيل المريض",
+    "providerRegistration": "تسجيل مقدم الرعاية الصحية"
+  },
+  "footer": {
+    "description": "جعل الرعاية الصحية عالية الجودة متاحة وميسورة التكلفة ومتاحة للجميع من خلال المتخصصين الطبيين المعتمدين.",
+    "forPatients": "للمرضى",
+    "forProviders": "لمقدمي الخدمة",
+    "company": "الشركة",
+    "support": "الدعم",
+    "legal": "قانوني",
+    "findDoctor": "ابحث عن طبيب",
+    "bookAppointment": "احجز موعد",
+    "telehealth": "الصحة عن بعد",
+    "pharmacy": "الصيدلية",
+    "joinAsDr": "انضم كطبيب",
+    "joinAsHospital": "انضم كمستشفى",
+    "joinAsLab": "انضم كمختبر",
+    "aboutUs": "من نحن",
+    "careers": "الوظائف",
+    "blog": "المدونة",
+    "pressKit": "المواد الصحفية",
+    "helpCenter": "مركز المساعدة",
+    "contactUs": "اتصل بنا",
+    "faq": "الأسئلة الشائعة",
+    "privacyPolicy": "سياسة الخصوصية",
+    "termsOfService": "شروط الخدمة",
+    "hipaaCompliance": "امتثال HIPAA",
+    "allRightsReserved": "جميع الحقوق محفوظة.",
+    "advertise": "الإعلان",
+    "remoteDiagnostics": "التشخيص عن بُعد",
+    "resources": "الموارد",
+    "sitemap": "خريطة الموقع"
+  },
+  "Newsletter": {
+    "title": "احصل على نشرة العافية الخاصة بنا",
+    "description": "تخلص من الضوضاء واعتني بصندوق بريدك الإلكتروني بنصائح صحية وعافية شاملة ومستندة إلى الخبرة الطبية.",
+    "emailPlaceholder": "أدخل بريدك الإلكتروني",
+    "signUp": "اشترك",
+    "privacyNote": "خصوصيتك مهمة بالنسبة لنا. قد يتم وضع أي معلومات تقدمها لنا عبر هذا الموقع على خوادم موجودة في بلدان خارج الاتحاد الأوروبي. إذا كنت لا توافق على هذا الوضع، فلا تقدم المعلومات.",
+    "company": "الشركة",
+    "resources": "الموارد",
+    "legal": "قانوني",
+    "aboutUs": "من نحن",
+    "contactUs": "اتصل بنا",
+    "privacyNotice": "إشعار الخصوصية",
+    "privacySettings": "إعدادات الخصوصية",
+    "sitemap": "خريطة الموقع",
+    "medicalAffairs": "الشؤون الطبية",
+    "contentIntegrity": "نزاهة المحتوى",
+    "newsletters": "النشرات الإخبارية",
+    "advertisingPolicy": "سياسة الإعلان",
+    "healthTopics": "مواضيع صحية",
+    "termsOfUse": "شروط الاستخدام",
+    "accessibility": "إمكانية الوصول",
+    "copyright": "© 2026 بيليانت ميديا ذ.م.م. جميع الحقوق محفوظة. بيليانت ميديا هي شركة RVO Health. المحتوى والمنتجات الخاصة بنا للأغراض الإعلامية فقط. لا تقدم بيليانت ميديا المشورة الطبية أو التشخيص أو العلاج.",
+    "additionalInfo": "انظر معلومات إضافية"
+  },
+  "Header": {
+    "healthConditions": "الحالات الصحية",
+    "wellness": "العافية",
+    "tools": "الأدوات",
+    "featured": "مميز",
+    "connect": "تواصل",
+    "subscribe": "اشترك",
+    "signIn": "تسجيل الدخول",
+    "signUp": "إنشاء حساب",
+    "searchPlaceholder": "ابحث عن مقالات أو مواضيع أو كتّاب...",
+    "searchButton": "بحث",
+    "categories": "التصنيفات",
+    "tags": "الوسوم",
+    "noCategories": "لا تصنيفات بعد",
+    "noTags": "لا وسوم بعد",
+    "nav": {
+      "categories": "التصنيفات",
+      "project": "المشروع",
+      "founder": "المؤسس",
+      "more": "المزيد",
+      "why": "لماذا UpToDate",
+      "whatWeDo": "ما نفعله",
+      "ourValue": "قيمتنا",
+      "challenges": "تحديات الرعاية الصحية",
+      "tags": "الوسوم",
+      "noCategories": "لا تصنيفات بعد",
+      "noTags": "لا وسوم بعد"
+    },
+    "menus": {
+      "explore": "استكشاف",
+      "allArticles": "جميع المقالات",
+      "search": "بحث",
+      "resources": "الموارد",
+      "company": "الشركة",
+      "about": "حول",
+      "contact": "اتصل بنا",
+      "topics": "المواضيع",
+      "andMore": "والمزيد",
+      "exploreAll": "استكشف كل خيارات الرعاية",
+      "healthConditions": {
+        "title": "لماذا UpToDate",
+        "blurb": "إرشادات قائمة على الأدلة للحالات التي يسأل عنها المرضى أكثر.",
+        "heartDisease": "أمراض القلب",
+        "heartDiseaseDesc": "رعاية القلب والوقاية والمتابعة عن بُعد",
+        "mentalHealth": "الصحة النفسية",
+        "mentalHealthDesc": "علاج نفسي وطب نفسي ودعم مستمر",
+        "diabetes": "السكري",
+        "diabetesDesc": "المراقبة والأدوية وخطط نمط الحياة",
+        "respiratory": "الجهاز التنفسي",
+        "respiratoryDesc": "الربو ومرض الانسداد الرئوي والالتهابات",
+        "eyeHealth": "صحة العيون",
+        "eyeHealthDesc": "مراجعة مشكلات الرؤية من متخصصين",
+        "boneJoint": "العظام والمفاصل",
+        "boneJointDesc": "تقييم عظام دون غرفة انتظار"
+      },
+      "wellness": {
+        "title": "ما نفعله",
+        "blurb": "أدوات سريرية تبقي الرعاية مستمرة من أي مكان.",
+        "clinicalSupport": "دعم القرار السريري",
+        "clinicalSupportDesc": "توصيات يقودها الأطباء للحالات المعقدة",
+        "drugSupport": "دعم قرارات الأدوية",
+        "drugSupportDesc": "وصف أكثر أمانًا وفحص التفاعلات",
+        "innovation": "الابتكار في الرعاية الصحية",
+        "innovationDesc": "تشخيص عن بُعد ومسارات رعاية متصلة",
+        "education": "التعليم الطبي المستمر",
+        "educationDesc": "تعلم موثوق للأطباء الممارسين",
+        "insights": "رؤى لأعمال الرعاية الصحية",
+        "insightsDesc": "بيانات تساعد الفرق على توسيع جودة الرعاية"
+      },
+      "tools": {
+        "title": "قيمتنا",
+        "blurb": "ما تقدمه BILLIANT للمرضى والأطباء وفرق الرعاية.",
+        "whyChoose": "لماذا تختار BILLIANT",
+        "whyChooseDesc": "متخصصون بشر، وصول أسرع، رعاية موثّقة",
+        "benefits": "فوائد للشركات",
+        "benefitsDesc": "تغطية وتقارير وصحة القوى العاملة",
+        "editorial": "العملية التحريرية",
+        "editorialDesc": "كيف يُراجع المحتوى السريري ويُحدَّث",
+        "aiContent": "الذكاء الاصطناعي في المحتوى السريري",
+        "aiContentDesc": "فرز مساعد، يؤكده الطبيب دائمًا",
+        "remoteDiagnostics": "التشخيص عن بُعد (Eclipse LLM)",
+        "remoteDiagnosticsDesc": "مراجعة ملفات آمنة وتشخيص عن بُعد"
+      },
+      "featured": {
+        "title": "تحديات الرعاية الصحية",
+        "blurb": "إجابات عملية للمشكلات التي تبطئ الرعاية اليوم.",
+        "aligningTeams": "مواءمة فرق الرعاية",
+        "aligningTeamsDesc": "خطط مشتركة بين الأطباء والمرضى والطاقم",
+        "qualityCosts": "موازنة الجودة والتكلفة",
+        "qualityCostsDesc": "نتائج أفضل دون إنفاق غير ضروري",
+        "equity": "العدالة الصحية",
+        "equityDesc": "الوصول إلى المتخصصين أينما كنت",
+        "burnout": "إرهاق العاملين في الصحة",
+        "burnoutDesc": "مسارات أخف للأطباء أثناء التنقل",
+        "outcomes": "جودة الرعاية والنتائج",
+        "outcomesDesc": "نتائج مقاسة من الاستشارات عن بُعد",
+        "careManagement": "توسيع إدارة الرعاية",
+        "careManagementDesc": "متابعة تنتقل مع المريض"
+      }
+    }
+  },
+  "HomePage": {
+    "whyChoose": "لماذا تختار بيليانت؟",
+    "whyChooseSubtitle": "رعاية صحية تضعك في المقدمة",
+    "featuredSpecialists": {
+      "title": "متخصصونا المميزون",
+      "subtitle": "تعرف على متخصصي الرعاية الصحية المؤهلين — متاحون للاستشارات عن بُعد بالكامل",
+      "requestConsultation": "طلب استشارة عن بُعد",
+      "viewAllDoctors": "عرض جميع الأطباء"
+    },
+    "benefits": {
+      "fasterCare": {
+        "title": "رعاية أسرع",
+        "description": "احصل على العناية الطبية في دقائق، وليس أيام"
+      },
+      "affordable": {
+        "title": "ميسور التكلفة",
+        "description": "تسعير شفاف، تكاليف أقل"
+      },
+      "verified": {
+        "title": "متخصصون معتمدون",
+        "description": "جميع مقدمي الرعاية الصحية مرخصون ومعتمدون"
+      },
+      "humanPowered": {
+        "title": "مدعوم بالبشر",
+        "description": "أطباء حقيقيون، وليس ذكاء اصطناعي. رعاية عالية الجودة يمكنك الوثوق بها"
+      }
+    },
+    "cta": {
+      "title": "هل أنت مستعد لتجربة رعاية صحية أفضل؟",
+      "subtitle": "انضم إلى آلاف المرضى الذين يثقون ببيليانت لاحتياجاتهم الصحية",
+      "getStarted": "ابدأ مجانًا",
+      "findDoctor": "ابحث عن طبيب"
+    },
+    "banner": {
+      "title": "هل أنت مستعد لتجربة رعاية صحية شاملة؟",
+      "getStarted": "ابدأ اليوم"
+    },
+    "careServices": {
+      "insuranceNote": "نقبل معظم التأمينات، مما يعني أن زيارتك قد تكون مجانية.",
+      "andMore": "والمزيد",
+      "categories": {
+        "urgentCare": {
+          "title": "الرعاية العاجلة",
+          "items": [
+            "نزلات البرد والإنفلونزا",
+            "كوفيد",
+            "التهابات الجيوب",
+            "التهابات الأذن",
+            "التهابات المسالك البولية",
+            "التهابات الخميرة",
+            "علاج الأمراض المنقولة جنسياً",
+            "علاج BV",
+            "التهاب الحلق",
+            "التهاب الملتحمة"
+          ],
+          "viewLink": "عرض الرعاية العاجلة",
+          "href": "/doctors?specialty=urgent"
+        },
+        "therapy": {
+          "title": "العلاج النفسي",
+          "items": [
+            "القلق",
+            "الاكتئاب",
+            "التوتر",
+            "الحزن والفقد",
+            "ما بعد الولادة",
+            "اضطراب ما بعد الصدمة",
+            "علاج الأزواج",
+            "EMDR",
+            "CBT",
+            "الصحة النفسية للشباب"
+          ],
+          "viewLink": "عرض العلاج عبر الإنترنت",
+          "href": "/doctors?specialty=therapy"
+        },
+        "psychiatry": {
+          "title": "الطب النفسي",
+          "items": [
+            "اضطرابات المزاج",
+            "التقييمات النفسية",
+            "التشخيص الأولي",
+            "إدارة الأدوية",
+            "الاضطراب ثنائي القطب",
+            "ADHD",
+            "اضطراب ما بعد الصدمة",
+            "الوصفات عبر الإنترنت"
+          ],
+          "viewLink": "عرض الطب النفسي عبر الإنترنت",
+          "href": "/doctors?specialty=psychiatry"
+        },
+        "primaryCare": {
+          "title": "الرعاية الأولية*",
+          "items": [
+            "إدارة الأمراض المزمنة",
+            "الصحة النفسية",
+            "الفحوصات السنوية",
+            "ارتفاع ضغط الدم",
+            "نزلات البرد والإنفلونزا والالتهابات",
+            "تجديد الوصفات",
+            "الرعاية الوقائية"
+          ],
+          "viewLink": "عرض الرعاية الأولية",
+          "href": "/doctors?specialty=primary"
+        }
+      }
+    }
+  },
+  "ReasonsSection": {
+    "eyebrow": "الحلول السريرية",
+    "heroTitle": "التشخيص السريري عن بُعد",
+    "heroDescription": "يربط BILLIANT المرضى بأخصائيين معتمدين من خلال تشخيص آمن عن بُعد بمساعدة الذكاء الاصطناعي — من فرز الأعراض ومراجعة الملفات المشفرة إلى التقارير الطبية. احصل على دعم قرارات سريرية قائم على الأدلة دون غرفة انتظار، من منزلك.",
+    "forLabel": "لـ:",
+    "forValue": "الأفراد وفرق الرعاية والأنظمة الصحية",
+    "reviewedByLabel": "مراجعة طبية بواسطة:",
+    "reviewedByName": "الشؤون السريرية BILLIANT",
+    "heroCta": "احصل على تشخيص عن بُعد الآن",
+    "title": "حلول سريرية رائدة للأفراد والمجموعات والمؤسسات",
+    "descriptionIntro": "استكشف مجموعاتنا المهنية والمؤسسية —",
+    "descriptionAnd": "و",
+    "descriptionOutro": "— مصممة للتشخيص عن بُعد بالكامل.",
+    "brandBilliant": "BILLIANT®",
+    "brandLexidrug": "BILLIANT Lexidrug™",
+    "brandEngagement": "مشاركة المرضى والأعضاء",
+    "brandArchitect": "Digital Architect",
+    "learnMore": "اعرف المزيد",
+    "whyChoose": "لماذا تختار BILLIANT؟",
+    "trusted": "موثوق به من قبل أكثر من 3 ملايين متخصص في الرعاية الصحية حول العالم",
+    "cta": "ابدأ التشخيص عن بُعد",
+    "audiences": {
+      "individuals": {
+        "label": "الأفراد",
+        "title": "رعاية شخصية في أي مكان",
+        "description": "استشارات عن بُعد، فرز بمساعدة الذكاء الاصطناعي، وسجلات طبية آمنة — للمرضى الذين يحتاجون رعاية دون غرفة انتظار."
+      },
+      "groups": {
+        "label": "المجموعات",
+        "title": "BILLIANT Pro Suite",
+        "description": "دعم قرارات سريرية ودوائية قائم على الأدلة للعيادات الصغيرة وفرق الرعاية — موثوق به من قبل أكثر من 3 ملايين متخصص."
+      },
+      "enterprises": {
+        "label": "المؤسسات",
+        "title": "BILLIANT Enterprise Suite",
+        "description": "CDS موحد، معلومات دوائية مرجعية، مشاركة المرضى، وتعليم للمستشفيات وشركات التأمين والنظم الصحية الحديثة."
+      }
+    },
+    "highlights": {
+      "evidence": {
+        "title": "تميز قائم على الأدلة",
+        "text": "معلومات سريرية دقيقة ومحدثة موثوقة عالميًا."
+      },
+      "ai": {
+        "title": "تشخيص عن بُعد بمساعدة الذكاء الاصطناعي",
+        "text": "Eclipse LLM يفرز الأعراض ويعد الحالات لمراجعة الطبيب."
+      },
+      "security": {
+        "title": "أمان على مستوى المؤسسات",
+        "text": "تشفير AES-256، تسجيل الموافقات، وسير عمل متوافق مع HIPAA."
+      },
+      "scale": {
+        "title": "مصمم لكل حجم",
+        "text": "من الممارسين الفرديين إلى الأنظمة الصحية الكبيرة — منصة واحدة."
+      }
+    }
+  },
+  "LoginPage": {
+    "title": "تسجيل الدخول إلى حسابك",
+    "subtitle": "سجل الدخول للوصول إلى حسابك",
+    "usernameOrEmail": "اسم المستخدم أو البريد الإلكتروني",
+    "emailPlaceholder": "you@example.com",
+    "continue": "متابعة",
+    "signingIn": "جاري تسجيل الدخول...",
+    "forgotUsername": "نسيت اسم المستخدم",
+    "noAccount": "ليس لديك حساب؟",
+    "createAccount": "أنشئ حسابًا الآن",
+    "backToHome": "العودة إلى الرئيسية",
+    "demoAccess": "وصول تجريبي سريع:",
+    "loginSuccess": "تم تسجيل الدخول! جاري التوجيه إلى لوحة التحكم...",
+    "loginSuccessUnverified": "تم تسجيل الدخول! يرجى التحقق من بريدك الإلكتروني.",
+    "loginFailed": "فشل تسجيل الدخول. تحقق من بيانات الاعتماد.",
+    "signIn": "تسجيل الدخول",
+    "chooseAccountType": "اختر نوع حسابك",
+    "patient": "مريض",
+    "doctor": "طبيب",
+    "emailAddress": "عنوان البريد الإلكتروني",
+    "password": "كلمة المرور",
+    "passwordPlaceholder": "أدخل كلمة المرور",
+    "rememberMe": "تذكرني",
+    "forgotPassword": "نسيت كلمة المرور؟",
+    "signInButton": "تسجيل الدخول",
+    "orContinueWith": "أو تابع مع",
+    "google": "جوجل",
+    "facebook": "فيسبوك",
+    "signUp": "سجل",
+    "admin": "مسؤول",
+    "continueSubtitle": "سجّل الدخول للمتابعة إلى بيليانت"
+  },
+  "RegisterPage": {
+    "title": "إنشاء حسابك",
+    "subtitle": "انضم إلى بيليانت للحصول على وصول أسرع للرعاية الصحية",
+    "patientRegistration": "تسجيل المريض",
+    "fillDetails": "املأ تفاصيلك للبدء",
+    "firstName": "الاسم الأول",
+    "firstNamePlaceholder": "محمد",
+    "lastName": "اسم العائلة",
+    "lastNamePlaceholder": "أحمد",
+    "emailAddress": "عنوان البريد الإلكتروني",
+    "emailPlaceholder": "mohamed.ahmed@example.com",
+    "phoneNumber": "رقم الهاتف",
+    "phonePlaceholder": "+966 50 123 4567",
+    "dateOfBirth": "تاريخ الميلاد",
+    "gender": "الجنس",
+    "selectGender": "اختر الجنس",
+    "male": "ذكر",
+    "female": "أنثى",
+    "other": "آخر",
+    "preferNotToSay": "أفضل عدم الإفصاح",
+    "password": "كلمة المرور",
+    "passwordPlaceholder": "8 أحرف على الأقل",
+    "confirmPassword": "تأكيد كلمة المرور",
+    "confirmPasswordPlaceholder": "أعد إدخال كلمة المرور",
+    "agreeToTerms": "أوافق على",
+    "termsOfService": "شروط الخدمة",
+    "and": "و",
+    "privacyPolicy": "سياسة الخصوصية",
+    "createAccount": "إنشاء حساب",
+    "healthcareProfessional": "هل أنت متخصص في الرعاية الصحية؟",
+    "registerAsDoctor": "سجل كطبيب",
+    "alreadyHaveAccount": "هل لديك حساب بالفعل؟",
+    "signIn": "تسجيل الدخول",
+    "required": "*",
+    "creatingAccount": "جاري إنشاء الحساب...",
+    "registrationSuccess": "تم التسجيل بنجاح!",
+    "redirectingToLogin": "جاري التوجيه إلى تسجيل الدخول...",
+    "passwordsDoNotMatch": "كلمات المرور غير متطابقة",
+    "passwordTooShort": "يجب أن تكون كلمة المرور 8 أحرف على الأقل",
+    "registrationFailed": "فشل التسجيل. يرجى المحاولة مرة أخرى.",
+    "backToHome": "العودة إلى الرئيسية"
+  },
+  "AboutPage": {
+    "title": "حول بيليانت",
+    "subtitle": "مهمتنا هي جعل الرعاية الصحية عالية الجودة متاحة وميسورة التكلفة ومتاحة للجميع من خلال المتخصصين الطبيين المعتمدين.",
+    "ourMission": "مهمتنا",
+    "missionText1": "تبسيط الرعاية الصحية من خلال بناء منصة رقمية شاملة تربط المرضى بالمتخصصين الطبيين المؤهلين والمستشفيات والمختبرات والصيدليات ومقدمي الرعاية الصحية، مما يتيح تشخيصًا أسرع وسهولة الوصول إلى العلاج ونتائج أفضل للمرضى.",
+    "missionText2": "نحن نحافظ على أعلى معايير الجودة الطبية والخصوصية والثقة مع الاستفادة من التكنولوجيا للقضاء على التأخيرات غير الضرورية وتحسين تقديم الرعاية الصحية.",
+    "ourValues": "قيمنا",
+    "values": {
+      "patientCentered": {
+        "title": "يركز على المريض",
+        "description": "نضع المرضى في المقام الأول في كل ما نقوم به"
+      },
+      "humanPowered": {
+        "title": "مدعوم بالبشر",
+        "description": "متخصصون حقيقيون في الرعاية الصحية، وليس خوارزميات الذكاء الاصطناعي"
+      },
+      "trustPrivacy": {
+        "title": "الثقة والخصوصية",
+        "description": "بياناتك الصحية آمنة ومحمية"
+      },
+      "qualityCare": {
+        "title": "رعاية عالية الجودة",
+        "description": "متخصصون معتمدون يقدمون رعاية ممتازة"
+      }
+    },
+    "stats": {
+      "doctors": "أطباء معتمدون",
+      "patients": "مرضى تم خدمتهم",
+      "consultations": "استشارات",
+      "rating": "تقييم المرضى"
+    }
+  },
+  "ContactPage": {
+    "title": "اتصل بنا",
+    "subtitle": "نحن هنا للمساعدة. تواصل معنا.",
+    "sendMessage": "أرسل لنا رسالة",
+    "fullName": "الاسم الكامل",
+    "fullNamePlaceholder": "محمد أحمد",
+    "email": "البريد الإلكتروني",
+    "emailPlaceholder": "mohamed@example.com",
+    "subject": "الموضوع",
+    "subjectPlaceholder": "كيف يمكننا المساعدة؟",
+    "message": "الرسالة",
+    "messagePlaceholder": "رسالتك...",
+    "sendButton": "إرسال الرسالة",
+    "emailLabel": "البريد الإلكتروني",
+    "phoneLabel": "الهاتف",
+    "phoneHours": "الاثنين-الجمعة 9 صباحًا-6 مساءً",
+    "officeLabel": "المكتب",
+    "officeAddress": "شارع الرعاية الصحية 123\nنيويورك، نيويورك 10001\nالولايات المتحدة",
+    "businessHoursLabel": "ساعات العمل",
+    "businessHours": "الاثنين - الجمعة: 9:00 صباحًا - 6:00 مساءً\nالسبت: 10:00 صباحًا - 4:00 مساءً\nالأحد: مغلق"
+  },
+  "DoctorsPage": {
+    "title": "ابحث عن طبيب",
+    "subtitle": "تواصل مع متخصصي الرعاية الصحية المعتمدين",
+    "searchPlaceholder": "البحث بالاسم أو التخصص أو الحالة...",
+    "searchButton": "بحث",
+    "verifiedProfessionals": "متخصص طبي معتمد",
+    "filters": "الفلاتر",
+    "specialty": "التخصص",
+    "sortBy": "ترتيب حسب",
+    "highestRated": "الأعلى تقييمًا",
+    "mostExperienced": "الأكثر خبرة",
+    "lowestFee": "أقل رسوم",
+    "highestFee": "أعلى رسوم",
+    "acceptingNewPatients": "يقبل مرضى جدد",
+    "clearFilters": "مسح الفلاتر",
+    "noDoctorsFound": "لم يتم العثور على أطباء يطابقون معاييرك.",
+    "loading": "جاري تحميل الأطباء...",
+    "yearsExperience": "سنوات خبرة",
+    "consultation": "استشارة",
+    "acceptingPatients": "يقبل مرضى جدد",
+    "viewProfile": "عرض الملف الشخصي",
+    "allSpecialties": "جميع التخصصات",
+    "cardiology": "أمراض القلب",
+    "dermatology": "الأمراض الجلدية",
+    "pediatrics": "طب الأطفال",
+    "orthopedics": "جراحة العظام",
+    "neurology": "طب الأعصاب",
+    "psychiatry": "الطب النفسي",
+    "gynecology": "أمراض النساء",
+    "ophthalmology": "طب العيون",
+    "generalMedicine": "الطب العام"
+  },
+  "DoctorProfile": {
+    "about": "حول",
+    "availability": "التوفر",
+    "reviews": "التقييمات",
+    "location": "الموقع",
+    "bookAppointment": "احجز موعد",
+    "message": "رسالة",
+    "officeHours": "ساعات العمل",
+    "scheduleAppointment": "حدد موعدك خلال هذه الساعات",
+    "patientReviews": "تقييمات المرضى",
+    "readReviews": "اقرأ ما يقوله المرضى عن د. {name}",
+    "reviewsComingSoon": "التقييمات قريبًا...",
+    "clinicLocation": "موقع العيادة",
+    "mapPlaceholder": "مكان الخريطة",
+    "educationCredentials": "التعليم والشهادات",
+    "education": "التعليم",
+    "certifications": "الشهادات",
+    "licenseNumber": "رقم الترخيص",
+    "notFoundTitle": "لم يتم العثور على ملف الطبيب أو غير متاح.",
+    "goBack": "رجوع",
+    "loadingProfile": "جاري تحميل الملف الشخصي..."
+  },
+  "SubscribeModal": {
+    "title": "لديك صديق في هذه المعركة.",
+    "subtitle": "احصل على أحدث أخبار الرعاية الصحية وخيارات العلاج ونصائح لزيارات الطبيب بالإضافة إلى قصص ملهمة.",
+    "emailPlaceholder": "أدخل بريدك الإلكتروني",
+    "subscribeButton": "اشترك",
+    "subscribing": "جاري الاشتراك...",
+    "successTitle": "تم الاشتراك بنجاح!",
+    "successMessage": "مرحبًا بك في بيليانت",
+    "privacyNote": "خصوصيتك مهمة بالنسبة لنا. قد يتم وضع أي معلومات تقدمها لنا عبر هذا الموقع على خوادم موجودة في بلدان خارج الاتحاد الأوروبي. إذا كنت لا توافق على هذا الوضع، فلا تقدم المعلومات.",
+    "privacySettings": "إعدادات الخصوصية",
+    "newsletters": "النشرات الإخبارية",
+    "healthTopics": "مواضيع صحية",
+    "copyright": "© 2026 بيليانت هيلث ذ.م.م. جميع الحقوق محفوظة. بيليانت هيلث هي منظمة غير ربحية 501(c)(3). خدماتنا عبر الإنترنت والمحتوى والمنتجات لأغراض إعلامية فقط.",
+    "stayConnected": "ابق على اتصال",
+    "joinCommunity": "انضم إلى مجتمع الرعاية الصحية لدينا"
+  },
+  "AuthLanguage": {
+    "label": "اللغة",
+    "english": "English",
+    "arabic": "العربية",
+    "french": "Français"
+  },
+  "NotFound": {
+    "title": "الصفحة غير موجودة",
+    "description": "عذرًا، لم نعثر على الصفحة التي تبحث عنها. ربما نُقلت أو حُذفت أو لم تكن موجودة أصلًا.",
+    "goHome": "العودة إلى الصفحة الرئيسية",
+    "findDoctor": "ابحث عن طبيب",
+    "popularPages": "صفحات شائعة",
+    "needHelp": "هل تحتاج مساعدة؟",
+    "helpDescription": "إذا كنت تعتقد أن هذا خطأ، يرجى التواصل مع فريق الدعم.",
+    "contactSupport": "تواصل مع الدعم",
+    "searchArticles": "البحث في المقالات",
+    "articles": "المقالات",
+    "about": "من نحن",
+    "resources": "الموارد",
+    "contact": "اتصل بنا"
+  },
+  "Blog": {
+    "latestArticles": "أحدث المقالات",
+    "publishedCount": "{count} {count, plural, one {مقال منشور} other {مقالات منشورة}}",
+    "freshWriting": "كتابات جديدة تُنشر أولًا بأول.",
+    "newer": "← مقالات أحدث",
+    "older": "مقالات أقدم →",
+    "pageOf": "صفحة {page} من {total}",
+    "readArticle": "اقرأ المقال",
+    "minRead": "{count} دقائق قراءة",
+    "relatedArticles": "مقالات ذات صلة",
+    "newsletterEyebrow": "النشرة",
+    "newsletterTitle": "استلم أفضل مقالاتنا في بريدك",
+    "newsletterBody": "إرشادات مبنية على البحث ورؤى عملية، أسبوعيًا.",
+    "newsletterEmail": "بريدك الإلكتروني",
+    "newsletterSubscribe": "اشترك",
+    "newsletterPrivacy": "لا رسائل مزعجة. إلغاء الاشتراك في أي وقت. يُحفظ في قائمة المشتركين.",
+    "newsletterDoneTitle": "تم الاشتراك",
+    "newsletterDoneBody": "ترقّب العدد التالي في صندوق الوارد.",
+    "helpfulQuestion": "هل كان هذا المقال مفيدًا؟",
+    "helpfulYes": "نعم",
+    "helpfulNo": "لا",
+    "helpfulThanks": "شكرًا على ملاحظاتك",
+    "helpfulStats": "{yes} من أصل {total} قرّاء وجدوه مفيدًا",
+    "helpfulError": "تعذّر حفظ تصويتك.",
+    "advertisement": "إعلان",
+    "emptyArticles": "لا مقالات بعد. عد قريبًا.",
+    "allArticles": "كل المقالات",
+    "moreIn": "المزيد في {category}",
+    "seeAllIn": "عرض كل مقالات {category}",
+    "categoryCount": "{count} {count, plural, one {مقال} other {مقالات}} في {category}",
+    "tagCount": "{count} {count, plural, one {مقال} other {مقالات}} بوسم {tag}",
+    "emptyCategory": "لا مقالات في هذا التصنيف بعد.",
+    "emptyTag": "لا مقالات بهذا الوسم بعد."
+  }
+}

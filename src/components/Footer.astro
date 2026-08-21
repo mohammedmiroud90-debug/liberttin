@@ -2,7 +2,6 @@
 import BrandLogo from "./BrandLogo.astro";
 import { DEFAULT_LOCALE, localizedPath, type Locale } from "../i18n/locales";
 import { t } from "../i18n/ui";
-import { SITE_TITLE } from "../consts";
 
 type Props = { locale?: Locale };
 const locale = Astro.props.locale ?? DEFAULT_LOCALE;
@@ -17,9 +16,19 @@ const policiesHref = localizedPath(locale, "/policies/");
 		<div class="footer-logo">
 			<BrandLogo href={homeHref} text="Libertta" variant="light" fontSize={32} fontWeight={700} />
 		</div>
-		<div class="footer-description">
-			{t(locale, "footer.description")}
+
+		<div class="footer-copy-wrap">
+			<section class="footer-block">
+				<h2 class="footer-heading">{t(locale, "footer.learnTitle")}</h2>
+				<p class="footer-copy">{t(locale, "footer.learnBody")}</p>
+			</section>
+
+			<section class="footer-block footer-block--curious">
+				<h2 class="footer-heading">{t(locale, "footer.curiousTitle")}</h2>
+				<p class="footer-tagline">{t(locale, "footer.curiousBody")}</p>
+			</section>
 		</div>
+
 		<div class="footer-social">
 			<a href="mailto:contact@liberttin.blog" target="_blank" rel="noopener noreferrer" aria-label="Email">
 				<svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2">
@@ -51,21 +60,61 @@ const policiesHref = localizedPath(locale, "/policies/");
 			<a href={policiesHref}>{t(locale, "nav.policies")}</a>
 		</div>
 		<div class="footer-copyright">
-			&copy; {today.getFullYear()} {SITE_TITLE}. {t(locale, "footer.rights")}
+			&copy; {today.getFullYear()} — {t(locale, "footer.rights")}
 		</div>
 	</div>
 </footer>
 <style>
 	footer {
-		padding: 2em 1em 6em 1em;
+		padding: 3em 1.25em 6em;
 		background: linear-gradient(var(--gray-gradient)) no-repeat;
 		color: rgb(var(--gray));
 		text-align: center;
 	}
+	.footer-content {
+		width: 100%;
+		margin: 0 auto;
+	}
 	.footer-logo {
 		display: flex;
 		justify-content: center;
-		margin-bottom: 1em;
+		margin-bottom: 1.75em;
+	}
+	.footer-copy-wrap {
+		width: min(100%, 34rem);
+		margin: 0 auto;
+		padding: 0 0.5rem;
+		text-align: center;
+	}
+	.footer-block {
+		margin: 0 auto 1.75rem;
+	}
+	.footer-block--curious {
+		margin-bottom: 1.5rem;
+	}
+	.footer-heading {
+		margin: 0 0 0.65rem;
+		font-family: "Atkinson", sans-serif;
+		font-size: 1.35rem;
+		font-weight: 700;
+		color: rgb(var(--black));
+		line-height: 1.25;
+		text-align: center;
+	}
+	.footer-copy {
+		margin: 0 auto;
+		font-size: 1rem;
+		line-height: 1.65;
+		color: rgb(var(--gray));
+		text-align: center;
+	}
+	.footer-tagline {
+		margin: 0 auto;
+		font-size: 1.05rem;
+		line-height: 1.55;
+		color: rgb(var(--gray-dark));
+		font-weight: 500;
+		text-align: center;
 	}
 	.footer-links {
 		display: flex;
@@ -81,7 +130,8 @@ const policiesHref = localizedPath(locale, "/policies/");
 		transition: color 0.2s ease;
 	}
 	.footer-links a:hover {
-		color: var(--accent);
+		color: #2563eb;
+		text-decoration-color: #2563eb;
 	}
 	.footer-links span {
 		color: rgb(var(--gray-light));
@@ -90,13 +140,24 @@ const policiesHref = localizedPath(locale, "/policies/");
 		display: flex;
 		justify-content: center;
 		gap: 1em;
-		margin-top: 1em;
+		margin-top: 0.25em;
+		margin-bottom: 0.25em;
 	}
 	.footer-social a {
 		text-decoration: none;
-		color: var(--accent);
+		color: #2563eb;
 	}
 	.footer-social a:hover {
-		color: var(--accent-dark);
+		color: #1d4ed8;
+	}
+	.footer-copyright {
+		margin-top: 0.35rem;
+		font-size: 0.9rem;
+		color: rgb(var(--gray));
+	}
+	.footer-bottom {
+		margin-top: 1.75rem;
+		padding-top: 1.25rem;
+		border-top: 1px solid rgba(var(--gray-light), 0.9);
 	}
 </style>

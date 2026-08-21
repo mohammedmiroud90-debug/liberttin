@@ -1,0 +1,15 @@
+---
+import AdminLayout from "../../../../../layouts/AdminLayout.astro";
+import { AdminNewPost } from "../../../../../components/admin/pages";
+import { localeStaticPaths, resolveLocaleParam } from "../../../../../i18n/paths";
+
+export function getStaticPaths() {
+	return localeStaticPaths();
+}
+
+const locale = resolveLocaleParam(Astro.params.locale);
+---
+
+<AdminLayout locale={locale}>
+	<AdminNewPost client:only="react" />
+</AdminLayout>
