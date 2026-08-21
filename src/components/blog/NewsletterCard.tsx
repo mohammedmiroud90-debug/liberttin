@@ -45,7 +45,7 @@ export function NewsletterCard({
   const isSidebar = variant === 'sidebar';
 
   const shell = [
-    'relative w-full overflow-hidden bg-black text-left text-white',
+    'relative w-full overflow-hidden rounded-2xl bg-black text-left text-white',
     isSidebar ? 'p-5' : 'p-6 md:p-8',
   ].join(' ');
 
@@ -104,15 +104,15 @@ export function NewsletterCard({
           onChange={(event) => setEmail(event.target.value)}
           placeholder={t('newsletterEmail')}
           aria-label={t('newsletterEmail')}
-          className="w-full border border-white/25 bg-white px-4 py-3 text-sm text-black placeholder-gray-500 outline-none transition-colors focus:border-white focus:ring-1 focus:ring-white"
+          className="w-full rounded-xl border border-white/25 bg-white px-4 py-3 text-sm text-black placeholder-gray-500 outline-none transition-colors focus:border-white focus:ring-1 focus:ring-white"
         />
         <button
           type="submit"
           disabled={status === 'saving'}
           className={
             isSidebar
-              ? 'inline-flex w-full items-center justify-center gap-2 border border-white bg-white px-7 py-3 text-sm font-bold uppercase tracking-[0.06em] text-black transition-colors hover:bg-gray-100 disabled:opacity-60'
-              : 'inline-flex shrink-0 items-center justify-center gap-2 border border-white bg-white px-7 py-3 text-sm font-bold uppercase tracking-[0.06em] text-black transition-colors hover:bg-gray-100 disabled:opacity-60'
+              ? 'inline-flex w-full items-center justify-center gap-2 rounded-xl border border-white bg-white px-7 py-3 text-sm font-bold uppercase tracking-[0.06em] text-black transition-colors hover:bg-gray-100 disabled:opacity-60'
+              : 'inline-flex shrink-0 items-center justify-center gap-2 rounded-xl border border-white bg-white px-7 py-3 text-sm font-bold uppercase tracking-[0.06em] text-black transition-colors hover:bg-gray-100 disabled:opacity-60'
           }
         >
           {status === 'saving' && <Loader2 className="h-4 w-4 animate-spin" />}

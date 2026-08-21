@@ -10,6 +10,8 @@ import { pageTitle } from "../i18n/title";
 type Props = { locale?: Locale };
 const locale = Astro.props.locale ?? DEFAULT_LOCALE;
 const dir = getDir(locale);
+const aboutDescription =
+	"Libertta is a technology and learning-focused blog built for people who enjoy exploring ideas, solving problems, and building things.";
 ---
 
 <!doctype html>
@@ -17,7 +19,7 @@ const dir = getDir(locale);
 	<head>
 		<BaseHead
 			title={pageTitle(locale, "nav.about")}
-			description={t(locale, "about.body")}
+			description={aboutDescription}
 			locale={locale}
 		/>
 	</head>
@@ -26,7 +28,103 @@ const dir = getDir(locale);
 		<main>
 			<article>
 				<h1>{t(locale, "nav.about")}</h1>
-				<p>{t(locale, "about.body")}</p>
+
+				<p>
+					<strong
+						>Libertta is a technology and learning-focused blog built for people who enjoy
+						exploring ideas, solving problems, and building things.</strong
+					>
+				</p>
+
+				<p>
+					The platform brings together practical exercises, technology insights, tutorials,
+					development tips, project experiences, and research-minded articles designed to turn
+					knowledge into something useful. Rather than focusing only on theory, Libertta
+					encourages readers to experiment, test ideas, learn from mistakes, and apply what they
+					discover to real projects.
+				</p>
+
+				<p>
+					Our content covers a broad range of topics across
+					<strong
+						>software development, emerging technologies, artificial intelligence, digital tools,
+						programming, engineering, innovation, and practical problem-solving</strong
+					>. Articles may range from simple exercises and technical explanations to deeper
+					explorations of technologies, workflows, tools, and ideas shaping the digital world.
+				</p>
+
+				<p>
+					Libertta also serves as a space for sharing
+					<strong>experiences, observations, experiments, and lessons learned</strong>. Some
+					articles are created to explain a concept clearly, while others investigate a
+					technology, document a project, compare approaches, or provide practical guidance for
+					readers who want to try something themselves.
+				</p>
+
+				<p>
+					The platform is designed for a diverse audience, including
+					<strong
+						>students, developers, researchers, makers, entrepreneurs, technology enthusiasts, and
+						curious learners</strong
+					>. Whether you are looking for a programming exercise, trying to understand a new
+					technology, searching for a practical solution, or simply exploring an interesting idea,
+					Libertta aims to provide useful and accessible content.
+				</p>
+
+				<h2>A Place to Learn by Doing</h2>
+				<p>
+					We believe that some of the most valuable learning happens through practice. That is why
+					Libertta combines explanations with exercises, examples, experiments, and practical
+					perspectives whenever possible.
+				</p>
+				<p>Our goal is simple:</p>
+				<p>
+					<strong
+						>Learn something useful. Explore the idea. Try it yourself. Build something better.</strong
+					>
+				</p>
+
+				<h2>Technology, Ideas &amp; Research</h2>
+				<p>
+					Technology changes quickly, and understanding it requires more than simply following
+					trends. Libertta aims to look beyond the surface by exploring
+					<strong
+						>how technologies work, why they matter, where they can be useful, and what can be
+						learned from using them</strong
+					>.
+				</p>
+				<p>
+					Our research-minded approach does not mean every article is an academic paper. Instead,
+					it means approaching interesting subjects with curiosity, evidence, experimentation, and
+					a willingness to examine different perspectives.
+				</p>
+
+				<h2>Multilingual &amp; Accessible</h2>
+				<p>
+					Libertta is designed to support readers from different backgrounds and regions. The
+					platform provides
+					<strong
+						>multiple-language support for navigation, interface elements, and selected content</strong
+					>, making the experience more accessible to an international audience.
+				</p>
+
+				<h2>Our Purpose</h2>
+				<p>
+					Libertta exists to create a growing knowledge space where
+					<strong
+						>ideas can be explored, practical skills can be developed, and useful discoveries can
+						be shared</strong
+					>.
+				</p>
+				<p>
+					We are building a place where a small exercise can become a learning experience, a
+					technical problem can become a tutorial, an experiment can become an insight, and an
+					interesting idea can become the starting point for a new project.
+				</p>
+
+				<p>
+					<strong>Libertta — Learn. Explore. Build. Share.</strong>
+				</p>
 			</article>
 		</main>
 		<Footer locale={locale} />
