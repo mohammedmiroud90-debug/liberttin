@@ -1,0 +1,15 @@
+---
+import AdminLayout from "../../../../layouts/AdminLayout.astro";
+import { SpaceNotifications } from "../../../../components/space/pages";
+import { localeStaticPaths, resolveLocaleParam } from "../../../../i18n/paths";
+
+export function getStaticPaths() {
+	return localeStaticPaths();
+}
+
+const locale = resolveLocaleParam(Astro.params.locale);
+---
+
+<AdminLayout locale={locale} titleKey="nav.space">
+	<SpaceNotifications client:only="react" />
+</AdminLayout>

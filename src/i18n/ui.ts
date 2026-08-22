@@ -5,11 +5,13 @@ type UiKey =
 	| "nav.home"
 	| "nav.blog"
 	| "nav.about"
+	| "nav.platform"
 	| "nav.contact"
 	| "nav.policies"
 	| "nav.categories"
 	| "nav.menu"
 	| "nav.signIn"
+	| "nav.space"
 	| "nav.dashboard"
 	| "nav.subscribe"
 	| "subscribe.title"
@@ -51,6 +53,7 @@ type UiKey =
 	| "admin.col.status"
 	| "admin.col.date"
 	| "site.description"
+	| "home.heading"
 	| "home.tagline"
 	| "home.latest"
 	| "home.viewAll"
@@ -99,6 +102,7 @@ type UiKey =
 	| "comments.errorEmpty"
 	| "post.minRead"
 	| "post.updated"
+	| "post.edit"
 	| "post.share"
 	| "post.shareX"
 	| "post.shareFacebook"
@@ -155,11 +159,13 @@ const en: Record<UiKey, string> = {
 	"nav.home": "Home",
 	"nav.blog": "Blog",
 	"nav.about": "About",
+	"nav.platform": "Liberta Platform",
 	"nav.contact": "Contact",
 	"nav.policies": "Policies",
 	"nav.categories": "Categories",
 	"nav.menu": "Menu",
 	"nav.signIn": "Sign in",
+	"nav.space": "Space",
 	"nav.dashboard": "Dashboard",
 	"nav.subscribe": "Subscribe",
 	"subscribe.title": "Stay Connected",
@@ -201,6 +207,7 @@ const en: Record<UiKey, string> = {
 	"admin.col.status": "Status",
 	"admin.col.date": "Published",
 	"site.description": "Thoughts, stories and ideas from Libertta.",
+	"home.heading": "Liberta Platform",
 	"home.tagline": "Learn something new. Try it yourself. Build something better.",
 	"home.latest": "Latest posts",
 	"home.viewAll": "View all posts →",
@@ -251,6 +258,7 @@ const en: Record<UiKey, string> = {
 	"comments.errorEmpty": "Please enter a comment.",
 	"post.minRead": "min read",
 	"post.updated": "Last updated on",
+	"post.edit": "Edit post",
 	"post.share": "Share this article",
 	"post.shareX": "Share on X",
 	"post.shareFacebook": "Share on Facebook",
@@ -311,11 +319,14 @@ const fr: Record<UiKey, string> = {
 	"nav.home": "Accueil",
 	"nav.blog": "Blog",
 	"nav.about": "À propos",
+	"nav.platform": "Liberta Platform",
 	"nav.contact": "Contact",
 	"nav.policies": "Politiques",
 	"nav.categories": "Catégories",
 	"nav.menu": "Menu",
 	"site.description": "Pensées, histoires et idées de Libertta.",
+	"home.heading": "Liberta Platform",
+	"home.tagline": "Apprenez quelque chose de nouveau. Essayez par vous-même. Construisez mieux.",
 	"home.latest": "Derniers articles",
 	"home.viewAll": "Voir tous les articles →",
 	"home.empty": "Aucun article publié pour le moment.",
@@ -365,6 +376,7 @@ const fr: Record<UiKey, string> = {
 	"comments.errorEmpty": "Veuillez saisir un commentaire.",
 	"post.minRead": "min de lecture",
 	"post.updated": "Dernière mise à jour le",
+	"post.edit": "Modifier l’article",
 	"post.share": "Partager cet article",
 	"post.shareX": "Partager sur X",
 	"post.shareFacebook": "Partager sur Facebook",
@@ -421,7 +433,10 @@ const ar: Record<UiKey, string> = {
 	"nav.policies": "السياسات",
 	"nav.categories": "الفئات",
 	"nav.menu": "القائمة",
+	"nav.platform": "منصة ليبرتا",
 	"site.description": "أفكار وقصص ورؤى من ليبرتّا.",
+	"home.heading": "منصة ليبرتا",
+	"home.tagline": "تعلّم شيئًا جديدًا. جرّب بنفسك. ابنِ شيئًا أفضل.",
 	"home.latest": "أحدث المقالات",
 	"home.viewAll": "عرض كل المقالات ←",
 	"home.empty": "لا توجد مقالات منشورة بعد.",
@@ -527,7 +542,10 @@ const es: Record<UiKey, string> = {
 	"nav.policies": "Políticas",
 	"nav.categories": "Categorías",
 	"nav.menu": "Menú",
+	"nav.platform": "Liberta Platform",
 	"site.description": "Pensamientos, historias e ideas de Libertta.",
+	"home.heading": "Liberta Platform",
+	"home.tagline": "Aprende algo nuevo. Pruébalo tú mismo. Construye algo mejor.",
 	"home.latest": "Últimos artículos",
 	"home.viewAll": "Ver todos los artículos →",
 	"home.empty": "Aún no hay artículos publicados.",
@@ -633,7 +651,10 @@ const de: Record<UiKey, string> = {
 	"nav.policies": "Richtlinien",
 	"nav.categories": "Kategorien",
 	"nav.menu": "Menü",
+	"nav.platform": "Liberta Platform",
 	"site.description": "Gedanken, Geschichten und Ideen von Libertta.",
+	"home.heading": "Liberta Platform",
+	"home.tagline": "Lernen Sie etwas Neues. Probieren Sie es selbst. Bauen Sie etwas Besseres.",
 	"home.latest": "Neueste Beiträge",
 	"home.viewAll": "Alle Beiträge ansehen →",
 	"home.empty": "Noch keine Beiträge veröffentlicht.",
@@ -739,7 +760,10 @@ const pt: Record<UiKey, string> = {
 	"nav.policies": "Políticas",
 	"nav.categories": "Categorias",
 	"nav.menu": "Menu",
+	"nav.platform": "Liberta Platform",
 	"site.description": "Pensamentos, histórias e ideias da Libertta.",
+	"home.heading": "Liberta Platform",
+	"home.tagline": "Aprenda algo novo. Experimente você mesmo. Construa algo melhor.",
 	"home.latest": "Últimos artigos",
 	"home.viewAll": "Ver todos os artigos →",
 	"home.empty": "Ainda não há artigos publicados.",
@@ -853,6 +877,7 @@ const dictionaries: Record<Locale, Record<UiKey, string>> = {
 		"nav.policies": "Политика",
 		"nav.categories": "Категории",
 		"nav.menu": "Меню",
+		"nav.platform": "Liberta Platform",
 		"site.description": "Мысли, истории и идеи от Libertta.",
 		"lang.switch": "Сменить язык",
 		"toc.label": "Содержание",
@@ -864,6 +889,8 @@ const dictionaries: Record<Locale, Record<UiKey, string>> = {
 		"comments.cancel": "Отмена",
 		"comments.guest": "Гость",
 		"comments.user": "Пользователь",
+		"home.heading": "Liberta Platform",
+		"home.tagline": "Узнайте что-то новое. Попробуйте сами. Создайте что-то лучше.",
 		"home.latest": "Последние записи",
 		"home.viewAll": "Все записи →",
 		"home.empty": "Пока нет опубликованных записей.",
@@ -901,6 +928,7 @@ const dictionaries: Record<Locale, Record<UiKey, string>> = {
 		"nav.policies": "政策",
 		"nav.categories": "分类",
 		"nav.menu": "菜单",
+		"nav.platform": "Liberta Platform",
 		"site.description": "来自 Libertta 的思考、故事与想法。",
 		"lang.switch": "切换语言",
 		"toc.label": "目录",
@@ -912,6 +940,8 @@ const dictionaries: Record<Locale, Record<UiKey, string>> = {
 		"comments.cancel": "取消",
 		"comments.guest": "访客",
 		"comments.user": "用户",
+		"home.heading": "Liberta Platform",
+		"home.tagline": "学点新东西。自己试试。做得更好。",
 		"home.latest": "最新文章",
 		"home.viewAll": "查看全部 →",
 		"home.empty": "暂无已发布文章。",
@@ -949,6 +979,7 @@ const dictionaries: Record<Locale, Record<UiKey, string>> = {
 		"nav.policies": "ポリシー",
 		"nav.categories": "カテゴリー",
 		"nav.menu": "メニュー",
+		"nav.platform": "Liberta Platform",
 		"site.description": "Libertta からの考え、物語、アイデア。",
 		"lang.switch": "言語を切り替え",
 		"toc.label": "目次",
@@ -960,6 +991,8 @@ const dictionaries: Record<Locale, Record<UiKey, string>> = {
 		"comments.cancel": "キャンセル",
 		"comments.guest": "ゲスト",
 		"comments.user": "ユーザー",
+		"home.heading": "Liberta Platform",
+		"home.tagline": "新しいことを学ぶ。自分で試す。より良いものを作る。",
 		"home.latest": "最新の投稿",
 		"home.viewAll": "すべての投稿 →",
 		"home.empty": "公開された投稿はまだありません。",
@@ -997,6 +1030,7 @@ const dictionaries: Record<Locale, Record<UiKey, string>> = {
 		"nav.policies": "नीतियाँ",
 		"nav.categories": "श्रेणियाँ",
 		"nav.menu": "मेनू",
+		"nav.platform": "Liberta Platform",
 		"site.description": "Libertta से विचार, कहानियाँ और आइडिया।",
 		"lang.switch": "भाषा बदलें",
 		"toc.label": "विषय सूची",
@@ -1008,6 +1042,8 @@ const dictionaries: Record<Locale, Record<UiKey, string>> = {
 		"comments.cancel": "रद्द करें",
 		"comments.guest": "अतिथि",
 		"comments.user": "उपयोगकर्ता",
+		"home.heading": "Liberta Platform",
+		"home.tagline": "कुछ नया सीखें। खुद आज़माएँ। बेहतर बनाएँ।",
 		"home.latest": "नवीनतम पोस्ट",
 		"home.viewAll": "सभी पोस्ट देखें →",
 		"home.empty": "अभी कोई पोस्ट प्रकाशित नहीं हुई।",

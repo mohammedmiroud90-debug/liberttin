@@ -8,6 +8,7 @@ export type ParseUser = {
   firstName?: string;
   lastName?: string;
   displayName?: string;
+  bio?: string;
   profilePicture?: string | { url?: string };
   [key: string]: unknown;
 };
@@ -82,6 +83,64 @@ export async function signupUser(
 
   const created = await response.json();
   return { username, email, ...created };
+}
+
+export type ProfileUpdates = {
+  firstName?: string;
+  lastName?: string;
+  displayName?: string;
+  bio?: string;
+  profilePictureUrl?: string;
+};
+
+function profilePicturePayload(url: string) {
+  const name = url.split('/').pop()?.split('?')[0] || 'profile.png';
+  return {
+    __type: 'File',
+    name,
+    url,
+  };
+}
+
+export async function updateUserProfile(
+  user: ParseUser,
+  updates: ProfileUpdates
+): Promise<ParseUser> {
+  const body: Record<string, unknown> = {
+    firstName: updates.firstName?.trim() ?? '',
+    lastName: updates.lastName?.trim() ?? '',
+    displayName: updates.displayName?.trim() ?? '',
+    bio: updates.bio?.trim() ?? '',
+  };
+
+  if (updates.profilePictureUrl) {
+    body.profilePicture = profilePicturePayload(updates.profilePictureUrl);
+  }
+
+  const response = await fetch(`${PARSE_SERVER_URL}/users/${user.objectId}`, {
+    method: 'PUT',
+    headers: parseHeaders(user.sessionToken),
+    body: JSON.stringify(body),
+  });
+
+  if (!response.ok) {
+    const detail = await response.json().catch(() => null);
+    throw new Error(detail?.error || 'Could not save your profile.');
+  }
+
+  const next: ParseUser = {
+    ...user,
+    firstName: updates.firstName?.trim(),
+    lastName: updates.lastName?.trim(),
+    displayName: updates.displayName?.trim(),
+    bio: updates.bio?.trim(),
+  };
+
+  if (updates.profilePictureUrl) {
+    next.profilePicture = updates.profilePictureUrl;
+  }
+
+  return next;
 }
 
 export async function fetchCurrentUser(sessionToken: string): Promise<ParseUser | null> {

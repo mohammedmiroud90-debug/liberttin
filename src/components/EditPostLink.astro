@@ -1,0 +1,69 @@
+---
+type Props = {
+	href: string;
+	label?: string;
+};
+
+const { href, label = "Edit post" } = Astro.props;
+---
+
+<a
+	href={href}
+	class="edit-post-link"
+	hidden
+	data-edit-post-link
+	aria-label={label}
+	title={label}
+>
+	<svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+		<path d="M12 20h9"></path>
+		<path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4 12.5-12.5z"></path>
+	</svg>
+</a>
+
+<script>
+	import { isAdminUser } from "../lib/blog/auth";
+	import { readStoredUser } from "../lib/auth-session";
+
+	function revealEditLinks() {
+		if (!isAdminUser(readStoredUser())) return;
+		document.querySelectorAll<HTMLElement>("[data-edit-post-link]").forEach((el) => {
+			el.removeAttribute("hidden");
+		});
+	}
+
+	revealEditLinks();
+	document.addEventListener("astro:page-load", revealEditLinks);
+</script>
+
+<style>
+	.edit-post-link {
+		display: inline-flex;
+		align-items: center;
+		justify-content: center;
+		width: 1.85rem;
+		height: 1.85rem;
+		margin-inline-start: 0.45rem;
+		flex-shrink: 0;
+		border: 1px solid rgba(0, 0, 0, 0.12);
+		border-radius: 999px;
+		background: #fff;
+		color: #111;
+		text-decoration: none;
+		vertical-align: middle;
+		transform: translateY(-0.15em);
+		transition: background 0.15s ease, color 0.15s ease, border-color 0.15s ease;
+	}
+
+	.edit-post-link[hidden] {
+		display: none;
+	}
+
+	.edit-post-link:hover,
+	.edit-post-link:focus-visible {
+		background: #111;
+		color: #fff;
+		border-color: #111;
+		outline: none;
+	}
+</style>

@@ -4,7 +4,7 @@ import { useState } from 'react';
 import { X } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import Image from 'next/image';
+import { addNewsletterSubscription } from '@/lib/blog/newsletter';
 
 interface SubscribeModalProps {
   isOpen: boolean;
@@ -15,29 +15,23 @@ export function SubscribeModal({ isOpen, onClose }: SubscribeModalProps) {
   const [email, setEmail] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
+  const [error, setError] = useState('');
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    setError('');
     setIsSubmitting(true);
 
     try {
-      // TODO: Replace with actual API call
-      // await fetch('/api/subscribe', {
-      //   method: 'POST',
-      //   body: JSON.stringify({ email }),
-      // });
-
-      // Simulate API call
-      await new Promise(resolve => setTimeout(resolve, 1000));
-      
+      await addNewsletterSubscription(email, 'header-subscribe');
       setIsSuccess(true);
       setTimeout(() => {
         onClose();
         setIsSuccess(false);
         setEmail('');
       }, 2000);
-    } catch (error) {
-      console.error('Subscription failed:', error);
+    } catch (submitError) {
+      setError(submitError instanceof Error ? submitError.message : 'Subscription failed.');
     } finally {
       setIsSubmitting(false);
     }
@@ -112,10 +106,15 @@ export function SubscribeModal({ isOpen, onClose }: SubscribeModalProps) {
                     </svg>
                   </div>
                   <p className="text-green-800 font-semibold">Successfully subscribed!</p>
-                  <p className="text-green-600 text-sm mt-1">Welcome to BILLIANT</p>
+                  <p className="text-green-600 text-sm mt-1">Welcome to Libertta</p>
                 </div>
               ) : (
                 <form onSubmit={handleSubmit} className="space-y-4">
+                  {error ? (
+                    <p className="rounded-lg border border-red-200 bg-red-50 px-3 py-2 text-sm text-red-700">
+                      {error}
+                    </p>
+                  ) : null}
                   <div>
                     <Input
                       type="email"

@@ -11,10 +11,13 @@ const NAV = [
   { href: '/admin', label: 'Posts' },
   { href: '/admin/comments', label: 'Comments' },
   { href: '/admin/subscribers', label: 'Subscribers' },
+  { href: '/admin/notifications', label: 'Notifications' },
+  { href: '/admin/profile', label: 'Profile' },
   { href: '/admin/analytics', label: 'Analytics' },
   { href: '/admin/settings', label: 'Settings' },
 ];
 
+/** Matches Billientt.blog AdminShell — single black bar, logo + nav + user actions. */
 export function AdminShell({ children }: { children: React.ReactNode }) {
   const { user, isLoading, isAdmin, openSignIn, logout } = useAuth();
   const router = useRouter();
@@ -62,17 +65,20 @@ export function AdminShell({ children }: { children: React.ReactNode }) {
       className="admin-shell min-h-screen bg-gray-50"
       style={{ fontFamily: 'var(--font-walby), system-ui, sans-serif' }}
     >
-      <header className="sticky top-0 z-40 bg-black text-white">
-        <div className="mx-auto flex h-16 max-w-6xl items-center gap-6 px-4">
-          <BrandLogo href="/admin" variant="dark" priority />
+      <header className="sticky top-0 z-40 w-full bg-black text-white">
+        <div className="mx-auto flex h-16 w-full max-w-7xl items-center gap-6 px-4 sm:px-6">
+          <BrandLogo
+            href="/admin"
+            variant="dark"
+            text="Libertta"
+            fontSize={36}
+            fontWeight={700}
+            priority
+          />
 
-          <nav className="hidden items-center gap-1 sm:flex">
+          <nav className="admin-header-nav flex items-center gap-2 overflow-x-auto" aria-label="Admin">
             {NAV.map((item) => (
-              <Link
-                key={item.href}
-                href={item.href}
-                className="rounded-full px-3 py-1.5 text-sm text-white/80 transition-colors hover:bg-white/10 hover:text-white"
-              >
+              <Link key={item.href} href={item.href} className="admin-nav-link text-sm">
                 {item.label}
               </Link>
             ))}
@@ -82,10 +88,7 @@ export function AdminShell({ children }: { children: React.ReactNode }) {
             <span className="hidden text-sm text-white/60 sm:inline">
               {userDisplayName(user)}
             </span>
-            <Link
-              href="/"
-              className="rounded-full border border-white/30 px-3 py-1.5 text-sm text-white transition-colors hover:bg-white hover:text-black"
-            >
+            <Link href="/" className="admin-view-blog text-sm">
               View blog
             </Link>
             <button
@@ -99,7 +102,7 @@ export function AdminShell({ children }: { children: React.ReactNode }) {
         </div>
       </header>
 
-      {children}
+      <div className="admin-main-wrap flex-1">{children}</div>
     </div>
   );
 }

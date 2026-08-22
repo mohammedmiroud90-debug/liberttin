@@ -3,6 +3,8 @@ import AdminCommentsPage from "@/app/[locale]/admin/comments/page";
 import AdminSubscribersPage from "@/app/[locale]/admin/subscribers/page";
 import AdminAnalyticsPage from "@/app/[locale]/admin/analytics/page";
 import AdminSettingsPage from "@/app/[locale]/admin/settings/page";
+import AdminNotificationsPage from "@/app/[locale]/admin/notifications/page";
+import AdminProfilePage from "@/app/[locale]/admin/profile/page";
 import NewPostPage from "@/app/[locale]/admin/posts/new/page";
 import EditPostPage from "@/app/[locale]/admin/posts/[id]/edit/page";
 import { AdminApp } from "@/components/admin/AdminApp";
@@ -43,6 +45,22 @@ export function AdminSettings() {
 	return (
 		<AdminApp>
 			<AdminSettingsPage />
+		</AdminApp>
+	);
+}
+
+export function AdminNotifications() {
+	return (
+		<AdminApp>
+			<AdminNotificationsPage />
+		</AdminApp>
+	);
+}
+
+export function AdminProfile() {
+	return (
+		<AdminApp>
+			<AdminProfilePage />
 		</AdminApp>
 	);
 }

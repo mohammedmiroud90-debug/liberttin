@@ -1,8 +1,9 @@
 'use client';
 
 import { useCallback, useEffect, useState } from 'react';
-import { Loader2, MessageSquare, Plus, Pencil, Trash2, ExternalLink } from 'lucide-react';
+import { ArrowRight, Loader2, MessageSquare, Plus, Pencil, Trash2, ExternalLink } from 'lucide-react';
 import { Link } from '@/i18n/routing';
+import { AdminPanelHeader } from '@/components/admin/AdminRefreshButton';
 import { useAuth } from '@/components/auth/AuthProvider';
 import { deleteBlogPost, getAllAdminPosts, type AdminPost } from '@/lib/blog/admin';
 import { getAllComments } from '@/lib/blog/comments';
@@ -68,20 +69,31 @@ export default function AdminPostsPage() {
   );
 
   return (
-    <main className="mx-auto max-w-6xl px-4 py-10">
+    <main className="admin-main">
       <div className="flex flex-wrap items-center justify-between gap-4">
         <div>
           <h1 className="text-2xl font-bold text-gray-900">Content</h1>
           <p className="mt-1 text-sm text-gray-500">Create, edit and remove blog posts.</p>
         </div>
 
-        <Link
-          href="/admin/posts/new"
-          className="inline-flex items-center gap-2 rounded-full bg-teal-600 px-5 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-teal-700"
-        >
-          <Plus className="h-4 w-4" />
-          New post
-        </Link>
+        <div className="flex flex-wrap items-center gap-2">
+          <Link
+            href="/space"
+            className="inline-flex items-center gap-1.5 rounded-full border border-gray-300 bg-white px-3.5 py-2 text-sm font-medium text-gray-800 transition-colors hover:border-gray-400 hover:bg-gray-50"
+            title="Open Space as a member"
+            aria-label="Open Space"
+          >
+            Space
+            <ArrowRight className="h-3.5 w-3.5" aria-hidden="true" />
+          </Link>
+          <Link
+            href="/admin/posts/new"
+            className="inline-flex items-center gap-2 rounded-full bg-teal-600 px-5 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-teal-700"
+          >
+            <Plus className="h-4 w-4" />
+            New post
+          </Link>
+        </div>
       </div>
 
       <input
@@ -96,10 +108,10 @@ export default function AdminPostsPage() {
         <p className="mt-4 rounded-lg bg-red-50 px-4 py-3 text-sm text-red-700">{error}</p>
       )}
 
-      <div className="mt-6 overflow-hidden rounded-xl border border-gray-200 bg-white shadow-sm">
-        <div className="border-b border-gray-100 px-5 py-3.5 text-sm font-semibold text-gray-700">
+      <div className="admin-panel mt-6 overflow-hidden">
+        <AdminPanelHeader onRefresh={load} refreshing={loading}>
           All posts ({filtered.length})
-        </div>
+        </AdminPanelHeader>
 
         {loading ? (
           <div className="flex justify-center py-16">

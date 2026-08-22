@@ -125,7 +125,7 @@ export default function AdminSettingsPage() {
   }
 
   return (
-    <main className="mx-auto max-w-4xl px-4 py-10">
+    <main className="admin-main">
       <div className="border-b border-black pb-5">
         <p className="text-[11px] font-bold uppercase tracking-[0.12em] text-gray-500">
           Site setup

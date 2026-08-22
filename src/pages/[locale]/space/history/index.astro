@@ -1,0 +1,15 @@
+---
+import AdminLayout from "../../../../layouts/AdminLayout.astro";
+import { SpaceHistory } from "../../../../components/space/pages";
+import { localeStaticPaths, resolveLocaleParam } from "../../../../i18n/paths";
+
+export function getStaticPaths() {
+	return localeStaticPaths();
+}
+
+const locale = resolveLocaleParam(Astro.params.locale);
+---
+
+<AdminLayout locale={locale} titleKey="nav.space">
+	<SpaceHistory client:only="react" />
+</AdminLayout>

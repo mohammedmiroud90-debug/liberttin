@@ -1,6 +1,6 @@
 ---
 import BlogPost from "../../../layouts/BlogPost.astro";
-import { getAllPostSlugs, getBlogPostBySlug } from "../../../lib/parse/posts";
+import { getAllPostSlugs, getBlogPostBySlug } from "../../../lib/blog/parse";
 import { processHeadings } from "../../../lib/blog/headings";
 import { localizedPath } from "../../../i18n/locales";
 import { localeStaticPaths, resolveLocaleParam } from "../../../i18n/paths";
@@ -38,6 +38,8 @@ const processed = processHeadings(post.content);
 	updatedAt={post.updatedAt}
 	imageUrl={post.imageUrl}
 	author={post.author}
+	authorProfilePicture={post.authorProfilePicture}
+	authorBio={post.authorBio}
 	category={post.category}
 	postId={post.id}
 	readingTime={post.readingTime}

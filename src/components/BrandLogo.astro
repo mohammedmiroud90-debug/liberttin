@@ -7,19 +7,23 @@ type Props = {
 	fontSize?: number;
 	fontWeight?: number;
 	scale?: number;
+	/** Show iconlogo.png to the right of the wordmark (default true). */
+	showIcon?: boolean;
 };
 
 const {
 	href = "/",
-	text = "Liberttin",
+	text = "Libertta",
 	variant = "dark",
 	fontSize = 28,
 	fontWeight = 700,
 	scale = 1,
+	showIcon = true,
 } = Astro.props;
 
 const color = variant === "dark" ? "#ffffff" : "#000000";
 const computedSize = fontSize * scale;
+const iconSize = Math.max(22, Math.round(computedSize * 0.85));
 ---
 
 <a href={href} class="brand-logo">
@@ -29,6 +33,19 @@ const computedSize = fontSize * scale;
 	>
 		{text}
 	</span>
+	{
+		showIcon && (
+			<img
+				class:list={["brand-logo__icon", { "brand-logo__icon--on-light": variant === "light" }]}
+				src="/iconlogo.png"
+				alt=""
+				width={iconSize}
+				height={iconSize}
+				style={`width: ${iconSize}px; height: ${iconSize}px;`}
+				decoding="async"
+			/>
+		)
+	}
 </a>
 
 <style>
@@ -43,6 +60,7 @@ const computedSize = fontSize * scale;
 	.brand-logo {
 		display: inline-flex;
 		align-items: center;
+		gap: 0.45rem;
 		min-width: 0;
 		text-decoration: none;
 		flex-shrink: 0;
@@ -54,5 +72,17 @@ const computedSize = fontSize * scale;
 		line-height: 1;
 		letter-spacing: -0.01em;
 		white-space: nowrap;
+	}
+
+	.brand-logo__icon {
+		display: block;
+		flex-shrink: 0;
+		object-fit: contain;
+		border-radius: 0.2rem;
+		filter: brightness(0) invert(1);
+	}
+
+	.brand-logo__icon--on-light {
+		filter: brightness(0);
 	}
 </style>

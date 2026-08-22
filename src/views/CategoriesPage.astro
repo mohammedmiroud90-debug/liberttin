@@ -1,5 +1,4 @@
 ---
-import type { CollectionEntry } from "astro:content";
 import BaseHead from "../components/BaseHead.astro";
 import Header from "../components/Header.astro";
 import Footer from "../components/Footer.astro";
@@ -10,23 +9,28 @@ import { t } from "../i18n/ui";
 import { pageTitle } from "../i18n/title";
 import { localizeCategory } from "../i18n/category";
 
+export type CategoryPost = {
+	slug: string;
+	title: string;
+	publishedAt: Date;
+	category: string;
+};
+
 interface Props {
 	locale: Locale;
-	posts: CollectionEntry<"blog">[];
+	posts: CategoryPost[];
 }
 
 const { locale, posts } = Astro.props;
 const dir = getDir(locale);
 
-const categoriesMap = new Map<string, CollectionEntry<"blog">[]>();
-
-posts.forEach((post) => {
-	const category = post.data.category || "General";
-	if (!categoriesMap.has(category)) {
-		categoriesMap.set(category, []);
-	}
-	categoriesMap.get(category)!.push(post);
-});
+const categoriesMap = new Map<string, CategoryPost[]>();
+for (const post of posts) {
+	const category = post.category || "General";
+	const list = categoriesMap.get(category) ?? [];
+	list.push(post);
+	categoriesMap.set(category, list);
+}
 
 const categories = Array.from(categoriesMap.entries()).sort((a, b) => a[0].localeCompare(b[0]));
 ---
@@ -44,48 +48,56 @@ const categories = Array.from(categoriesMap.entries()).sort((a, b) => a[0].local
 		<Header locale={locale} />
 		<main>
 			<section class="categories-header">
+				<p class="categories-kicker">{posts.length} {posts.length === 1 ? t(locale, "categories.articleOne") : t(locale, "categories.articleMany")}</p>
 				<h1>{t(locale, "categories.title")}</h1>
 				<p>{t(locale, "categories.subtitle")}</p>
 			</section>
 
-			<section class="categories-grid">
-				{
-					categories.map(([category, categoryPosts]) => (
-						<div class="category-card">
-							<h2 class="category-title">{localizeCategory(locale, category)}</h2>
-							<p class="category-count">
-								{categoryPosts.length}{" "}
-								{categoryPosts.length === 1
-									? t(locale, "categories.articleOne")
-									: t(locale, "categories.articleMany")}
-							</p>
-							<ul class="category-posts">
-								{categoryPosts.slice(0, 5).map((post) => (
-									<li>
-										<a href={localizedPath(locale, `/blog/${post.id}/`)}>
-											<span class="post-title">{post.data.title}</span>
-											<span class="post-date">
-												<FormattedDate date={post.data.pubDate} locale={locale} />
-											</span>
-										</a>
-									</li>
-								))}
-							</ul>
-							{categoryPosts.length > 5 && (
-								<a
-									href={localizedPath(
-										locale,
-										`/categories/${category.toLowerCase().replace(/\s+/g, "-")}/`,
-									)}
-									class="view-all"
-								>
-									{t(locale, "categories.viewAll").replace("{count}", String(categoryPosts.length))}
-								</a>
-							)}
-						</div>
-					))
-				}
-			</section>
+			{
+				categories.length === 0 ? (
+					<p class="categories-empty">{t(locale, "blog.empty")}</p>
+				) : (
+					<section class="categories-grid">
+						{categories.map(([category, categoryPosts]) => (
+							<article class="category-card">
+								<div class="category-card__top">
+									<h2 class="category-title">{localizeCategory(locale, category)}</h2>
+									<span class="category-count">{categoryPosts.length}</span>
+								</div>
+								<p class="category-meta">
+									{categoryPosts.length}{" "}
+									{categoryPosts.length === 1
+										? t(locale, "categories.articleOne")
+										: t(locale, "categories.articleMany")}
+								</p>
+								<ul class="category-posts">
+									{categoryPosts.slice(0, 5).map((post) => (
+										<li>
+											<a href={localizedPath(locale, `/blog/${post.slug}/`)}>
+												<span class="post-title">{post.title}</span>
+												<span class="post-date">
+													<FormattedDate date={post.publishedAt} locale={locale} />
+												</span>
+											</a>
+										</li>
+									))}
+								</ul>
+								{categoryPosts.length > 5 && (
+									<a
+										href={localizedPath(
+											locale,
+											`/categories/${category.toLowerCase().replace(/\s+/g, "-")}/`,
+										)}
+										class="view-all"
+									>
+										{t(locale, "categories.viewAll").replace("{count}", String(categoryPosts.length))}
+									</a>
+								)}
+							</article>
+						))}
+					</section>
+				)
+			}
 		</main>
 		<Footer locale={locale} />
 		<CookieBanner locale={locale} />
@@ -95,70 +107,109 @@ const categories = Array.from(categoriesMap.entries()).sort((a, b) => a[0].local
 <style>
 	main {
 		width: 100%;
-		max-width: 1200px;
+		max-width: 1120px;
 		margin: 0 auto;
-		padding: 2rem 1.5rem;
+		padding: 2.5rem 1.5rem 4rem;
 	}
 
 	.categories-header {
-		text-align: center;
-		margin-bottom: 3rem;
-		padding: 2rem 0;
+		text-align: left;
+		margin-bottom: 2.25rem;
+		padding: 0.5rem 0 1.5rem;
+		border-bottom: 1px solid #e5e7eb;
+	}
+
+	.categories-kicker {
+		margin: 0 0 0.5rem;
+		font-size: 0.75rem;
+		font-weight: 700;
+		letter-spacing: 0.12em;
+		text-transform: uppercase;
+		color: #6b7280;
 	}
 
 	.categories-header h1 {
-		font-size: 2.5rem;
+		font-size: 2.35rem;
 		font-weight: 700;
-		margin: 0 0 1rem 0;
+		margin: 0 0 0.5rem 0;
 		color: #000;
+		letter-spacing: -0.03em;
 	}
 
 	.categories-header p {
-		font-size: 1.125rem;
+		font-size: 1.05rem;
 		color: #6b7280;
 		margin: 0;
 	}
 
+	.categories-empty {
+		padding: 3rem 0;
+		color: #6b7280;
+	}
+
 	.categories-grid {
 		display: grid;
-		grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
-		gap: 2rem;
-		margin-bottom: 3rem;
+		grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+		gap: 1.25rem;
 	}
 
 	.category-card {
 		background: #fff;
 		border: 1px solid #e5e7eb;
-		padding: 1.5rem;
-		transition: all 0.2s ease;
+		border-radius: 1rem;
+		padding: 1.35rem 1.35rem 1.15rem;
+		transition: box-shadow 0.2s ease, transform 0.2s ease, border-color 0.2s ease;
 	}
 
 	.category-card:hover {
-		box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+		border-color: #111;
+		box-shadow: 0 10px 28px rgba(0, 0, 0, 0.08);
 		transform: translateY(-2px);
 	}
 
+	.category-card__top {
+		display: flex;
+		align-items: flex-start;
+		justify-content: space-between;
+		gap: 0.75rem;
+	}
+
 	.category-title {
-		font-size: 1.5rem;
-		font-weight: 600;
-		margin: 0 0 0.5rem 0;
+		font-size: 1.25rem;
+		font-weight: 700;
+		margin: 0;
 		color: #000;
+		letter-spacing: -0.02em;
 	}
 
 	.category-count {
-		font-size: 0.875rem;
+		display: inline-flex;
+		align-items: center;
+		justify-content: center;
+		min-width: 1.75rem;
+		height: 1.75rem;
+		padding: 0 0.45rem;
+		border-radius: 999px;
+		background: #111;
+		color: #fff;
+		font-size: 0.75rem;
+		font-weight: 700;
+	}
+
+	.category-meta {
+		font-size: 0.8125rem;
 		color: #6b7280;
-		margin: 0 0 1.5rem 0;
+		margin: 0.4rem 0 1rem;
 	}
 
 	.category-posts {
 		list-style: none;
 		padding: 0;
-		margin: 0 0 1rem 0;
+		margin: 0;
 	}
 
 	.category-posts li {
-		margin-bottom: 0.75rem;
+		border-top: 1px solid #f3f4f6;
 	}
 
 	.category-posts a {
@@ -168,60 +219,54 @@ const categories = Array.from(categoriesMap.entries()).sort((a, b) => a[0].local
 		gap: 1rem;
 		color: #374151;
 		text-decoration: none;
-		padding: 0.5rem;
-		margin: 0 -0.5rem;
-		transition: background 0.15s ease;
+		padding: 0.7rem 0;
+		transition: color 0.15s ease;
 	}
 
-	.category-posts a:hover {
-		background: #f9fafb;
+	.category-posts a:hover .post-title {
+		color: #2563eb;
 	}
 
 	.post-title {
 		flex: 1;
 		font-size: 0.9375rem;
 		font-weight: 500;
-		color: #000;
+		color: #111;
+		line-height: 1.4;
 	}
 
 	.post-date {
-		font-size: 0.8125rem;
+		font-size: 0.75rem;
 		color: #9ca3af;
 		white-space: nowrap;
 	}
 
 	.view-all {
 		display: inline-block;
-		color: var(--accent);
+		margin-top: 0.75rem;
+		color: #2563eb;
 		text-decoration: none;
-		font-size: 0.9375rem;
-		font-weight: 500;
-		margin-top: 0.5rem;
-		transition: color 0.15s ease;
+		font-size: 0.875rem;
+		font-weight: 600;
 	}
 
 	.view-all:hover {
-		color: var(--accent-dark);
+		text-decoration: underline;
 	}
 
 	@media (max-width: 768px) {
 		.categories-header h1 {
-			font-size: 2rem;
+			font-size: 1.85rem;
 		}
 
 		.categories-grid {
 			grid-template-columns: 1fr;
-			gap: 1.5rem;
 		}
 
 		.category-posts a {
 			flex-direction: column;
 			align-items: flex-start;
-			gap: 0.25rem;
-		}
-
-		.post-date {
-			font-size: 0.75rem;
+			gap: 0.2rem;
 		}
 	}
 </style>

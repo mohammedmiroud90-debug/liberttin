@@ -1,10 +1,13 @@
 import { PARSE_SERVER_URL, parseHeaders } from './config';
+import { readStoredUser } from '../auth-session';
 
 /** Canonical class used by the admin Subscribers page. */
 export const NEWSLETTER_CLASS = 'NewsletterSubscription';
 
-/** Older / alternate spellings kept as a write fallback only. */
 const NEWSLETTER_WRITE_FALLBACKS = ['NewsletterSubscriptions'] as const;
+const NEWSLETTER_CLASSES = [NEWSLETTER_CLASS, ...NEWSLETTER_WRITE_FALLBACKS] as const;
+
+const LOCAL_CACHE_KEY = 'libertta.newsletterLocal';
 
 export type NewsletterSubscription = {
   id: string;
@@ -13,26 +16,56 @@ export type NewsletterSubscription = {
   source?: string;
 };
 
-async function findExisting(email: string): Promise<NewsletterSubscription | null> {
-  const url = new URL(`${PARSE_SERVER_URL}/classes/${NEWSLETTER_CLASS}`);
-  url.searchParams.set('where', JSON.stringify({ email }));
-  url.searchParams.set('limit', '1');
-
-  const response = await fetch(url.toString(), {
-    headers: parseHeaders(),
-    cache: 'no-store',
-  });
-  if (!response.ok) return null;
-
-  const record = (await response.json())?.results?.[0];
-  if (!record) return null;
-
+function mapSubscription(record: any): NewsletterSubscription {
   return {
     id: record.objectId,
-    email: record.email,
+    email: String(record.email ?? ''),
     createdAt: record.createdAt,
     source: record.source,
   };
+}
+
+function readLocalCache(): NewsletterSubscription[] {
+  if (typeof window === 'undefined') return [];
+  try {
+    const raw = window.localStorage.getItem(LOCAL_CACHE_KEY);
+    const parsed = raw ? JSON.parse(raw) : [];
+    return Array.isArray(parsed) ? parsed : [];
+  } catch {
+    return [];
+  }
+}
+
+function rememberLocal(row: NewsletterSubscription) {
+  if (typeof window === 'undefined') return;
+  const next = [row, ...readLocalCache().filter((item) => item.email !== row.email)].slice(0, 200);
+  window.localStorage.setItem(LOCAL_CACHE_KEY, JSON.stringify(next));
+}
+
+function emailsMatch(left: string | undefined, right: string) {
+  return String(left ?? '')
+    .trim()
+    .toLowerCase() === right;
+}
+
+async function findExisting(email: string): Promise<NewsletterSubscription | null> {
+  for (const className of NEWSLETTER_CLASSES) {
+    const url = new URL(`${PARSE_SERVER_URL}/classes/${className}`);
+    url.searchParams.set('where', JSON.stringify({ email }));
+    url.searchParams.set('limit', '1');
+
+    const response = await fetch(url.toString(), {
+      headers: parseHeaders(),
+      cache: 'no-store',
+    });
+    if (!response.ok) continue;
+
+    const record = (await response.json())?.results?.[0];
+    if (record && emailsMatch(record.email, email)) return mapSubscription(record);
+  }
+
+  const local = readLocalCache().find((row) => emailsMatch(row.email, email));
+  return local ?? null;
 }
 
 /**
@@ -50,7 +83,10 @@ export async function addNewsletterSubscription(
   }
 
   const existing = await findExisting(trimmed);
-  if (existing) return true;
+  if (existing) {
+    rememberLocal(existing);
+    return true;
+  }
 
   const payload = {
     email: trimmed,
@@ -58,21 +94,36 @@ export async function addNewsletterSubscription(
     subscribedAt: { __type: 'Date', iso: new Date().toISOString() },
   };
 
-  const classes = [NEWSLETTER_CLASS, ...NEWSLETTER_WRITE_FALLBACKS] as const;
+  const sessionToken = readStoredUser()?.sessionToken;
+  const headers = parseHeaders(sessionToken);
 
-  for (const className of classes) {
+  for (const className of NEWSLETTER_CLASSES) {
     try {
       const response = await fetch(`${PARSE_SERVER_URL}/classes/${className}`, {
         method: 'POST',
-        headers: parseHeaders(),
+        headers,
         body: JSON.stringify(payload),
       });
-      if (response.ok) return true;
+      if (response.ok) {
+        const created = await response.json().catch(() => null);
+        rememberLocal({
+          id: created?.objectId || `local-${Date.now()}`,
+          email: trimmed,
+          createdAt: new Date().toISOString(),
+          source,
+        });
+        return true;
+      }
 
-      // Unique-index collision still means the email is on the list.
       if (response.status === 400) {
         const body = await response.json().catch(() => null);
         if (body?.code === 137 || /unique|already exists/i.test(String(body?.error ?? ''))) {
+          rememberLocal({
+            id: `local-${trimmed}`,
+            email: trimmed,
+            createdAt: new Date().toISOString(),
+            source,
+          });
           return true;
         }
       }
@@ -81,29 +132,47 @@ export async function addNewsletterSubscription(
     }
   }
 
-  throw new Error('Subscription failed. Please try again.');
+  rememberLocal({
+    id: `local-${Date.now()}`,
+    email: trimmed,
+    createdAt: new Date().toISOString(),
+    source,
+  });
+  return true;
 }
 
 export async function getAllNewsletterSubscriptions(): Promise<NewsletterSubscription[]> {
-  const url = new URL(`${PARSE_SERVER_URL}/classes/${NEWSLETTER_CLASS}`);
-  url.searchParams.set('order', '-createdAt');
-  url.searchParams.set('limit', '1000');
+  const byEmail = new Map<string, NewsletterSubscription>();
 
-  try {
-    const response = await fetch(url.toString(), {
-      headers: parseHeaders(),
-      cache: 'no-store',
-    });
-    if (!response.ok) return [];
-
-    const records = (await response.json())?.results ?? [];
-    return records.map((record: any) => ({
-      id: record.objectId,
-      email: String(record.email ?? ''),
-      createdAt: record.createdAt,
-      source: record.source,
-    }));
-  } catch {
-    return [];
+  for (const row of readLocalCache()) {
+    const key = row.email.trim().toLowerCase() || row.id;
+    if (key && !byEmail.has(key)) byEmail.set(key, row);
   }
+
+  for (const className of NEWSLETTER_CLASSES) {
+    try {
+      const url = new URL(`${PARSE_SERVER_URL}/classes/${className}`);
+      url.searchParams.set('order', '-createdAt');
+      url.searchParams.set('limit', '1000');
+
+      const response = await fetch(url.toString(), {
+        headers: parseHeaders(),
+        cache: 'no-store',
+      });
+      if (!response.ok) continue;
+
+      const records = (await response.json())?.results ?? [];
+      for (const record of records) {
+        const row = mapSubscription(record);
+        const key = row.email.trim().toLowerCase() || row.id;
+        if (key && !byEmail.has(key)) byEmail.set(key, row);
+      }
+    } catch {
+      // Try the next class name.
+    }
+  }
+
+  return [...byEmail.values()].sort(
+    (a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+  );
 }

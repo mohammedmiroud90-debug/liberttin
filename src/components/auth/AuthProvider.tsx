@@ -9,8 +9,12 @@ import {
   useState,
 } from 'react';
 import { fetchCurrentUser, isAdminUser, type ParseUser } from '@/lib/blog/auth';
-
-const STORAGE_KEY = 'billiant.user';
+import {
+  AUTH_STORAGE_KEY,
+  clearStoredUser,
+  readStoredUser,
+  storeUser,
+} from '@/lib/auth-session';
 
 type AuthContextValue = {
   user: ParseUser | null;
@@ -26,17 +30,6 @@ type AuthContextValue = {
 };
 
 const AuthContext = createContext<AuthContextValue | null>(null);
-
-function readStoredUser(): ParseUser | null {
-  try {
-    const raw = window.localStorage.getItem(STORAGE_KEY);
-    if (!raw) return null;
-    const parsed = JSON.parse(raw) as ParseUser;
-    return parsed?.sessionToken && parsed?.objectId ? parsed : null;
-  } catch {
-    return null;
-  }
-}
 
 export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [user, setUser] = useState<ParseUser | null>(null);
@@ -55,14 +48,14 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         if (!fresh) return;
         const merged = { ...fresh, sessionToken: stored.sessionToken };
         setUser(merged);
-        window.localStorage.setItem(STORAGE_KEY, JSON.stringify(merged));
+        storeUser(merged);
       });
     }
   }, []);
 
   useEffect(() => {
     const onStorage = (event: StorageEvent) => {
-      if (event.key === STORAGE_KEY) setUser(readStoredUser());
+      if (event.key === AUTH_STORAGE_KEY) setUser(readStoredUser());
     };
     window.addEventListener('storage', onStorage);
     return () => window.removeEventListener('storage', onStorage);
@@ -70,13 +63,13 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
   const login = useCallback((next: ParseUser) => {
     setUser(next);
-    window.localStorage.setItem(STORAGE_KEY, JSON.stringify(next));
+    storeUser(next);
     setSignInModalOpen(false);
   }, []);
 
   const logout = useCallback(() => {
     setUser(null);
-    window.localStorage.removeItem(STORAGE_KEY);
+    clearStoredUser();
   }, []);
 
   const refreshUser = useCallback(async () => {
@@ -86,7 +79,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     if (!fresh) return;
     const merged = { ...fresh, sessionToken: token };
     setUser(merged);
-    window.localStorage.setItem(STORAGE_KEY, JSON.stringify(merged));
+    storeUser(merged);
   }, [user?.sessionToken]);
 
   const value = useMemo<AuthContextValue>(

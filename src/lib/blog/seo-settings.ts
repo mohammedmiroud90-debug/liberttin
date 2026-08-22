@@ -177,11 +177,11 @@ export const LOGO_FONT_OPTIONS: {
 ];
 
 export const DEFAULT_LOGO_SETTINGS: LogoSettings = {
-  type: 'image',
+  type: 'text',
   imageUrl: '/BRAND.png',
-  text: 'BILLIANT',
+  text: 'Libertta',
   fontFamily: 'Libertinage',
-  fontSize: 28,
+  fontSize: 36,
   fontWeight: 700,
   color: '#000000',
   colorDark: '#ffffff',

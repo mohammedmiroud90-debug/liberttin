@@ -3,9 +3,9 @@
 import { useEffect, useState } from 'react';
 import Image from 'next/image';
 import { X, Loader2 } from 'lucide-react';
-import { Link } from '@/i18n/routing';
+import { Link, useRouter } from '@/i18n/routing';
 import { useAuth } from './AuthProvider';
-import { loginUser, signupUser } from '@/lib/blog/auth';
+import { isAdminUser, loginUser, signupUser } from '@/lib/blog/auth';
 import { SITE_NAME, SIGN_IN_PANEL_SIDE, type SignInPanelSide } from '@/lib/site';
 
 type Mode = 'signin' | 'signup';
@@ -44,6 +44,7 @@ function GoogleIcon({ className }: { className?: string }) {
 
 export function SignInModal({ side = SIGN_IN_PANEL_SIDE }: { side?: SignInPanelSide }) {
   const { signInModalOpen, closeSignIn, login } = useAuth();
+  const router = useRouter();
   const [mode, setMode] = useState<Mode>('signin');
   const [step, setStep] = useState<Step>('providers');
   const [username, setUsername] = useState('');
@@ -91,6 +92,11 @@ export function SignInModal({ side = SIGN_IN_PANEL_SIDE }: { side?: SignInPanelS
           ? await loginUser(email.trim(), password)
           : await signupUser(username.trim(), password, email.trim());
       login(user);
+      if (isAdminUser(user)) {
+        router.push('/admin');
+      } else if (typeof window !== 'undefined' && !window.location.pathname.includes('/space')) {
+        router.push('/space');
+      }
     } catch (submitError) {
       setError(
         submitError instanceof Error ? submitError.message : 'Something went wrong.'

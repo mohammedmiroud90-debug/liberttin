@@ -4,6 +4,7 @@ import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useSearchParams } from 'next/navigation';
 import { Link } from '@/i18n/routing';
 import { CornerDownRight, Eye, EyeOff, Loader2, Trash2 } from 'lucide-react';
+import { AdminPanelHeader } from '@/components/admin/AdminRefreshButton';
 import { useAuth } from '@/components/auth/AuthProvider';
 import { profilePictureUrl, userDisplayName } from '@/lib/blog/auth';
 import { CommentBody } from '@/components/blog/CommentBody';
@@ -110,7 +111,7 @@ export default function AdminCommentsPage() {
   const hiddenCount = comments.filter((comment) => !comment.isActive).length;
 
   return (
-    <main className="mx-auto max-w-5xl px-4 py-10">
+    <main className="admin-main">
       <div className="flex flex-wrap items-end justify-between gap-4 border-b border-black pb-5">
         <div>
           <p className="text-[11px] font-bold uppercase tracking-[0.12em] text-gray-500">
@@ -166,7 +167,9 @@ export default function AdminCommentsPage() {
       )}
 
       <div className="admin-panel mt-6 overflow-hidden">
-        <div className="admin-panel-header">Comments ({filtered.length})</div>
+        <AdminPanelHeader onRefresh={load} refreshing={loading}>
+          Comments ({filtered.length})
+        </AdminPanelHeader>
 
         {loading ? (
           <div className="flex justify-center py-16">

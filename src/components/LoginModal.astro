@@ -5,6 +5,7 @@ import { t } from "../i18n/ui";
 type Props = { locale: Locale };
 const { locale } = Astro.props;
 const adminHref = localizedPath(locale, "/admin/");
+const spaceHref = localizedPath(locale, "/space/");
 const policiesHref = localizedPath(locale, "/policies/");
 const siteName = "Libertta";
 ---
@@ -14,6 +15,7 @@ const siteName = "Libertta";
 	data-login-modal
 	hidden
 	data-admin-href={adminHref}
+	data-space-href={spaceHref}
 >
 	<div class="login-modal__backdrop" data-login-close></div>
 	<div
@@ -251,6 +253,9 @@ const siteName = "Libertta";
 		border-radius: 999px;
 		border: 1px solid #d1d5db;
 		background: #fff;
+		color: #111;
+		-webkit-text-fill-color: #111;
+		caret-color: #111;
 		font-size: 0.95rem;
 		outline: none;
 	}

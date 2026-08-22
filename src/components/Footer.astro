@@ -14,7 +14,7 @@ const policiesHref = localizedPath(locale, "/policies/");
 <footer>
 	<div class="footer-content">
 		<div class="footer-logo">
-			<BrandLogo href={homeHref} text="Libertta" variant="light" fontSize={32} fontWeight={700} />
+			<BrandLogo href={homeHref} text="Libertta" variant="light" fontSize={32} fontWeight={700} showIcon={true} />
 		</div>
 
 		<div class="footer-copy-wrap">
@@ -78,7 +78,21 @@ const policiesHref = localizedPath(locale, "/policies/");
 	.footer-logo {
 		display: flex;
 		justify-content: center;
+		align-items: center;
 		margin-bottom: 1.75em;
+	}
+	.footer-logo :global(.brand-logo) {
+		display: inline-flex;
+		align-items: center;
+		gap: 0.5rem;
+	}
+	.footer-logo :global(.brand-logo__icon) {
+		width: 28px;
+		height: 28px;
+		object-fit: contain;
+		border-radius: 0.25rem;
+		flex-shrink: 0;
+		filter: brightness(0);
 	}
 	.footer-copy-wrap {
 		width: min(100%, 34rem);

@@ -15,14 +15,16 @@ const locale = Astro.props.locale ?? getLocaleFromPath(Astro.url.pathname);
 const homeHref = localizedPath(locale, "/");
 const blogHref = localizedPath(locale, "/blog/");
 const aboutHref = localizedPath(locale, "/about/");
+const platformHref = localizedPath(locale, "/about/");
 const categoriesHref = localizedPath(locale, "/categories/");
 const contactHref = localizedPath(locale, "/contact/");
 const policiesHref = localizedPath(locale, "/policies/");
 const loginHref = localizedPath(locale, "/login/");
 const adminHref = localizedPath(locale, "/admin/");
+const spaceHref = localizedPath(locale, "/space/");
 ---
 
-<header data-admin-href={adminHref}>
+<header data-admin-href={adminHref} data-space-href={spaceHref}>
 	<nav>
 		<h2>
 			<BrandLogo href={homeHref} text="Libertta" variant="dark" fontSize={36} fontWeight={700} />
@@ -31,6 +33,7 @@ const adminHref = localizedPath(locale, "/admin/");
 			<HeaderLink href={homeHref}>{t(locale, "nav.home")}</HeaderLink>
 			<HeaderLink href={blogHref}>{t(locale, "nav.blog")}</HeaderLink>
 			<HeaderLink href={aboutHref}>{t(locale, "nav.about")}</HeaderLink>
+			<HeaderLink href={platformHref}>{t(locale, "nav.platform")}</HeaderLink>
 			<HeaderLink href={categoriesHref}>{t(locale, "nav.categories")}</HeaderLink>
 			<HeaderLink href={contactHref}>{t(locale, "nav.contact")}</HeaderLink>
 			<HeaderLink href={policiesHref}>{t(locale, "nav.policies")}</HeaderLink>
@@ -100,6 +103,7 @@ const adminHref = localizedPath(locale, "/admin/");
 			<a href={homeHref} class="mobile-menu-link">{t(locale, "nav.home")}</a>
 			<a href={blogHref} class="mobile-menu-link">{t(locale, "nav.blog")}</a>
 			<a href={aboutHref} class="mobile-menu-link">{t(locale, "nav.about")}</a>
+			<a href={platformHref} class="mobile-menu-link">{t(locale, "nav.platform")}</a>
 			<a href={categoriesHref} class="mobile-menu-link">{t(locale, "nav.categories")}</a>
 			<a href={contactHref} class="mobile-menu-link">{t(locale, "nav.contact")}</a>
 			<a href={policiesHref} class="mobile-menu-link">{t(locale, "nav.policies")}</a>
@@ -112,64 +116,6 @@ const adminHref = localizedPath(locale, "/admin/");
 		</div>
 	</div>
 
-	<div class="subscribe-modal" data-subscribe-modal hidden>
-		<div class="subscribe-modal__backdrop" data-subscribe-close></div>
-		<div class="subscribe-modal__panel" role="dialog" aria-modal="true" aria-labelledby="subscribe-modal-title">
-			<button type="button" class="subscribe-modal__close" aria-label="Close" data-subscribe-close>
-				<svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
-					<path d="M18 6L6 18M6 6l12 12"></path>
-				</svg>
-			</button>
-
-			<div class="subscribe-modal__grid">
-				<aside class="subscribe-modal__aside" aria-hidden="true">
-					<div class="subscribe-modal__orb subscribe-modal__orb--one"></div>
-					<div class="subscribe-modal__orb subscribe-modal__orb--two"></div>
-					<div class="subscribe-modal__aside-inner">
-						<span class="subscribe-modal__mark">L</span>
-						<h3>{t(locale, "subscribe.asideTitle")}</h3>
-						<p>{t(locale, "subscribe.asideBody")}</p>
-					</div>
-				</aside>
-
-				<div class="subscribe-modal__content">
-					<p class="subscribe-modal__eyebrow">{t(locale, "subscribe.eyebrow")}</p>
-					<h2 id="subscribe-modal-title">{t(locale, "subscribe.title")}</h2>
-					<p class="subscribe-modal__lead">{t(locale, "subscribe.body")}</p>
-
-					<div class="subscribe-modal__success" data-subscribe-success hidden>
-						<div class="subscribe-modal__success-icon" aria-hidden="true">
-							<svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="currentColor" stroke-width="2.25">
-								<path d="M20 6 9 17l-5-5"></path>
-							</svg>
-						</div>
-						<strong data-subscribe-success-title>{t(locale, "subscribe.success")}</strong>
-						<p data-subscribe-success-body>{t(locale, "subscribe.successBody")}</p>
-					</div>
-
-					<div class="subscribe-modal__form-wrap" data-subscribe-form-wrap>
-						<p class="subscribe-modal__status" data-subscribe-status hidden></p>
-						<form class="subscribe-modal__form" data-subscribe-form>
-							<label class="subscribe-modal__label" for="subscribe-email-input">
-								{t(locale, "subscribe.email")}
-							</label>
-							<input
-								id="subscribe-email-input"
-								type="email"
-								name="email"
-								required
-								autocomplete="email"
-								placeholder={t(locale, "subscribe.email")}
-								data-subscribe-email
-							/>
-							<button type="submit" data-subscribe-submit>{t(locale, "subscribe.submit")}</button>
-						</form>
-						<p class="subscribe-modal__privacy">{t(locale, "subscribe.privacy")}</p>
-					</div>
-				</div>
-			</div>
-		</div>
-	</div>
 	<div class="search-mobile-panel" hidden data-search-mobile>
 		<form class="search-form search-form-mobile" data-search-form-mobile>
 			<input
@@ -188,11 +134,70 @@ const adminHref = localizedPath(locale, "/admin/");
 		</form>
 	</div>
 </header>
+<div class="subscribe-modal" data-subscribe-modal hidden>
+	<div class="subscribe-modal__backdrop" data-subscribe-close></div>
+	<div class="subscribe-modal__panel" role="dialog" aria-modal="true" aria-labelledby="subscribe-modal-title">
+		<button type="button" class="subscribe-modal__close" aria-label="Close" data-subscribe-close>
+			<svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+				<path d="M18 6L6 18M6 6l12 12"></path>
+			</svg>
+		</button>
+
+		<div class="subscribe-modal__grid">
+			<aside class="subscribe-modal__aside" aria-hidden="true">
+				<div class="subscribe-modal__orb subscribe-modal__orb--one"></div>
+				<div class="subscribe-modal__orb subscribe-modal__orb--two"></div>
+				<div class="subscribe-modal__aside-inner">
+					<span class="subscribe-modal__mark">L</span>
+					<h3>{t(locale, "subscribe.asideTitle")}</h3>
+					<p>{t(locale, "subscribe.asideBody")}</p>
+				</div>
+			</aside>
+
+			<div class="subscribe-modal__content">
+				<p class="subscribe-modal__eyebrow">{t(locale, "subscribe.eyebrow")}</p>
+				<h2 id="subscribe-modal-title">{t(locale, "subscribe.title")}</h2>
+				<p class="subscribe-modal__lead">{t(locale, "subscribe.body")}</p>
+
+				<div class="subscribe-modal__success" data-subscribe-success hidden>
+					<div class="subscribe-modal__success-icon" aria-hidden="true">
+						<svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="currentColor" stroke-width="2.25">
+							<path d="M20 6 9 17l-5-5"></path>
+						</svg>
+					</div>
+					<strong data-subscribe-success-title>{t(locale, "subscribe.success")}</strong>
+					<p data-subscribe-success-body>{t(locale, "subscribe.successBody")}</p>
+				</div>
+
+				<div class="subscribe-modal__form-wrap" data-subscribe-form-wrap>
+					<p class="subscribe-modal__status" data-subscribe-status hidden></p>
+					<form class="subscribe-modal__form" data-subscribe-form>
+						<label class="subscribe-modal__label" for="subscribe-email-input">
+							{t(locale, "subscribe.email")}
+						</label>
+						<input
+							id="subscribe-email-input"
+							type="email"
+							name="email"
+							required
+							autocomplete="email"
+							placeholder={t(locale, "subscribe.email")}
+							data-subscribe-email
+						/>
+						<button type="submit" data-subscribe-submit>{t(locale, "subscribe.submit")}</button>
+					</form>
+					<p class="subscribe-modal__privacy">{t(locale, "subscribe.privacy")}</p>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
 <LoginModal locale={locale} />
 <script>
 	import { isAdminUser, loginUser } from "../lib/blog/auth";
 	import { readStoredUser, storeUser } from "../lib/auth-session";
 	import { addNewsletterSubscription } from "../lib/blog/newsletter";
+	import { recordVisit } from "../lib/blog/visit-history";
 
 	// Mobile menu toggle
 	const toggleBtn = document.querySelector('[data-mobile-menu-toggle]') as HTMLButtonElement;
@@ -230,7 +235,11 @@ const adminHref = localizedPath(locale, "/admin/");
 	const isAdmin = isAdminUser(user);
 	const userBtn = document.querySelector<HTMLElement>("[data-header-user]");
 	const mobileUser = document.querySelector<HTMLElement>("[data-mobile-user]");
-	const adminPath = document.querySelector<HTMLElement>("header")?.dataset.adminHref;
+	const headerEl = document.querySelector<HTMLElement>("header");
+	const adminPath = headerEl?.dataset.adminHref;
+	const spacePath = headerEl?.dataset.spaceHref || "/en/space/";
+
+	recordVisit(window.location.pathname, document.title);
 
 	const loginModal = document.querySelector<HTMLElement>("[data-login-modal]");
 	const loginError = document.querySelector<HTMLElement>("[data-login-error]");
@@ -240,6 +249,7 @@ const adminHref = localizedPath(locale, "/admin/");
 	const loginPassword = document.querySelector<HTMLInputElement>("[data-login-password]");
 	const loginSubmit = document.querySelector<HTMLButtonElement>("[data-login-submit]");
 	const loginAdminHref = loginModal?.dataset.adminHref || adminPath || "/en/admin/";
+	const loginSpaceHref = loginModal?.dataset.spaceHref || spacePath;
 
 	const showLoginError = (message: string) => {
 		if (!loginError) return;
@@ -270,12 +280,15 @@ const adminHref = localizedPath(locale, "/admin/");
 	};
 
 	const goAdminOrOpenLogin = (event: Event) => {
+		event.preventDefault();
 		if (isAdmin && adminPath) {
-			event.preventDefault();
 			window.location.href = adminPath;
 			return;
 		}
-		event.preventDefault();
+		if (user && spacePath) {
+			window.location.href = spacePath;
+			return;
+		}
 		openLogin();
 	};
 
@@ -338,11 +351,7 @@ const adminHref = localizedPath(locale, "/admin/");
 		try {
 			const nextUser = await loginUser(email, password);
 			storeUser(nextUser);
-			if (!isAdminUser(nextUser)) {
-				showLoginError("This account is not an administrator.");
-				return;
-			}
-			window.location.href = loginAdminHref;
+			window.location.href = isAdminUser(nextUser) ? loginAdminHref : loginSpaceHref;
 		} catch (err) {
 			showLoginError(err instanceof Error ? err.message : "Sign in failed.");
 		} finally {
@@ -821,10 +830,18 @@ const adminHref = localizedPath(locale, "/admin/");
 		border: 1px solid #d1d5db;
 		border-radius: 12px;
 		background: #fff;
+		color: #111;
+		-webkit-text-fill-color: #111;
+		caret-color: #111;
 		font-size: 1rem;
 		box-sizing: border-box;
 		outline: none;
 		transition: border-color 0.15s ease, box-shadow 0.15s ease;
+	}
+
+	.subscribe-modal__form input::placeholder {
+		color: #9ca3af;
+		-webkit-text-fill-color: #9ca3af;
 	}
 
 	.subscribe-modal__form input:focus {

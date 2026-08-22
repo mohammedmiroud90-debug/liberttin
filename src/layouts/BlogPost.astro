@@ -9,7 +9,9 @@ import CookieBanner from '../components/CookieBanner.astro';
 import type { BlogPost } from '../lib/parse/posts';
 import type { ArticleHeading } from '../lib/blog/headings';
 import DynamicTranslate from '../components/DynamicTranslate.astro';
-import { DEFAULT_LOCALE, getDir, type Locale } from '../i18n/locales';
+import EditPostLink from '../components/EditPostLink.astro';
+import { AuthorAvatarHoverCard } from '../components/blog/AuthorAvatarHoverCard';
+import { DEFAULT_LOCALE, getDir, localizedPath, type Locale } from '../i18n/locales';
 import { t } from '../i18n/ui';
 import { articleTitle } from '../i18n/title';
 import { localizeCategory } from '../i18n/category';
@@ -22,6 +24,8 @@ type Props = Pick<
 	| 'updatedAt'
 	| 'imageUrl'
 	| 'author'
+	| 'authorProfilePicture'
+	| 'authorBio'
 	| 'category'
 	| 'readingTime'
 > & {
@@ -38,6 +42,8 @@ const {
 	updatedAt,
 	imageUrl,
 	author,
+	authorProfilePicture,
+	authorBio,
 	category,
 	readingTime,
 	postId,
@@ -48,6 +54,11 @@ const {
 const pubDate = new Date(publishedAt);
 const updated = updatedAt ? new Date(updatedAt) : undefined;
 const dir = getDir(locale);
+const aboutHref = localizedPath(locale, '/about/');
+const authorAvatar =
+	authorProfilePicture ||
+	`https://api.dicebear.com/7.x/initials/svg?seed=${encodeURIComponent(author || 'author')}&size=144&backgroundColor=111111&textColor=ffffff`;
+const authorBioText = authorBio || t(locale, 'post.authorBio');
 ---
 
 <html lang={locale} dir={dir}>
@@ -98,21 +109,25 @@ const dir = getDir(locale);
 				font-family: "Atkinson", sans-serif;
 				font-size: 2.25rem;
 			}
+			.post-title-row {
+				display: flex;
+				align-items: flex-start;
+				justify-content: flex-start;
+				gap: 0.25rem;
+				margin: 0 0 0.5em 0;
+			}
+			.post-title-row h1 {
+				margin: 0;
+				flex: 1 1 auto;
+			}
 			.post-author-header {
 				display: flex;
 				align-items: center;
 				gap: 1rem;
 				margin-bottom: 1.5rem;
 			}
-			.post-author-header__avatar {
-				width: 50px;
-				height: 50px;
-				min-width: 50px;
-				min-height: 50px;
-				flex-shrink: 0;
-				border-radius: 50%;
-				object-fit: cover;
-				background: #e5e7eb;
+			.post-author-header :global(.author-hover__avatar) {
+				box-shadow: 0 0 0 2px #fff, 0 2px 8px rgba(0, 0, 0, 0.12);
 			}
 			.post-author-header__info {
 				flex: 1;
@@ -654,15 +669,13 @@ const dir = getDir(locale);
 					<div class="title">
 						<!-- Author Header with Avatar -->
 						<div class="post-author-header">
-							<img 
-								src="/images/profile-pic.png" 
-								alt=""
-								width="50"
-								height="50"
-								class="post-author-header__avatar"
-								loading="eager"
-								decoding="async"
-								onerror="this.onerror=null;this.src='https://api.dicebear.com/7.x/initials/svg?seed=author&size=100&backgroundColor=111111&textColor=ffffff';"
+							<AuthorAvatarHoverCard
+								client:load
+								author={author || t(locale, 'post.author')}
+								avatar={authorProfilePicture}
+								bio={authorBioText}
+								aboutHref={aboutHref}
+								size={50}
 							/>
 							<div class="post-author-header__info">
 								<div class="post-author-header__name">{author || t(locale, 'post.author')}</div>
@@ -677,7 +690,13 @@ const dir = getDir(locale);
 						</div>
 
 						<DynamicTranslate locale={locale} targets="[data-i18n-dynamic]" />
-						<h1 data-i18n-dynamic>{title}</h1>
+						<div class="post-title-row">
+							<h1 data-i18n-dynamic>{title}</h1>
+							<EditPostLink
+								href={localizedPath(locale, `/admin/posts/${postId}/edit/`)}
+								label={t(locale, "post.edit")}
+							/>
+						</div>
 						
 						{
 							updated && (
@@ -718,19 +737,18 @@ const dir = getDir(locale);
 					<div class="author-profile">
 						<div class="author-profile__inner">
 							<img 
-								src="/images/profile-pic.png" 
+								src={authorAvatar}
 								alt=""
 								width="72"
 								height="72"
 								class="author-profile__avatar"
 								loading="lazy"
 								decoding="async"
-								onerror="this.onerror=null;this.src='https://api.dicebear.com/7.x/initials/svg?seed=author&size=144&backgroundColor=111111&textColor=ffffff';"
 							/>
 							<div class="author-profile__info">
 								<div class="author-profile__name">{author || t(locale, 'post.author')}</div>
 								<div class="author-profile__bio">
-									{t(locale, 'post.authorBio')}
+									{authorBioText}
 								</div>
 							</div>
 						</div>

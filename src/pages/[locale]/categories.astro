@@ -1,6 +1,6 @@
 ---
-import { getCollection } from "astro:content";
 import CategoriesPage from "../../views/CategoriesPage.astro";
+import { getBlogPosts } from "../../lib/parse/posts";
 import { localeStaticPaths, resolveLocaleParam } from "../../i18n/paths";
 
 export function getStaticPaths() {
@@ -8,10 +8,13 @@ export function getStaticPaths() {
 }
 
 const locale = resolveLocaleParam(Astro.params.locale);
-
-const posts = (await getCollection("blog")).sort(
-	(a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf(),
-);
+const { items } = await getBlogPosts(1, 200);
+const posts = items.map((post) => ({
+	slug: post.slug,
+	title: post.title,
+	publishedAt: new Date(post.publishedAt),
+	category: post.category || "General",
+}));
 ---
 
 <CategoriesPage locale={locale} posts={posts} />

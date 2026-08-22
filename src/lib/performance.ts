@@ -14,13 +14,18 @@ export interface PerformanceMetric {
  * Report Web Vitals to analytics
  */
 export function reportWebVitals(metric: PerformanceMetric) {
+  const nodeEnv =
+    (typeof import.meta !== 'undefined' &&
+      (import.meta as ImportMeta & { env?: { MODE?: string; DEV?: boolean; PROD?: boolean } }).env?.MODE) ||
+    (typeof process !== 'undefined' ? process.env?.NODE_ENV : undefined);
+
   // Log to console in development
-  if (process.env.NODE_ENV === 'development') {
+  if (nodeEnv === 'development' || nodeEnv === 'dev') {
     console.log('📊 Web Vital:', metric);
   }
 
   // Send to analytics service in production
-  if (process.env.NODE_ENV === 'production') {
+  if (nodeEnv === 'production') {
     // Example: Send to Google Analytics
     if (typeof window !== 'undefined' && (window as any).gtag) {
       (window as any).gtag('event', metric.name, {

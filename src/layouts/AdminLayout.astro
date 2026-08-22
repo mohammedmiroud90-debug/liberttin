@@ -2,11 +2,12 @@
 import BaseHead from "../components/BaseHead.astro";
 import { DEFAULT_LOCALE, getDir, type Locale } from "../i18n/locales";
 import { pageTitle } from "../i18n/title";
+import type { UiKey } from "../i18n/ui";
 import "../styles/admin.css";
 
 type Props = {
 	locale?: Locale;
-	titleKey?: "nav.dashboard";
+	titleKey?: UiKey;
 };
 
 const locale = Astro.props.locale ?? DEFAULT_LOCALE;

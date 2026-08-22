@@ -50,6 +50,10 @@ export default defineConfig({
 				"next/navigation": path.resolve(rootDir, "src/shims/next-navigation.ts"),
 			},
 		},
+		// Client islands (admin React) must not crash on bare `process.env` reads.
+		define: {
+			"process.env.NODE_ENV": JSON.stringify(process.env.NODE_ENV ?? "development"),
+		},
 	},
 	server: {
 		port: 3000,

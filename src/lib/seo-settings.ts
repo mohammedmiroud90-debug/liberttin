@@ -18,11 +18,11 @@ const SEO_SETTINGS_CLASS = "SiteSettings";
 const SEO_SETTINGS_KEY = "site-seo";
 
 export const DEFAULT_LOGO_SETTINGS: LogoSettings = {
-	type: "image",
+	type: "text",
 	imageUrl: "/LOGO.png",
 	text: "Libertta",
 	fontFamily: "Libertinage",
-	fontSize: 28,
+	fontSize: 36,
 	fontWeight: 700,
 	color: "#000000",
 	colorDark: "#ffffff",

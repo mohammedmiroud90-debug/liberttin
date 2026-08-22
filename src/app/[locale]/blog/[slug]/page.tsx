@@ -157,6 +157,7 @@ export default async function BlogPostPage({ params }: PageProps) {
             <AuthorByline
               author={post.author}
               avatar={post.authorProfilePicture}
+              bio={post.authorBio}
               publishedLabel={publishedLabel}
               updatedLabel={updatedLabel}
               factChecker={post.factChecker}
